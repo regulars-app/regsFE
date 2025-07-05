@@ -17,7 +17,7 @@ const GlassCard = ({ children, style }) => (
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 28,
+    borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: 'transparent',
     ...Platform.select({
