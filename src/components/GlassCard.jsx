@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   content: {
     position: 'relative',
-    padding: 20,
+    padding: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },

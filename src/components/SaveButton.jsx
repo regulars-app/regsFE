@@ -13,12 +13,13 @@ const SaveButton = () => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 25,
-    height: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonImage: {
-    width: '100%',
-    height: '100%',
+    width: 25,
+    height: 25,
   },
 });
 

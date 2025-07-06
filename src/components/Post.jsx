@@ -1,110 +1,144 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
 import SaveButton from './SaveButton';
 import CommentButton from './CommentButton';
 import GlassCard from './GlassCard';
 
-const postPic = require('../images/dog-placeholder.png'); // Use a placeholder image
+// PROPS:
+// Can be given type: 'text', 'image', 'mixed'
+// Can be given position: 'left', 'right'
+// Can be given imageURI: string
+// Can be given text: string
+// Can be given senderName: string
+// Can be given commentText: string
 
-const Post = ( {type, position, imageURI, text} ) => (
-  <View style={styles.wrapper}>
-    <View style={styles.profilePicContainer}>
-      <ProfilePic size={60} footer="Ralphie" />
-    </View>
-    <View style={styles.container}>
+const Post = ( {type, position, imageURI, text, senderName, commentText} ) => {
+  const dynamicStyle = {
+    container: {
+      alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
+    },
+    profilePic: {
+      top: position === 'left' ? -30 : -30,
+      left: position === 'left' ? -30 : 'none',
+      right: position === 'right' ? -30 : 'none',
+    },
+    postText: {
+      paddingLeft: position === 'left' && type === 'text' ? 20 : 0,
+      paddingRight: position === 'right' && type === 'text' ? 20 : 0,
+    },
+  };
+  
+  return(
+  <View style={[styles.container, dynamicStyle.container]}>
+    <View style={styles.postBodyWrapper}>
+      <ProfilePic size={60} footer="Ralphie" style={[styles.profilePic, dynamicStyle.profilePic]}/>
       <GlassCard style={styles.postBody}>
         {type === 'image' ? (
           <Image source={imageURI} style={styles.postImage} />
         ) : type === 'text' ? (
-          <Text style={styles.postText}>{text}</Text>
-        ) : type === 'image+text' ? (
+          <View style={styles.textContainer}>
+            <Text style={[styles.postText, dynamicStyle.postText]}>{text}</Text>
+          </View>
+        ) : type === 'mixed' ? (
           <View style={styles.imageTextContainer}>
             <Image source={imageURI} style={styles.postImage} />
-            <Text style={styles.postText}>{text}</Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.postText}>{text}</Text>
+            </View>
           </View>
         ) : null}
       </GlassCard>
       <View style={styles.postFooter}>
         <View style={styles.postFooterButtons}>
           <SaveButton />
-          <CommentButton />
+          <CommentButton numComments={3} />
         </View>
-        <View style={styles.postFooterText}>
-          <Text style={styles.senderName}>Shyam</Text>
-          <Text style={styles.commentText}>Hello</Text>
-        </View>
+        <TouchableOpacity style={styles.postFooterText}>
+          <Text style={styles.senderName}>{senderName}</Text>
+          <Text style={styles.commentText} numberOfLines={1} ellipsizeMode="tail">{commentText}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   </View>
-);
+)};
 
 const styles = StyleSheet.create({
-  wrapper: {
-    position: 'relative',
+  container: {
     alignItems: 'center',
     marginVertical: 8,
-  },
-  profilePicContainer: {
-    position: 'absolute',
-    top: 10,
-    left: -30,
-    zIndex: 100,
-  },
-  container: {
-    borderRadius: 16,
+    alignSelf: 'flex-start',
+    maxWidth: '75%',
     padding: 12,
-    width: 320,
-    alignItems: 'center',
-    marginTop: 30,
+    paddingTop: 42,
+    paddingLeft: 42,
+    paddingRight: 42,
+    overflow: 'hidden'
+  },
+  postBodyWrapper: {
+    position: 'relative',
+    overflow: 'visible',
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
   },
   postBody: {
-    width: '100%',
     minHeight: 75,
-    alignItems: 'center',
+    minWidth: 200,
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
+  },
+  profilePic: {
+    position: 'absolute',
+    zIndex: 100,
   },
   imageTextContainer: {
     alignItems: 'center',
     width: '100%',
   },
   postFooter: {
-    width: '100%',
     paddingTop: 10,
+    maxWidth: '100%',
   },
   postFooterButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
     marginBottom: 10,
     paddingHorizontal: 15,
   },
   postFooterText: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: '100%',
+    color: '#6E6E6E',
     paddingHorizontal: 10,
   },
   senderName: {
     fontSize: 16,
     fontWeight: 'bold',
     paddingRight: 10,
+    color: '#6E6E6E',
   },
   commentText: {
     fontSize: 16,
     fontWeight: 'normal',
+    color: '#6E6E6E',
+    flexShrink: 1,
   },
   postImage: {
     width: 280,
     height: 280,
     borderRadius: 8,
+    resizeMode: 'cover',
+  },
+  textContainer: {
+    padding: 20,
+    width: '100%',
   },
   postText: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
-    width: '100%',
-    paddingHorizontal: 20,
+    textAlign: 'left',
     lineHeight: 24,
+    color: '#6E6E6E',
   },
 });
 

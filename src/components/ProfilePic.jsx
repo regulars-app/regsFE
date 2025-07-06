@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
-import GlassCard from './GlassCard';
 
 const groupPic = require('../images/profilePic.png'); // Use your image
 
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowRadius: 1,
     elevation: 2,
     alignSelf: 'center',
     margin: 0,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontWeight: '500',
-    color: '#222',
+    color: '#6E6E6E',
   },
 });
 

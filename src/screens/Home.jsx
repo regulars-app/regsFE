@@ -30,8 +30,12 @@ const HomeScreen = () => (
   <View style={styles.bg}>
     {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
     <ScrollView contentContainerStyle={styles.centered}>
+      <Post type="text" position="left" text="Heoadsfcsdasdadsacsdkcmsdklmclksdmcksdkcmsdcdsadasdassdfsdfdsfsd" imageURI="" senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+      <Post type="image" position="right" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+      <Post type="mixed" position="left" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+
+      {/* 
       <SearchBar />
-      <Post type="text" position="left" text="Heo" />
       <Stack />
       <GlassCard>
         <Text style={styles.text}>test of the glass card</Text>
@@ -53,7 +57,8 @@ const HomeScreen = () => (
       <GlassCardClickable />
       <MessagingSub />
       <MessagingMain />
-      <MainButton />
+      <MainButton /> 
+      */}
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

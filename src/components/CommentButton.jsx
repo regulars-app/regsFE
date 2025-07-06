@@ -1,23 +1,31 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Image, View} from 'react-native';
+import { TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
 
-const CommentButton = () => {
+const CommentButton = ({numComments}) => {
   const commentIcon = require('../images/chat-icon.png');
   return (
     <TouchableOpacity style={styles.button}>
       <Image source={commentIcon} style={styles.buttonImage} />
+      <Text style={styles.buttonText}>{numComments}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
     button: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonImage: {
       width: 25,
       height: 25,
     },
-    buttonImage: {
-      width: '100%',
-      height: '100%',
+    buttonText: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: '#6E6E6E',
+      paddingLeft: 5,
     },
   });
   
