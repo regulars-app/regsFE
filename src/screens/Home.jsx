@@ -4,7 +4,7 @@ import GlassCard from '../components/GlassCard';
 import Countdown from '../components/Countdown';
 import MeetupItemButton from '../components/MeetupItemButton';
 import MeetupCard from '../components/MeetupCard';
-import EditButton from '../components/EditButton';
+import EditSymbol from '../components/EditSymbol';
 import ScrollList from '../components/ScrollList';
 import ProfilePic from '../components/ProfilePic';
 import MapWidget from '../components/MapWidget';
@@ -33,16 +33,17 @@ const HomeScreen = () => (
       <Post type="text" position="left" text="Heoadsfcsdasdadsacsdkcmsdklmclksdmcksdkcmsdcdsadasdassdfsdfdsfsd" imageURI="" senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
       <Post type="image" position="right" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
       <Post type="mixed" position="left" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
-
+      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" />
+      <Stack />
+  
       {/* 
       <SearchBar />
-      <Stack />
       <GlassCard>
         <Text style={styles.text}>test of the glass card</Text>
       </GlassCard>
       <Countdown />
       <MeetupItemButton />
-      <MeetupCard />
+    
       <EditButton />
       <ScrollList />
       <MapWidget />

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
       },
       android: {
-        elevation: 3,
+        elevation: 1,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 0 },
       },
