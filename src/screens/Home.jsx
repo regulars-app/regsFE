@@ -26,6 +26,30 @@ import SearchBar from '../components/SearchBar';
 
 const mapImage = require('../images/map.png');
 
+const data = [
+  {
+    id: '1',
+    datetime: '10:00 AM',
+    activity: 'Golf, Cooking, Movie',
+    info: 'Bring crisps.',
+    confirmed: '130001, 3493833,33434343,3434343455',
+  },
+  {
+    id: '2',
+    datetime: '2:30 PM',
+    activity: 'Hiking, Painting',
+    info: 'Meet at the park entrance.',
+    confirmed: '230002, 4593844,33434343,3434343455',
+  },
+  {
+    id: '3',
+    datetime: '6:00 PM',
+    activity: 'Dinner, Board Games',
+    info: 'Don\'t forget your favorite game!',
+    confirmed: '330003, 5593855,33434343,3434343455',
+  },
+];
+
 const HomeScreen = () => (
   <View style={styles.bg}>
     {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
@@ -34,7 +58,7 @@ const HomeScreen = () => (
       <Post type="image" position="right" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
       <Post type="mixed" position="left" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
       <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" />
-      <Stack />
+      <Stack data={data} renderItem={({item}) => <MeetupCard {...item} />} />
   
       {/* 
       <SearchBar />
