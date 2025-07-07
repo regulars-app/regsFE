@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { View, Animated, StyleSheet, PanResponder, Dimensions, Easing } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 
-const CARD_WIDTH = Math.round(Dimensions.get('window').width * 0.95);
-const CARD_HEIGHT = 800;
+const CARD_WIDTH = Math.round(Dimensions.get('window').width * 1);
+const CARD_HEIGHT = 900;
 const CARD_RADIUS = 24;
 //const BLUR_AMOUNT = 8;
 const SWIPE_THRESHOLD = CARD_WIDTH / 10;
