@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-const groupPic = require('../images/profilePic.png'); // Use your image
-
-const ProfilePic = ({ footer, style, size = 80 }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -18,7 +16,7 @@ return (
   <View style={[styles.container, style]}>
     <View style={[styles.outer, dynamicStyles.outer]}>
       <Image
-        source={groupPic}
+        source={{ uri: imageURL }}
         style={styles.image}
         resizeMode="cover"
       />
@@ -39,13 +37,13 @@ const styles = StyleSheet.create({
   },
   outer: {
     borderRadius: 50,
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: '#fff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 1,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.02,
+    shadowRadius: 0.2,
+    elevation: 1,
     alignSelf: 'center',
     margin: 0,
     backgroundColor: '#fff',

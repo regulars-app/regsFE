@@ -13,7 +13,7 @@ import GlassCard from './GlassCard';
 // Can be given senderName: string
 // Can be given commentText: string
 
-const Post = ( {type, position, imageURI, text, senderName, commentText} ) => {
+const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
   const dynamicStyle = {
     container: {
       alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
@@ -32,17 +32,17 @@ const Post = ( {type, position, imageURI, text, senderName, commentText} ) => {
   return(
   <View style={[styles.container, dynamicStyle.container]}>
     <View style={styles.postBodyWrapper}>
-      <ProfilePic size={60} footer="Ralphie" style={[styles.profilePic, dynamicStyle.profilePic]}/>
+      <ProfilePic size={60} footer="Ralphie" style={[styles.profilePic, dynamicStyle.profilePic]} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.postBody}>
         {type === 'image' ? (
-          <Image source={imageURI} style={styles.postImage} />
+          <Image source={{ uri: imageURL }} style={styles.postImage} />
         ) : type === 'text' ? (
           <View style={styles.textContainer}>
             <Text style={[styles.postText, dynamicStyle.postText]}>{text}</Text>
           </View>
         ) : type === 'mixed' ? (
           <View style={styles.imageTextContainer}>
-            <Image source={imageURI} style={styles.postImage} />
+            <Image source={{ uri: imageURL }} style={styles.postImage} />
             <View style={styles.textContainer}>
               <Text style={styles.postText}>{text}</Text>
             </View>
@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   postText: {
-    fontSize: 16,
-    fontWeight: '400',
+    fontSize: 13,
+    fontWeight: '600',
     textAlign: 'left',
-    lineHeight: 24,
-    letterSpacing: 0.5,
+    lineHeight: 20,
+    letterSpacing: 0.4,
     color: '#6E6E6E',
   },
 });

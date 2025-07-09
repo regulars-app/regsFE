@@ -15,7 +15,7 @@ const MeetupCard = ({datetime, activity, info, confirmed}) => {
   return(
 <View style={styles.container}>
     <View style={styles.meetupCardBodyWrapper}>
-      <ProfilePic size={60} style={styles.profilePic}/>
+      <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.meetupCardBody}>
         <MapWidget />
         <GlassCard style={styles.meetupCardDetails}>
@@ -37,12 +37,12 @@ const MeetupCard = ({datetime, activity, info, confirmed}) => {
                     <Text>Confirmed</Text>
                 </View>
                 <View style={styles.confirmedList}>
-                    <ProfilePic size={50}/>
-                    <ProfilePic size={50}/>
-                    <ProfilePic size={50}/>
-                    <ProfilePic size={50}/>
-                    <ProfilePic size={50}/>
-                    <ProfilePic size={50}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 </View>
             </View>
         </GlassCard>

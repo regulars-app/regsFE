@@ -85,7 +85,7 @@ const Stack = ({ data, renderItem, cardWidth, cardHeight }) => {
         if (index < focusedIndex - 1 || index > focusedIndex + 1) return null;
         // Distance from animated index
         const offset = Animated.subtract(index, currentAnimatedIndex);
-        const sideOffset = 48;
+        const sideOffset = 30;
         const scale = offset.interpolate({
           inputRange: [-1, 0, 1],
           outputRange: [0.92, 1, 0.92],
@@ -98,7 +98,6 @@ const Stack = ({ data, renderItem, cardWidth, cardHeight }) => {
         });
         // Set zIndex so focused card is always on top
         const zIndex = index === focusedIndex ? 100 : 100 - Math.abs(index - focusedIndex);
-        const isFocused = index === focusedIndex;
         return (
           <Animated.View
             key={index}

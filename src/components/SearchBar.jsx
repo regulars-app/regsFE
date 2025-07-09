@@ -1,42 +1,61 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import GlassCard from './GlassCard';
+import HamburgerSymbol from './HamburgerSymbol';
+import SearchSymbol from './SearchSymbol';
 
 const SearchBar = () => (
-  <View style={styles.container}>
-    <Ionicons name="menu" size={22} color="#888" style={styles.icon} />
-    <TextInput
-      style={styles.input}
-      placeholder="Search"
-      placeholderTextColor="#888"
-    />
-    <Ionicons name="search" size={22} color="#888" style={styles.icon} />
-  </View>
+  <GlassCard style={styles.glassCard}>
+    <View style={styles.container}>
+      <TouchableOpacity>
+        <HamburgerSymbol style={styles.hamburgerSymbol}/>
+      </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="Search"
+        placeholderTextColor="#888"
+      />
+      <TouchableOpacity>
+        <SearchSymbol style={styles.searchSymbol}/>
+      </TouchableOpacity>
+    </View>
+  </GlassCard>
 );
 
 const styles = StyleSheet.create({
+  glassCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '250',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 6,
+    paddingBottom: 6,
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    borderRadius: 24,
-    paddingHorizontal: 16,
-    height: 48,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
-    marginVertical: 8,
-  },
-  icon: {
-    marginHorizontal: 4,
+    justifyContent: 'center',
+    width: '100%',
   },
   input: {
     flex: 1,
-    fontSize: 16,
-    color: '#222',
+    fontSize: 20,
+    color: '#6E6E6E',
     marginHorizontal: 8,
+  },
+  hamburgerSymbol: {
+    width: 20,
+    height: 20,
+    marginLeft: 10,
+  },
+  searchSymbol: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
   },
 });
 

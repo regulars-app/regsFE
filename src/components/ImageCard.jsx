@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-const ImageCard = ({ imageURL, footer, width, height }) => {
+const ImageCard = ({ imageURL, footer, width, height, aspectRatio }) => {
 
   const dynamicStyles = {
     outer: {
       width: width,
-      height: height,
+      height: height ? height : 'auto',
+      aspectRatio: aspectRatio ? aspectRatio : 'auto',
     },
-    footerText: {
-      fontSize: Math.round(width * 0.02), 
-    }
  };
   
   return(
@@ -18,7 +16,7 @@ const ImageCard = ({ imageURL, footer, width, height }) => {
     <Image source={{ uri: imageURL }} style={styles.image} />
     {footer && (
       <View style={styles.footerContainer}>
-        <Text style={styles.footerText}>{footer}</Text>
+        <Text style={styles.footerText} ellipsizeMode='tail' numberOfLines={1}>{footer}</Text>
       </View>
     )}
   </View>
@@ -63,6 +61,7 @@ const styles = StyleSheet.create({
     color: '#6E6E6E',
     fontWeight: '500',
     textAlign: 'center',
+    fontSize: 10,
   },
 }); 
 
