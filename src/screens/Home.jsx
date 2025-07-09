@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Dimensions } from 'react-native';
 import GlassCard from '../components/GlassCard';
 import Countdown from '../components/Countdown';
 import MeetupItemButton from '../components/MeetupItemButton';
@@ -23,10 +23,12 @@ import MessagingSub from '../components/MessagingSub';
 import MessagingMain from '../components/MessagingMain';
 import MainButton from '../components/MainButton';
 import SearchBar from '../components/SearchBar';
+import ImageCard from '../components/ImageCard';
 
 const mapImage = require('../images/map.png');
 
-const data = [
+
+const meetupExampleData = [
   {
     id: '1',
     datetime: '10:00 AM',
@@ -50,15 +52,34 @@ const data = [
   },
 ];
 
+const photoStackWideExampleData = [
+  {
+    id: '1',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+    footer: 'Octopus pasta',
+  },
+  {
+    id: '2',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
+    footer: 'Beach Freddo',
+  },
+  {
+    id: '3',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/03/05/11/louvre-9638315_1280.jpg',
+    footer: 'Idiot sandwich',
+  },
+];
+
 const HomeScreen = () => (
   <View style={styles.bg}>
     {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
     <ScrollView contentContainerStyle={styles.centered}>
       <Post type="text" position="left" text="Heoadsfcsdasdadsacsdkcmsdklmclksdmcksdkcmsdcdsadasdassdfsdfdsfsd" imageURI="" senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
-      <Post type="image" position="right" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
-      <Post type="mixed" position="left" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/map.png')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+      <Post type="image" position="right" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/test4.jpg')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+      <Post type="mixed" position="left" text="Heoadsfcsdasdadsadsadasdassdfsdfdsfsd" imageURI={require('../images/test4.jpg')} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
       <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" />
-      <Stack data={data} renderItem={({item}) => <MeetupCard {...item} />} />
+      <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} />} />
+      <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.8} height={200} />} />
   
       {/* 
       <SearchBar />

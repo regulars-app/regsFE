@@ -2,13 +2,23 @@ import React, { useRef, useState } from 'react';
 import { View, Animated, StyleSheet, PanResponder, Dimensions, Easing } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 
-const CARD_WIDTH = Math.round(Dimensions.get('window').width * 1);
-const CARD_HEIGHT = 900;
-const CARD_RADIUS = 24;
-//const BLUR_AMOUNT = 8;
-const SWIPE_THRESHOLD = CARD_WIDTH / 10;
 
-const Stack = ({ data, renderItem }) => {
+const Stack = ({ data, renderItem, cardWidth, cardHeight }) => {
+
+  const SWIPE_THRESHOLD = cardWidth / 10;
+
+  const dynamicStyle = {
+    stackContainer: {
+      width: cardWidth,
+      height: cardHeight,
+    },
+    card: {
+      position: 'absolute',
+      width: cardWidth,
+      height: cardHeight,
+    },
+  }
+
   const [focusedIndex, setFocusedIndex] = useState(0);
   const animatedIndex = useRef(new Animated.Value(0)).current;
   const panX = useRef(new Animated.Value(0)).current;
@@ -22,7 +32,7 @@ const Stack = ({ data, renderItem }) => {
         panX.setValue(0);
       },
       onPanResponderMove: (_, gestureState) => {
-        panX.setValue(-gestureState.dx / CARD_WIDTH);
+        panX.setValue(-gestureState.dx / cardWidth);
       },
       onPanResponderRelease: (_, gestureState) => {
         let snappedIndex = lastIndex.current;
@@ -69,7 +79,7 @@ const Stack = ({ data, renderItem }) => {
   const currentAnimatedIndex = Animated.add(animatedIndex, panX);
 
   return (
-    <View style={styles.stackContainer} {...panResponder.panHandlers}>
+    <View style={[styles.stackContainer, dynamicStyle.stackContainer]} {...panResponder.panHandlers}>
       {data.map((item, index) => {
         // Only render cards within focusedIndex-1, focusedIndex, focusedIndex+1
         if (index < focusedIndex - 1 || index > focusedIndex + 1) return null;
@@ -94,6 +104,7 @@ const Stack = ({ data, renderItem }) => {
             key={index}
             style={[
               styles.card,
+              dynamicStyle.card,
               {
                 zIndex,
                 transform: [
@@ -115,31 +126,21 @@ const Stack = ({ data, renderItem }) => {
 
 const styles = StyleSheet.create({
   stackContainer: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
   card: {
     position: 'absolute',
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
-    borderRadius: CARD_RADIUS,
+    borderRadius: 20,
     left: 0,
     top: 0,
   },
   cardContent: {
     flex: 1,
-    borderRadius: CARD_RADIUS,
+    borderRadius: 20,
     overflow: 'hidden',
-    backgroundColor: 'transparent',
     position: 'relative',
-  },
-  blur: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: CARD_RADIUS,
-    zIndex: 10,
   },
 });
 

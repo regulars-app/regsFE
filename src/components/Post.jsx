@@ -135,9 +135,10 @@ const styles = StyleSheet.create({
   },
   postText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '400',
     textAlign: 'left',
     lineHeight: 24,
+    letterSpacing: 0.5,
     color: '#6E6E6E',
   },
 });
