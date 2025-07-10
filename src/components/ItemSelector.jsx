@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import GlassCard from './GlassCard';
 import SearchBar from './SearchBar';
 import PreferenceItem from './PreferenceItem';
@@ -56,10 +56,21 @@ const ItemSelector = () => {
         { text: "White Water Rafting", color: "red", type: "activity" },
     ];
 
+    const [selected, setSelected] = useState(Array(activities.length).fill(false));
+
+    const handleToggle = (index) => {
+        setSelected(prev => {
+            const updated = [...prev];
+            updated[index] = !updated[index];
+            return updated;
+        });
+    };
+
     return (
         <GlassCard style={styles.glassCard}>
             <View style={styles.container}>
                 <SearchBar />
+                <View style={styles.scrollArea}>
                     <ScrollView
                         contentContainerStyle={styles.itemList}
                         showsVerticalScrollIndicator={true}
@@ -67,16 +78,19 @@ const ItemSelector = () => {
                         nestedScrollEnabled={true}
                     >
                         {activities.map((activity, index) => (
-                            <PreferenceItem
-                                key={index}
-                                text={activity.text}
-                                color={activity.color}
-                                type={activity.type}
-                            />
+                            <TouchableOpacity key={index} onPress={() => handleToggle(index)} activeOpacity={0.7}>
+                                <PreferenceItem
+                                    text={activity.text}
+                                    color={activity.color}
+                                    type={activity.type}
+                                    isSelected={selected[index]}
+                                />
+                            </TouchableOpacity>
                         ))}
                     </ScrollView>
+                </View>
+                <AddButton size={50} style={styles.addButton}/>
             </View>
-            <AddButton size={50} style={styles.add}/>
         </GlassCard>
     );
 };
@@ -88,11 +102,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 20,
         marginBottom: 20,
-        position: 'relative',
     },
     container: {
+        height: '100%',
         width: '100%',
-        height: 390,
+        position: 'relative',
+    },
+    scrollArea: {
+        width: '100%',
+        height: 287,
     },
     itemListContainer: {
         width: '95%',
@@ -102,11 +120,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingHorizontal: 15,
-        paddingVertical: 10,
+        paddingVertical: 5,
         gap: 7,
     },
-    add: {
-        bottom: 10,
+    addButton: {
+        bottom: 25,
         right: 25,
         zIndex: 10,
         position: 'absolute',
