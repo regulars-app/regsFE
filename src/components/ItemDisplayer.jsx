@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5,
         gap: 7,
+        paddingBottom: 110,
     },
 });
 export default ItemDisplayer;

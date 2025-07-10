@@ -92,9 +92,6 @@ const HomeScreen = () => (
       <ItemDisplayer />
   
       {/* 
-      <GlassCard>
-        <Text style={styles.text}>test of the glass card</Text>
-      </GlassCard>
       <Countdown />
       <MeetupItemButton />
     
