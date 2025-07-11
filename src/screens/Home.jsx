@@ -72,6 +72,69 @@ const photoStackWideExampleData = [
   },
 ];
 
+const messagesMainDemoData = [
+  {
+    chatType: 'main',
+    time: '12:00',
+    position: 'left',
+    messageType: 'text',
+    senderName: 'John Doe',
+    messageText: 'Hello, how are you?',
+    imageURL: '',
+  },
+  {
+    chatType: 'main',
+    time: '12:00',
+    position: 'right',
+    messageType: 'image',
+    senderName: 'John Doe',
+    messageText: '',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+  },
+  {
+    chatType: 'main',
+    time: '12:00',
+    position: 'left',
+    messageType: 'mixed',
+    senderName: 'John Doe',
+    messageText: 'I\'m ok thanks, i\'ve been doing lots of arts and crafts!',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+  },
+];
+
+const messagesSubDemoData = [
+  {
+    chatType: 'sub',
+    time: '12:00',
+    position: 'left',
+    messageType: 'text',
+    senderName: 'John Doe',
+    messageText: 'Hello, how are you?',
+    imageURL: '',
+    userID: '1',
+  },
+  {
+    chatType: 'sub',
+    time: '12:00',
+    position: 'left',
+    messageType: 'image',
+    senderName: 'John Doe',
+    messageText: '',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+    userID: '2',
+  },
+  {
+    chatType: 'sub',
+    time: '12:00',
+    position: 'left',
+    messageType: 'mixed',
+    senderName: 'John Doe',
+    messageText: 'I\'m ok thanks, i\'ve been doing lots of arts and crafts!',
+    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+    userID: '3',
+  },
+];
+
 const HomeScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
   return(
@@ -92,7 +155,8 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
         <Text>PopupDemo</Text>
       </TouchableOpacity>
-      <Messenger style={{height: 500}}/>
+      <Messenger style={{height: 500}} messages={messagesMainDemoData}/>
+      <Messenger style={{height: 500}} messages={messagesSubDemoData}/>
 
       {/* 
       <Countdown />

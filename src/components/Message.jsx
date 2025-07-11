@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Image   } from 'react-native';
 import GlassCard from './GlassCard';
 import ProfilePic from './ProfilePic';
 
-const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL}) => {
+const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL, userID}) => {
     const dynamicStyle = {
-        container: {
+        mainChatMessageContainer: {
           alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
         },
         mainMessageProfilePic: {
@@ -17,38 +17,65 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
           paddingLeft: position === 'left' && messageType === 'text' ? 20 : 0,
           paddingRight: position === 'right' && messageType === 'text' ? 20 : 0,
         },
+        subSenderLabel: {backgroundColor: userID === '1' ? '#F2FFF6' : 'white'},
       };
     return (
         <View style={[styles.container, dynamicStyle.container]}>
             {/* Differentiate between messages in a main chat and 
             messagges in a subChat (e.g. in a post) */}
             {chatType === 'main' ? (
-                <View style={styles.mainChatMessage}>
-                    <ProfilePic size={40} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'} style={[styles.mainMessageProfilePic, dynamicStyle.mainMessageProfilePic]}/>
-                    <GlassCard style={styles.messageBody}>
-                        {messageType === 'image' ? (
-                        <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
-                        ) : messageType === 'text' ? (
-                        <View style={styles.mainMessageTextContainer}>
-                            <Text style={styles.mainMessageSenderName}>{senderName}</Text>
-                            <Text style={styles.mainMessageText}>{messageText}</Text>
-                            <Text style={styles.mainMessageTime}>{time}</Text>
-                        </View>
-                        ) : messageType === 'mixed' ? (
-                        <View style={styles.mainMessageImageTextContainer}>
-                            <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
+                <View style={[styles.mainChatMessageContainer, dynamicStyle.mainChatMessageContainer]}>
+                    <View style={styles.mainChatMessage}>
+                        <ProfilePic size={40} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'} style={[styles.mainMessageProfilePic, dynamicStyle.mainMessageProfilePic]}/>
+                        <GlassCard style={styles.messageBody}>
+                            {messageType === 'image' ? (
+                                <View style={styles.mainMessageImageContainer}>     
+                                    <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
+                                    <Text style={styles.mainMessageImageTime}>{time}</Text>
+                                </View>
+                            ) : messageType === 'text' ? (
                             <View style={styles.mainMessageTextContainer}>
                                 <Text style={styles.mainMessageSenderName}>{senderName}</Text>
                                 <Text style={styles.mainMessageText}>{messageText}</Text>
                                 <Text style={styles.mainMessageTime}>{time}</Text>
                             </View>
-                        </View>
-                        ) : null}
-                    </GlassCard>
+                            ) : messageType === 'mixed' ? (
+                            <View style={styles.mainMessageImageTextContainer}>
+                                <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
+                                <View style={styles.mainMessageTextContainer}>
+                                    <Text style={styles.mainMessageSenderName}>{senderName}</Text>
+                                    <Text style={styles.mainMessageText}>{messageText}</Text>
+                                    <Text style={styles.mainMessageTime}>{time}</Text>
+                                </View>
+                            </View>
+                            ) : null}
+                        </GlassCard>
+                    </View>
                 </View>
             ) : (
                 <View style={styles.subChatMessage}>
-             
+                  {messageType === 'image' ? (
+                    <View style={styles.subMessageImageOnly}>
+                      <View style={[styles.subSenderLabel, dynamicStyle.subSenderLabel]}><Text style={styles.subSenderLabelText}>{senderName}</Text></View>
+                      <Image source={{ uri: imageURL }} style={styles.subMessageImage} />
+                      <Text style={styles.subMessageTime}>{time}</Text>
+                    </View>
+                  ) : messageType === 'text' ? (
+                    <View style={styles.subMessageTextOnly}>
+                      <View style={[styles.subSenderLabel, dynamicStyle.subSenderLabel]}><Text style={styles.subSenderLabelText}>{senderName}</Text></View>
+                      <Text style={styles.subMessageText}>{messageText}</Text>
+                      <Text style={styles.subMessageTime}>{time}</Text>
+                    </View>
+                  ) : messageType === 'mixed' ? (
+                    <View style={styles.subMessageMixed}>
+                      <View style={[styles.subSenderLabel, dynamicStyle.subSenderLabel]}><Text style={styles.subSenderLabelText}>{senderName}</Text></View>
+                      <View style={styles.subMessageMixedImageTextContainer}>
+                        <Image source={{ uri: imageURL }} style={styles.subMessageImage} />
+                        <Text style={styles.subMessageText}>{messageText}</Text>
+                      </View>
+                      <Text style={styles.subMessageTime}>{time}</Text>
+                    </View>
+                  ) : null}
                 </View>
             )}
         </View>
@@ -57,7 +84,9 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
 
 const styles = StyleSheet.create({
     container: {
-        padding: 50,
+        width: '100%',
+    },
+    mainChatMessageContainer: {
         paddingBottom: 12,
         paddingTop: 12,
         paddingLeft: 52,
@@ -90,6 +119,21 @@ const styles = StyleSheet.create({
         marginRight: 5,
         fontWeight: '400',
     },
+    mainMessageImageContainer: {
+        alignItems: 'center',
+        position: 'relative',
+    },
+    mainMessageImageTime: {
+        fontSize: 13,
+        fontWeight: '600',
+        color: 'white',
+        position: 'absolute',
+        bottom:5,
+        right: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        padding: 5,
+        borderRadius: 10,
+    },
     mainMessageText: {
         fontSize: 16,
         fontWeight: '300',
@@ -108,7 +152,70 @@ const styles = StyleSheet.create({
     },
 
     subChatMessage: {
+        alignSelf: 'flex-start',
         width: '100%',
-    },    
-});
+        paddingVertical: 12,
+        paddingHorizontal: 8,
+    },
+    subMessageTextOnly: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+      width: '100%',
+    },
+    subMessageImageOnly: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+      width: '100%',
+    },
+    subMessageMixed: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 8,
+        width: '100%',
+    },
+    subMessageMixedImageTextContainer: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 8,
+        width: 250,
+    },
+    subSenderLabel: {
+      backgroundColor: '#F5F5F5',
+      borderRadius: 12,
+      paddingHorizontal: 10,
+      paddingVertical: 2,
+      marginRight: 6,
+      minWidth: 36,
+      alignItems: 'center',
+    },
+    subSenderLabelText: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: '#6E6E6E',
+    },
+    subMessageText: {
+      fontSize: 15,
+      color: '#6E6E6E',
+      flexShrink: 1,
+      flexWrap: 'wrap',
+      flex: 1,
+      // maxWidth: 180, // Uncomment or adjust as needed for your layout
+    },
+    subMessageImage: {
+      width: 250,
+      height: 250,
+      borderRadius: 20,
+      marginRight: 8,
+    },
+    subMessageTime: {
+      fontSize: 12,
+      color: '#A0A0A0',
+      marginLeft: 'auto',
+      minWidth: 38,
+      textAlign: 'right',
+      alignSelf: 'flex-end',
+    },
+  });
     export default Message;
