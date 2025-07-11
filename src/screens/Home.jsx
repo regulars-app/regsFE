@@ -19,12 +19,11 @@ import Map from '../components/Map';
 import BackButton from '../components/BackButton';
 import GroupNav from '../components/GroupNav';
 import GlassCardClickable from '../components/GlassCardClickable';
-import MessagingSub from '../components/MessagingSub';
-import MessagingMain from '../components/MessagingMain';
 import MainButton from '../components/MainButton';
 import SearchBar from '../components/SearchBar';
 import ImageCard from '../components/ImageCard';
 import MiniMeetupCard from '../components/MiniMeetupCard';
+import Messenger from '../components/Messenger';
 
 const mapImage = require('../images/map.png');
 
@@ -94,6 +93,7 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
         <Text>PopupDemo</Text>
       </TouchableOpacity>
+      <Messenger />
 
       {/* 
       <Countdown />
