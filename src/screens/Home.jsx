@@ -93,7 +93,7 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
         <Text>PopupDemo</Text>
       </TouchableOpacity>
-      <Messenger />
+      <Messenger style={{height: 500}}/>
 
       {/* 
       <Countdown />

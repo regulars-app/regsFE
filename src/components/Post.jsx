@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     alignSelf: 'flex-start',
     maxWidth: '75%',
-    padding: 12,
+    paddingBottom: 12,
     paddingTop: 42,
     paddingLeft: 42,
     paddingRight: 42,
