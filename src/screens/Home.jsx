@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import GlassCard from '../components/GlassCard';
 import Countdown from '../components/Countdown';
 import MeetupItemButton from '../components/MeetupItemButton';
@@ -28,7 +28,6 @@ import MiniMeetupCard from '../components/MiniMeetupCard';
 
 const mapImage = require('../images/map.png');
 
-
 const meetupExampleData = [
   {
     id: '1',
@@ -55,7 +54,6 @@ const meetupExampleData = [
     confirmed: '330003, 5593855,33434343,3434343455',
   },
 ];
-
 const photoStackWideExampleData = [
   {
     id: '1',
@@ -74,8 +72,11 @@ const photoStackWideExampleData = [
   },
 ];
 
-const HomeScreen = () => (
+const HomeScreen = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  return(
   <View style={styles.bg}>
+    <Popup showPopup={showPopup} onClose={() => setShowPopup(false)} />
     {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
     <ScrollView contentContainerStyle={styles.centered}>
       <Post type="text" position="left" text="This is an example of a text post. It's a bit longer than the others, but it's still readable." imageURL="" senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
@@ -90,7 +91,10 @@ const HomeScreen = () => (
       <SearchBar />
       <ItemSelector />
       <ItemDisplayer />
-  
+      <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
+        <Text>PopupDemo</Text>
+      </TouchableOpacity>
+
       {/* 
       <Countdown />
       <MeetupItemButton />
@@ -100,7 +104,6 @@ const HomeScreen = () => (
       <MapWidget />
       <TimeSelector />
       <Calendar />
-      <Popup />
       <Map />
       <BackButton />
       <GroupNav />
@@ -112,7 +115,8 @@ const HomeScreen = () => (
     </ScrollView>
     {/* </ImageBackground> */}
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   bg: {
@@ -120,6 +124,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#FFF6F0',
+    position: 'relative',
   },
   centered: {
     flexGrow: 1,
@@ -137,6 +142,13 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 8,
     color: '#333',
+  },
+  popupDemoButton: {
+    borderWidth: 2,
+    borderColor: 'black',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
 });
 
