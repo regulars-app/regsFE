@@ -1,4 +1,32 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-const BackButton = () => <View><Text>BackButton Placeholder</Text></View>;
+import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import BackSymbol from './BackSymbol';
+
+const BackButton = ({style, size}) => {
+    const dynamicStyle = {
+        backButton: {
+            width: size,
+            height: size,
+        },
+    };
+  return (
+    <TouchableOpacity style={[styles.backButton, dynamicStyle.backButton, style]}>
+      <BackSymbol />
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: 'white',
+    borderRadius: 50,
+    alignItems: 'center',   
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+  },
+});
 export default BackButton;

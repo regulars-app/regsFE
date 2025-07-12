@@ -157,11 +157,12 @@ const HomeScreen = () => {
       </TouchableOpacity>
       <Messenger style={{height: 500}} messages={messagesMainDemoData}/>
       <Messenger style={{height: 500}} messages={messagesSubDemoData}/>
-
+      <BackButton size={40}/>
+      <GroupNav />
+      
       {/* 
       <Countdown />
       <MeetupItemButton />
-    
       <EditButton />
       <ScrollList />
       <MapWidget />
@@ -169,7 +170,6 @@ const HomeScreen = () => {
       <Calendar />
       <Map />
       <BackButton />
-      <GroupNav />
       <GlassCardClickable />
       <MessagingSub />
       <MessagingMain />

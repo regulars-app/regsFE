@@ -1,11 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
+import ChatSymbol from './ChatSymbol';
 
 const CommentButton = ({numComments}) => {
-  const commentIcon = require('../images/chat-icon.png');
   return (
     <TouchableOpacity style={styles.button}>
-      <Image source={commentIcon} style={styles.buttonImage} />
+      <ChatSymbol size={25} />
       <Text style={styles.buttonText}>{numComments}</Text>
     </TouchableOpacity>
   );
@@ -16,10 +16,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    buttonImage: {
-      width: 25,
-      height: 25,
     },
     buttonText: {
       fontSize: 12,

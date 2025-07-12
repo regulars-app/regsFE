@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
       android: {
         elevation: 1,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0 },
+        shadowOffset: { width: 0, height: -2 },
       },
     }),
   },
