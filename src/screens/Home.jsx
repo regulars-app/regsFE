@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import GlassCard from '../components/GlassCard';
 import Countdown from '../components/Countdown';
-import MeetupItemButton from '../components/MeetupItemButton';
+import MeetupItemCard from '../components/MeetupItemCard';
 import MeetupCard from '../components/MeetupCard';
 import EditSymbol from '../components/EditSymbol';
 import ScrollList from '../components/ScrollList';
@@ -25,6 +25,7 @@ import ImageCard from '../components/ImageCard';
 import MiniMeetupCard from '../components/MiniMeetupCard';
 import Messenger from '../components/Messenger';
 import PostView from '../components/PostView';
+import MeetupView from '../components/MeetupView';
 
 const mapImage = require('../images/map.png');
 
@@ -135,6 +136,49 @@ const messagesSubDemoData = [
   },
 ];
 
+const meetupViewExampleData = [
+  {
+    id: '1',
+    name: 'Football',
+    datetime: '10:00 AM',
+    activity: 'Golf, Cooking, Movie',
+    info: 'Bring crisps.',
+    confirmed: '130001, 3493833,33434343,3434343455',
+  },
+  {
+    id: '2',
+    name: 'Hiking',
+    datetime: '2:30 PM',
+    activity: 'Hiking, Painting',
+    info: 'Meet at the park entrance.',
+    confirmed: '',
+  },
+  {
+    id: '3',
+    name: 'Dinner',
+    datetime: '6:00 PM',
+    activity: 'Dinner, Board Games',
+    info: 'Don\'t forget your favorite game!',
+    confirmed: '330003, 5593855,33434343,3434343455',
+  },
+  {
+    id: '4',
+    name: 'Dinner',
+    datetime: '6:00 PM',
+    activity: 'Dinner, Board Games',
+    info: 'Don\'t forget your favorite game!',
+    confirmed: '330003, 5593855,33434343,3434343455',
+  },
+  {
+    id: '5',
+    name: 'Dinner',
+    datetime: '6:00 PM',
+    activity: 'Dinner, Board Games',
+    info: 'Don\'t forget your favorite game!',
+    confirmed: '',
+  },
+];
+
 const HomeScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
   return(
@@ -159,10 +203,11 @@ const HomeScreen = () => {
       <Messenger style={{height: 500}} messages={messagesSubDemoData}/>
       <BackButton size={40}/>
       <GroupNav />
-      
+      <MeetupView style={{height: 400}} meetups={meetupViewExampleData} />
+
       {/* 
       <Countdown />
-      <MeetupItemButton />
+      
       <EditButton />
       <ScrollList />
       <MapWidget />
