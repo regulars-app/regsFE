@@ -4,13 +4,13 @@ import GlassCard from './GlassCard';
 import GroupButton from './GroupButton';
 import ProfilePic from './ProfilePic';
 
-const MembersCard = ({style, members}) => {
+const GroupsCard = ({style, groups}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <View style={styles.membersContainer}>
+                <View style={styles.groupsContainer}>
                 <ScrollView nestedScrollEnabled={true}>
-                    <View style={styles.membersList}>
+                    <View style={styles.groupsList}>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
             bottom: 10,
             right: 10,
         },
-        membersContainer: {
+        groupsContainer: {
             width: '100%',
             height: '90%',
             flexDirection: 'column',
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
             paddingHorizontal: 20,
             paddingVertical: 10,
         },
-        membersList: {
+        groupsList: {
             flexDirection: 'row',
             flexWrap: 'wrap',
             gap: 15,
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
         },
         });
 
-export default MembersCard;
+export default GroupsCard;
