@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import DiarySymbol from './DiarySymbol';
 
-const DiarySymbolEnclosed = ({style, size}) => {
+const DiarySymbolEnclosed = ({style, size, diaryScore, showScore}) => {
     const dynamicStyle = {
         diarySymbolEnclosed: {
             width: size,
@@ -10,14 +10,21 @@ const DiarySymbolEnclosed = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.diarySymbolEnclosed, dynamicStyle.diarySymbolEnclosed, style]}>
+    <View style={[styles.diarySymbolEnclosedContainer, style]}>
+    <View style={[styles.diarySymbolEnclosed, dynamicStyle.diarySymbolEnclosed]}>
         <DiarySymbol size={'60%'} />
-    </TouchableOpacity>
+    </View>
+    {showScore && <Text style={styles.diaryScoreText}>{diaryScore}</Text>}
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
-  diarySymbolEnclosed: {
+  diarySymbolEnclosedContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+    diarySymbolEnclosed: {
     backgroundColor: 'white',
     borderRadius: 50,
     alignItems: 'center',   
@@ -27,6 +34,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 1,
+  },
+  diaryScoreText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6E6E6E',
   },
 });
 export default DiarySymbolEnclosed;

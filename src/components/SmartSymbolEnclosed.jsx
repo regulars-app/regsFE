@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import SmartSymbol from './SmartSymbol';
 
-const SmartSymbolEnclosed = ({style, size}) => {
+const SmartSymbolEnclosed = ({style, size, smartScore, showScore}) => {
     const dynamicStyle = {
         smartSymbolEnclosed: {
             width: size,
@@ -10,14 +10,21 @@ const SmartSymbolEnclosed = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.smartSymbolEnclosed, dynamicStyle.smartSymbolEnclosed, style]}>
+    <View style={[styles.smartSymbolEnclosedContainer, style]}>
+    <View style={[styles.smartSymbolEnclosed, dynamicStyle.smartSymbolEnclosed]}>
         <SmartSymbol size={'60%'} />
-    </TouchableOpacity>
+    </View>
+    {showScore && <Text style={styles.smartScoreText}>{smartScore}</Text>}
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
-  smartSymbolEnclosed: {
+  smartSymbolEnclosedContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+    smartSymbolEnclosed: {
     backgroundColor: 'white',
     borderRadius: 50,
     alignItems: 'center',   
@@ -27,6 +34,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 1,
+  },
+  smartScoreText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6E6E6E',
   },
 });
 export default SmartSymbolEnclosed;

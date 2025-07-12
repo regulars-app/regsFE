@@ -11,11 +11,11 @@ const GroupsScoreCard = ({style}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <WildSymbolEnclosed size={45} style={styles.wildSymbol}/>
-                <BondSymbolEnclosed size={70} style={styles.bondSymbol} />
-                <DiarySymbolEnclosed size={45} style={styles.diarySymbol}/>
-                <SmartSymbolEnclosed size={45} style={styles.smartSymbol}/>
-                <HealthSymbolEnclosed size={45} style={styles.healthSymbol}/>
+                <WildSymbolEnclosed size={45} style={styles.wildSymbol} wildScore={100} showScore={true}/>
+                <BondSymbolEnclosed size={70} style={styles.bondSymbol} bondScore={253} showScore={true}/>
+                <DiarySymbolEnclosed size={45} style={styles.diarySymbol} diaryScore={100} showScore={true}/>
+                <SmartSymbolEnclosed size={45} style={styles.smartSymbol} smartScore={100} showScore={true}/>
+                <HealthSymbolEnclosed size={45} style={styles.healthSymbol} healthScore={100} showScore={true}/>
             </View>
         </GlassCard>
     );
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
     },
     healthSymbol: {
         position: 'absolute',
@@ -42,7 +43,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         left: 0,
-        margin: 15,
+        marginLeft: 15,
+        marginBottom: 7,
     },
     bondSymbol: {
     },
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
-        margin: 15,
+        marginRight: 15,
+        marginBottom: 7,
     },
     smartSymbol: {
         position: 'absolute',

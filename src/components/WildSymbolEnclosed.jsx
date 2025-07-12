@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import WildSymbol from './WildSymbol';
 
-const WildSymbolEnclosed = ({style, size}) => {
+const WildSymbolEnclosed = ({style, size, wildScore, showScore}) => {
     const dynamicStyle = {
         wildSymbolEnclosed: {
             width: size,
@@ -10,14 +10,21 @@ const WildSymbolEnclosed = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.wildSymbolEnclosed, dynamicStyle.wildSymbolEnclosed, style]}>
+    <View style={[styles.wildSymbolEnclosedContainer, style]}>
+    <View style={[styles.wildSymbolEnclosed, dynamicStyle.wildSymbolEnclosed]}>
         <WildSymbol size={'60%'} />
-    </TouchableOpacity>
+    </View>
+    {showScore && <Text style={styles.wildScoreText}>{wildScore}</Text>}
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
-  wildSymbolEnclosed: {
+  wildSymbolEnclosedContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+    wildSymbolEnclosed: {
     backgroundColor: 'white',
     borderRadius: 50,
     alignItems: 'center',   
@@ -27,6 +34,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 1,
+  },
+  wildScoreText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6E6E6E',
   },
 });
 export default WildSymbolEnclosed;
