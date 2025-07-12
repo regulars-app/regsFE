@@ -9,13 +9,13 @@ const ChatSummaryCard = ({style, overallSummary, vibeSummary, personalSummary, g
             <View style={styles.container}>
                 <View style={styles.summariesContainer}>
                     <View style={styles.summaryOverall}>
-                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{}</Text>
+                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{overallSummary}</Text>
                     </View>
                     <View style={styles.summaryVibe}>
-                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>Vibe: This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat.</Text>
+                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{vibeSummary}</Text>
                     </View>
                     <View style={styles.summaryPersonal}>
-                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>Personal: This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat.</Text>
+                        <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{personalSummary}</Text>
                     </View>
                 </View>
                 <ChatButton style={styles.chatButton} size={40} />
