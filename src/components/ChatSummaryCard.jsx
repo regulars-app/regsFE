@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     glassCard: {
         width: '90%',
         height: 200,
+        marginVertical: 10,
     }, 
     container: {
         width: '100%',

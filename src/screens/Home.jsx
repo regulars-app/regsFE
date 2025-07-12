@@ -27,6 +27,7 @@ import Messenger from '../components/Messenger';
 import PostView from '../components/PostView';
 import MeetupView from '../components/MeetupView';
 import ChatSummaryCard from '../components/ChatSummaryCard';
+import MembersCard from '../components/MembersCard';r
 
 const mapImage = require('../images/map.png');
 
@@ -207,6 +208,7 @@ const HomeScreen = () => {
       <MeetupView style={{height: 400}} type="meetup" meetups={meetupViewExampleData} />
       <MeetupView style={{height: 400}} type="surprise" meetups={meetupViewExampleData} />
       <ChatSummaryCard overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
+      <MembersCard  />
 
       {/* 
       <Countdown />
