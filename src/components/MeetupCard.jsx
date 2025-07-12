@@ -17,7 +17,7 @@ const MeetupCard = ({datetime, activity, info, confirmed}) => {
     <View style={styles.meetupCardBodyWrapper}>
       <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.meetupCardBody}>
-        <MapWidget />
+        <MapWidget width={'85%'} height={165} />
         <GlassCard style={styles.meetupCardDetails}>
             <View style={styles.meetupCardDetailsItemWrapper}>
                 <View style={styles.meetupCardDetailsItem}>

@@ -26,6 +26,7 @@ import MiniMeetupCard from '../components/MiniMeetupCard';
 import Messenger from '../components/Messenger';
 import PostView from '../components/PostView';
 import MeetupView from '../components/MeetupView';
+import ChatSummaryCard from '../components/ChatSummaryCard';
 
 const mapImage = require('../images/map.png');
 
@@ -203,14 +204,14 @@ const HomeScreen = () => {
       <Messenger style={{height: 500}} messages={messagesSubDemoData}/>
       <BackButton size={40}/>
       <GroupNav />
-      <MeetupView style={{height: 400}} meetups={meetupViewExampleData} />
+      <MeetupView style={{height: 400}} type="meetup" meetups={meetupViewExampleData} />
+      <MeetupView style={{height: 400}} type="surprise" meetups={meetupViewExampleData} />
+      <ChatSummaryCard overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
 
       {/* 
       <Countdown />
-      
       <EditButton />
       <ScrollList />
-      <MapWidget />
       <TimeSelector />
       <Calendar />
       <Map />

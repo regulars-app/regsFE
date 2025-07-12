@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MeetupItemCard from './MeetupItemCard';
 
-const MeetupView = ({style, meetups = []}) => {
+const MeetupView = ({style, type, meetups = []}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Meetups</Text>
+                <Text style={styles.title}>{type === 'meetup' ? 'Meetups' : 'Surprise Events'}</Text>
             </View>
             <View style={styles.scrollViewContainer}>
                 <ScrollView style={styles.scrollView} 
