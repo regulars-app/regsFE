@@ -12,7 +12,7 @@ const GroupsScoreCard = ({style}) => {
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
                 <WildSymbolEnclosed size={45} style={styles.wildSymbol}/>
-                <BondSymbolEnclosed size={70} style={styles.bondSymbol}/>
+                <BondSymbolEnclosed size={70} style={styles.bondSymbol} />
                 <DiarySymbolEnclosed size={45} style={styles.diarySymbol}/>
                 <SmartSymbolEnclosed size={45} style={styles.smartSymbol}/>
                 <HealthSymbolEnclosed size={45} style={styles.healthSymbol}/>

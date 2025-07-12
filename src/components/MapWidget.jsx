@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import GlassCard from './GlassCard';
 
-const MapWidget = ({width, height}) => {
+const MapWidget = ({width, height, style}) => {
     const dynamicStyles = {
         mapWidget: {
         width: width,
@@ -10,7 +10,7 @@ const MapWidget = ({width, height}) => {
         },
     }
     return(
-        <GlassCard style={[styles.mapWidget, dynamicStyles.mapWidget]}>
+        <GlassCard style={[styles.mapWidget, dynamicStyles.mapWidget, style]}>
             <Image source={require('../images/map.png')} style={styles.mapImage} />
         </GlassCard>
     )

@@ -12,6 +12,7 @@ const BondSymbolEnclosed = ({style, size}) => {
   return (
     <TouchableOpacity style={[styles.bondSymbolEnclosed, dynamicStyle.bondSymbolEnclosed, style]}>
         <BondSymbol size={'60%'} />
+        <Text></Text>
     </TouchableOpacity>
   );
 };
