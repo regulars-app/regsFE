@@ -8,6 +8,7 @@ import CountdownSymbol from './CountdownSymbol';
 import ActivitySymbol from './ActivitySymbol';
 import InfoSymbol from './InfoSymbol';
 import ConfirmedSymbol from './ConfirmedSymbol';
+import MembersCard from './MembersCard';
 
 const MeetupCard = ({datetime, activity, info, confirmed}) => {
 
@@ -36,14 +37,7 @@ const MeetupCard = ({datetime, activity, info, confirmed}) => {
                     <ConfirmedSymbol />
                     <Text>Confirmed</Text>
                 </View>
-                <View style={styles.confirmedList}>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                </View>
+                <MembersCard style={styles.membersCard} showGroupButton={false} clickable={false}  />
             </View>
         </GlassCard>
         <View style={styles.meetupCardFooter}>
@@ -103,6 +97,13 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       paddingBottom: 10,
     },
+    membersCard: {
+      width: '100%',
+      height: 135,
+      alignSelf: 'center',
+      elevation: 0,
+      backgroundColor: 'white',
+    },
     profilePic: {
       position: 'absolute',
       zIndex: 100,
@@ -114,15 +115,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         padding: 12,
-    },
-    confirmedList: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 15,
-        alignSelf: 'flex-start',
-        paddingLeft: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
     },
   });
 export default MeetupCard;

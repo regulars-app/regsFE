@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import GlassCard from './GlassCard';
 import GroupButton from './GroupButton';
 import ProfilePic from './ProfilePic';
 
-const GroupsCard = ({style, groups}) => {
+const GroupsCard = ({style, groups, clickable, showGroupButton}) => {
+    const Wrapper = clickable ? TouchableOpacity : View;
+
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
                 <View style={styles.groupsContainer}>
-                <ScrollView nestedScrollEnabled={true}>
-                    <View style={styles.groupsList}>
+                <ScrollView nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
+                    <Wrapper style={styles.groupsList}>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
@@ -23,10 +25,21 @@ const GroupsCard = ({style, groups}) => {
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                         <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                    </View>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                        <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    </Wrapper>
                 </ScrollView>
                 </View>
-                <GroupButton style={styles.groupButton} size={40} />
+                {showGroupButton && <GroupButton style={styles.groupButton} size={40} />}
             </View>
         </GlassCard>
     );
@@ -34,7 +47,7 @@ const GroupsCard = ({style, groups}) => {
 
 const styles = StyleSheet.create({
     glassCard: {
-        width: '90%',
+        width: '100%',
         height: 200,
         marginVertical: 10,
     }, 
@@ -52,20 +65,27 @@ const styles = StyleSheet.create({
         },
         groupsContainer: {
             width: '100%',
-            height: '90%',
+            height: '100%',
             flexDirection: 'column',
-            justifyContent: 'space-between',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
+        },
+        scrollView: {
+            padding: 0,
+            margin: 0,
+            height: '100%',
+        },
+        scrollViewContent: {
+            padding: 0,
+            margin: 0,
+            justifyContent: 'center',
+            flexGrow: 1,
         },
         groupsList: {
             flexDirection: 'row',
             flexWrap: 'wrap',
-            gap: 15,
-            alignSelf: 'flex-start',
-            paddingLeft: 20,
             paddingTop: 10,
-            paddingBottom: 10,
+            paddingBottom: 40,
+            gap: 15,
+            paddingHorizontal: 20,
         },
         });
 

@@ -10,10 +10,10 @@ const BondSymbolEnclosed = ({style, size, bondScore, showScore}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.bondSymbolEnclosed, dynamicStyle.bondSymbolEnclosed, style]}>
+    <View style={[styles.bondSymbolEnclosed, dynamicStyle.bondSymbolEnclosed, style]}>
         <BondSymbol size={'60%'} />
         {showScore && <Text style={styles.bondScoreText}>{bondScore}</Text>}
-    </TouchableOpacity>
+    </View>
   );
 };
 
