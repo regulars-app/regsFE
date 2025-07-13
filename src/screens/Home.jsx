@@ -27,8 +27,7 @@ import Messenger from '../components/Messenger';
 import PostView from '../components/PostView';
 import MeetupView from '../components/MeetupView';
 import ChatSummaryCard from '../components/ChatSummaryCard';
-import MembersCard from '../components/MembersCard';
-import GroupsCard from '../components/GroupsCard';
+import ProfileListCard from '../components/ProfileListCard';
 import GroupsScoreCard from '../components/GroupsScoreCard';
 
 const mapImage = require('../images/map.png');
@@ -210,8 +209,8 @@ const HomeScreen = () => {
       <MeetupView style={{height: 400}} type="meetup" meetups={meetupViewExampleData} />
       <MeetupView style={{height: 400}} type="surprise" meetups={meetupViewExampleData} />
       <ChatSummaryCard overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
-      <MembersCard  clickable={true} showGroupButton={true}/>
-      <GroupsCard clickable={true} showGroupButton={true} />
+      <ProfileListCard clickable={true} showButton={true} type="groups"/>
+      <ProfileListCard clickable={true} showButton={true} type="members" title="Who's the surprise for?"/>
       <GroupsScoreCard />
 
 

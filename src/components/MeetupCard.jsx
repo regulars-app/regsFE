@@ -8,7 +8,7 @@ import CountdownSymbol from './CountdownSymbol';
 import ActivitySymbol from './ActivitySymbol';
 import InfoSymbol from './InfoSymbol';
 import ConfirmedSymbol from './ConfirmedSymbol';
-import MembersCard from './MembersCard';
+import ProfileListCard from './ProfileListCard';
 
 const MeetupCard = ({datetime, activity, info, confirmed}) => {
 
@@ -37,7 +37,7 @@ const MeetupCard = ({datetime, activity, info, confirmed}) => {
                     <ConfirmedSymbol />
                     <Text>Confirmed</Text>
                 </View>
-                <MembersCard style={styles.membersCard} showGroupButton={false} clickable={false}  />
+                <ProfileListCard style={styles.membersCard} showGroupButton={false} clickable={false}  type="members"/>
             </View>
         </GlassCard>
         <View style={styles.meetupCardFooter}>

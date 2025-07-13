@@ -4,15 +4,23 @@ import GlassCard from './GlassCard';
 import GroupButton from './GroupButton';
 import ProfilePic from './ProfilePic';
 
-const MembersCard = ({style, members, showGroupButton, clickable}) => {
+const ProfileListCard = ({style, members, showButton, clickable, title, type}) => {
     const Wrapper = clickable ? TouchableOpacity : View;
+    const dynamicStyle = {
+        profileListContainer: {
+            height: title ? '80%' : '100%',
+        },
+    }
 
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <View style={styles.membersContainer}>
+                {title && <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{title}</Text>
+                </View>}
+                <View style={[styles.profileListContainer, dynamicStyle.profileListContainer]}>
                     <ScrollView nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-                        <Wrapper style={styles.membersList}>
+                        <Wrapper style={styles.profileList}>
                             <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                             <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                             <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
@@ -39,7 +47,7 @@ const MembersCard = ({style, members, showGroupButton, clickable}) => {
                         </Wrapper>
                     </ScrollView>
                 </View>
-                {showGroupButton && <GroupButton style={styles.groupButton} size={40} />}
+                {showButton && <GroupButton style={styles.profileListButton} size={40} />}
             </View>
         </GlassCard>
     );
@@ -57,14 +65,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         },
-        groupButton: {
+        titleContainer: {
+            width: '100%',
+            height: '20%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 10,
+  
+        },
+        title: {
+            fontSize: 17,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: '#6E6E6E',
+        },
+        profileListButton: {
             position: 'absolute',
             bottom: 10,
             right: 10,
         },
-        membersContainer: {
+        profileListContainer: {
             width: '100%',
-            height: '100%',
             flexDirection: 'column',
         },
         scrollView: {
@@ -74,7 +95,7 @@ const styles = StyleSheet.create({
             justifyContent: 'center',
             flexGrow: 1,
         },
-        membersList: {
+        profileList: {
             flexDirection: 'row',
             flexWrap: 'wrap',
             paddingTop: 10,
@@ -84,4 +105,4 @@ const styles = StyleSheet.create({
         },
         });
 
-export default MembersCard;
+export default ProfileListCard;
