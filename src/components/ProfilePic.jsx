@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import ConfirmSymbol from './ConfirmSymbol';
 
-const ProfilePic = ({ footer, style, size = 80, imageURL }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, onPress }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -12,29 +13,40 @@ const ProfilePic = ({ footer, style, size = 80, imageURL }) => {
     }
  };
 
-return (
-  <View style={[styles.container, style]}>
-    <View style={[styles.outer, dynamicStyles.outer]}>
-      <Image
-        source={{ uri: imageURL }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-    </View>
-    {footer ? (
-      <View style={styles.footer}>
-        <Text style={[styles.footerText, dynamicStyles.footerText]}>{footer}</Text>
-      </View>
-    ) : null}
-  </View>
-);
+  const Wrapper = selectable ? TouchableOpacity : View;
 
+  return (
+    <Wrapper
+      style={[styles.container, style]}
+      onPress={selectable ? onPress : undefined}
+      activeOpacity={0.8}
+    >
+      <View style={[styles.outer, dynamicStyles.outer]}>
+        <Image
+          source={{ uri: imageURL }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+        {selectable && selected && (
+          <>
+            <View style={styles.overlay} />
+            <View style={styles.checkmark}>
+              <ConfirmSymbol size={15} />
+            </View>
+          </>
+        )}
+      </View>
+      {footer ? (
+        <View style={styles.footer}>
+          <Text style={[styles.footerText, dynamicStyles.footerText]}>{footer}</Text>
+        </View>
+      ) : null}
+    </Wrapper>
+  );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
+  container: { alignItems: 'center' },
   outer: {
     borderRadius: 50,
     borderWidth: 1,
@@ -52,7 +64,23 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 100,
-    objectFit: 'cover'
+    objectFit: 'cover',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+    borderRadius: 100,
+    zIndex: 1,
+  },
+  checkmark: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 2,
+    elevation: 2,
   },
   footer: {
     marginTop: -7,

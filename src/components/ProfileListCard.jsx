@@ -1,56 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import GlassCard from './GlassCard';
 import GroupButton from './GroupButton';
 import ProfilePic from './ProfilePic';
 
-const ProfileListCard = ({style, members, showButton, clickable, title, type}) => {
-    const Wrapper = clickable ? TouchableOpacity : View;
-    const dynamicStyle = {
-        profileListContainer: {
-            height: title ? '80%' : '100%',
-        },
-    }
+const ProfileListCard = ({
+  style,
+  members = [],
+  showButton,
+  clickable,
+  selectable,
+  title,
+  type,
+  onPress, // for clickable card
+}) => {
+  const [selectedIds, setSelectedIds] = useState([]);
 
-    return (
-        <GlassCard style={[styles.glassCard, style]}>
-            <View style={styles.container}>
-                {title && <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{title}</Text>
-                </View>}
-                <View style={[styles.profileListContainer, dynamicStyle.profileListContainer]}>
-                    <ScrollView nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-                        <Wrapper style={styles.profileList}>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                            <ProfilePic size={50} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-                        </Wrapper>
-                    </ScrollView>
-                </View>
-                {showButton && <GroupButton style={styles.profileListButton} size={40} />}
-            </View>
-        </GlassCard>
+  const handleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
+  };
+
+  const TouchableWrapper = clickable ? TouchableOpacity : View;
+
+  const dynamicStyle = {
+    profileListContainer: {
+      height: title ? '80%' : '100%',
+    },
+  };
+
+  return (
+    <GlassCard style={[styles.glassCard, style]}>
+        {title && (
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        )}
+        <View style={[styles.profileListContainer, dynamicStyle.profileListContainer]}>
+          <ScrollView
+            nestedScrollEnabled={true}
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
+          >
+            <TouchableWrapper
+        style={styles.container}
+        onPress={clickable ? onPress : undefined}
+        activeOpacity={0.8}
+      >
+            <View style={styles.profileList}>
+              {members.map((member) => (
+                <ProfilePic
+                  key={member.id}
+                  size={50}
+                  imageURL={member.imageURL}
+                  selectable={!!selectable}
+                  selected={selectable && selectedIds.includes(member.id)}
+                  onPress={
+                    selectable ? () => handleSelect(member.id) : undefined
+                  }
+                />
+              ))}
+            </View>
+            </TouchableWrapper>
+          </ScrollView>
+        </View>
+        {showButton && <GroupButton style={styles.profileListButton} size={40} />}
+    </GlassCard>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -70,7 +87,6 @@ const styles = StyleSheet.create({
             height: '20%',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 10,
   
         },
         title: {
