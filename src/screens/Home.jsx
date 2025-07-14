@@ -29,6 +29,7 @@ import MeetupView from '../components/MeetupView';
 import ChatSummaryCard from '../components/ChatSummaryCard';
 import ProfileListCard from '../components/ProfileListCard';
 import GroupsScoreCard from '../components/GroupsScoreCard';
+import AvailabilityCard from '../components/AvailabilityCard';
 
 const mapImage = require('../images/map.png');
 
@@ -236,6 +237,7 @@ const HomeScreen = () => {
       <ProfileListCard clickable={true} selectable={false} showButton={true} type="groups" members={members}/>
       <ProfileListCard clickable={false} selectable={true} showButton={true} type="members" title="Who's the surprise for?" members={members}/>
       <GroupsScoreCard />
+      <AvailabilityCard />
 
 
       {/* 
