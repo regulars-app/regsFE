@@ -130,10 +130,10 @@ const Calendar = () => {
           </View>
           <View style={styles.headerArrows}>
             <TouchableOpacity onPress={handlePrevMonth} style={styles.arrowBtn}>
-              <PreviousSymbol size={30} />
+              <PreviousSymbol size={35} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleNextMonth} style={styles.arrowBtn}>
-              <NextSymbol size={30} />
+              <NextSymbol size={35} />
             </TouchableOpacity>
           </View>
         </View>
@@ -320,13 +320,14 @@ const styles = StyleSheet.create({
   headerArrows: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    justifyContent: 'center',
+    gap: 15,
   },
   arrowBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 32,
-    height: 32,
+    width: 35,
+    height: 35,
   },
   daysRow: {
     flexDirection: 'row',

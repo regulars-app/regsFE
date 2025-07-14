@@ -5,8 +5,8 @@ const PreviousSymbol = ({ style, size }) => {
   const previousIcon = require('../images/previous-icon.png');
   const dynamicStyles = {
     previousSymbol: {
+      width: size,
       height: size,
-      width: size/2,
     },
   };
   return (

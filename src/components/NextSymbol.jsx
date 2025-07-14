@@ -5,7 +5,7 @@ const NextSymbol = ({ style, size }) => {
   const nextIcon = require('../images/next-icon.png');
   const dynamicStyles = {
     nextSymbol: {
-      width: size/2,
+      width: size,
       height: size,
     }, 
   };
