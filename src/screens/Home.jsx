@@ -30,6 +30,7 @@ import ChatSummaryCard from '../components/ChatSummaryCard';
 import ProfileListCard from '../components/ProfileListCard';
 import GroupsScoreCard from '../components/GroupsScoreCard';
 import AvailabilityCard from '../components/AvailabilityCard';
+import PreviousSymbol from '../components/PreviousSymbol';
 
 const mapImage = require('../images/map.png');
 
@@ -238,8 +239,8 @@ const HomeScreen = () => {
       <ProfileListCard clickable={false} selectable={true} showButton={true} type="members" title="Who's the surprise for?" members={members}/>
       <GroupsScoreCard />
       <AvailabilityCard />
-
-
+      <Calendar visualAdjust={100}/>
+      
       {/* 
       <Countdown />
       <EditButton />
