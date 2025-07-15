@@ -240,7 +240,9 @@ const HomeScreen = () => {
       <GroupsScoreCard />
       <AvailabilityCard />
       <Calendar visualAdjust={100}/>
-      
+      <TimeSelector title="From:"/>
+      <TimeSelector title="To:"/>
+
       {/* 
       <Countdown />
       <EditButton />

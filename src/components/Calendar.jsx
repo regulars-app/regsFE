@@ -373,97 +373,13 @@ const styles = StyleSheet.create({
     color: '#1976D2',
     fontWeight: 'bold',
   },
-  // Modal styles
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.15)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    padding: 18,
-    width: 320,
-    maxWidth: '90%',
-    alignItems: 'center',
-    elevation: 4,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#222',
-  },
-  modalPickersRow: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  modalPicker: {
-    width: 130,
-    maxHeight: 180,
-    backgroundColor: '#F7F7F7',
-    borderRadius: 12,
-    marginHorizontal: 4,
-    paddingVertical: 6,
-  },
-  modalOption: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginVertical: 2,
-  },
-  modalOptionSelected: {
-    backgroundColor: 'rgba(25, 118, 210, 0.12)',
-  },
-  modalOptionText: {
-    fontSize: 16,
-    color: '#222',
-    textAlign: 'center',
-  },
-  modalOptionTextSelected: {
-    color: '#1976D2',
-    fontWeight: 'bold',
-  },
-  modalOptionTextCurrent: {
-    color: '#1976D2',
-  },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: '100%',
-    marginTop: 8,
-    gap: 10,
-  },
-  modalCancelBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: '#F7F7F7',
-  },
-  modalCancelText: {
-    color: '#888',
-    fontSize: 16,
-  },
-  modalConfirmBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: '#1976D2',
-  },
-  modalConfirmText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   pickerOverlay: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     marginTop: 8,
     flex: 1,
+    gap: 15,
   },
   pickerTitle: {
     fontSize: 18,
@@ -508,11 +424,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#F7F7F7',
-    marginTop: 4,
+    backgroundColor: '#F9C7C5',
+   
   },
   pickerCancelText: {
-    color: '#888',
+    color: '#6E6E6E',
     fontSize: 16,
   },
 });
