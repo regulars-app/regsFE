@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const AddSymbol = () => {
+const AddSymbol = ({style}) => {
   const addIcon = require('../images/add-icon.png');
   return (
-      <View style={styles.addSymbol}>
+      <View style={[styles.addSymbol, style]}>
         <Image source={addIcon} style={styles.addSymbolImage} />
       </View>
 

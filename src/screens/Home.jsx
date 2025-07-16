@@ -31,6 +31,17 @@ import ProfileListCard from '../components/ProfileListCard';
 import GroupsScoreCard from '../components/GroupsScoreCard';
 import AvailabilityCard from '../components/AvailabilityCard';
 import PreviousSymbol from '../components/PreviousSymbol';
+import AddFriendItem from '../components/AddFriendItem';
+import FriendItem from '../components/FriendItem';
+import SettingsItem from '../components/SettingsItem';
+import PlaceItem from '../components/PlaceItem';
+import AcceptFriendItem from '../components/AcceptFriendItem';
+import IncommingFriendRequestView from '../components/IncommingFriendRequestView';
+import AddFriendsView from '../components/AddFriendsView';
+import MyFriendsView from '../components/MyFriendsView';
+import SettingsView from '../components/SettingsView';
+import PlacesView from '../components/PlacesView';
+import SubNav from '../components/SubNav';
 
 const mapImage = require('../images/map.png');
 
@@ -208,13 +219,105 @@ const members = [
   { id: 21, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
 ];
 
+const requests = [
+  { name: 'John Doe' },
+  { name: 'Jane Doe' },
+  { name: 'Jim Doe' },
+];
+
+const potentialFriends = [
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+];
+
+const friends = [
+  { name: 'John Doe' },
+  { name: 'Jane Doe' },
+  { name: 'Jim Doe' },
+  { name: 'John Doe' },
+  { name: 'Jane Doe' },
+  { name: 'Jim Doe' },
+  { name: 'John Doe' },
+  { name: 'Jane Doe' },
+  { name: 'Jim Doe' },
+];
+
+const settings = [
+  { name: 'Privacy' },
+  { name: 'Notifications' },
+  { name: 'Language' },
+  { name: 'About' },
+  { name: 'Privacy' },
+  { name: 'Notifications' },
+  { name: 'Language' },
+  { name: 'About' },
+];
+
+const places = [
+  { name: 'Pani\'s house',
+    myPlace: true,
+    group: 'group1',
+   },
+  { name: 'Pani\'s house',
+    myPlace: true,
+    group: 'group1',
+   },
+  { name: 'Pani\'s house',
+    myPlace: false,
+    group: 'group2',
+   },
+  { name: 'Pani\'s house',
+    myPlace: false,
+    group: 'group1',
+   },
+  { name: 'Pani\'s house',
+    myPlace: true,
+    group: null,
+   },
+  { name: 'Pani\'s house',
+    myPlace: false,
+    group: 'group1',
+   },
+  { name: 'Pani\'s house',
+    myPlace: false,
+    group: 'group1',
+   },
+  { name: 'Pani\'s house',
+    myPlace: true,
+    group: null,
+   },
+  { name: 'Pani\'s house',
+    myPlace: false,
+    group: 'group1',
+   },
+];
+
+const tabs = [
+  { title: 'Plans', path: 'plans' },
+  { title: 'Discussion', path: 'discussion' },
+  { title: 'Jeffrey', path: 'jeffrey' },
+];
+
 const HomeScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState('plans');
+
+  const handleTabPress = (path, index) => {
+    setCurrentScreen(path);
+  };
   return(
   <View style={styles.bg}>
     <Popup showPopup={showPopup} onClose={() => setShowPopup(false)} />
     {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
     <ScrollView contentContainerStyle={styles.centered}>
+
       <PostView style={{height: 500}}/>
       <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" />
       <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} />} />
@@ -242,20 +345,21 @@ const HomeScreen = () => {
       <Calendar visualAdjust={100}/>
       <TimeSelector title="From:"/>
       <TimeSelector title="To:"/>
-
-      {/* 
-      <Countdown />
-      <EditButton />
-      <ScrollList />
-      <TimeSelector />
-      <Calendar />
-      <Map />
-      <BackButton />
-      <GlassCardClickable />
-      <MessagingSub />
-      <MessagingMain />
-      <MainButton /> 
-      */}
+      <AddFriendItem name="John Doe" requested={false}/>
+      <FriendItem name="John Doe"/>
+      <SettingsItem name="Privacy"/>
+      <PlaceItem name="Pani's house"/>
+      <AcceptFriendItem name="John Doe"/>
+      <IncommingFriendRequestView height={200} requests={requests}/>
+      <AddFriendsView height={400} potentialFriends={potentialFriends}/>
+      <MyFriendsView height={400} friends={friends}/>
+      <SettingsView height={400} settings={settings}/>
+      <PlacesView height={400} places={places}/>
+      <SubNav tabs={tabs} onTabPress={handleTabPress} initialActiveIndex={0}/>
+      {/* Render different content based on currentScreen */}
+      {currentScreen === 'plans' && <Text>Plans</Text>}
+      {currentScreen === 'discussion' && <Text>Discussion</Text>}
+      {currentScreen === 'jeffrey' && <Text>Jeffrey</Text>}
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

@@ -1,27 +1,27 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const ConfirmSymbol = ({size, style}) => {
-  const confirmIcon = require('../images/confirm-icon.png');
+const MoreSymbol = ({size, style}) => {
+  const moreIcon = require('../images/more-icon.png');
   const dynamicStyle = {
-    confirmSymbolImage: {
+    moreSymbolImage: {
       width: size,
       height: size,
     },
   };
   return (
-    <View style={[styles.confirmSymbol, style]}>
-      <Image source={confirmIcon} style={[dynamicStyle.confirmSymbolImage]} />
+    <View style={[styles.moreSymbol, style]}>
+      <Image source={moreIcon} style={[dynamicStyle.moreSymbolImage]} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  confirmSymbol: {
+    moreSymbol: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
 
-export default ConfirmSymbol;
+export default MoreSymbol;
