@@ -10,11 +10,11 @@ import InfoSymbol from './InfoSymbol';
 import ConfirmedSymbol from './ConfirmedSymbol';
 import ProfileListCard from './ProfileListCard';
 
-const MeetupCard = ({datetime, activity, info, confirmed}) => {
+const MeetupCard = ({datetime, activity, info, confirmed, style}) => {
 
     
   return(
-<View style={styles.container}>
+<View style={[styles.container, style]}>
     <View style={styles.meetupCardBodyWrapper}>
       <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.meetupCardBody}>

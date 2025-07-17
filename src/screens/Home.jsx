@@ -42,6 +42,8 @@ import MyFriendsView from '../components/MyFriendsView';
 import SettingsView from '../components/SettingsView';
 import PlacesView from '../components/PlacesView';
 import SubNav from '../components/SubNav';
+import ChallengeWriterBox from '../components/ChallengeWriterBox';
+import EvidenceTypeSelector from '../components/EvidenceTypeSelector';
 
 const mapImage = require('../images/map.png');
 
@@ -319,7 +321,7 @@ const HomeScreen = () => {
     <ScrollView contentContainerStyle={styles.centered}>
 
       <PostView style={{height: 500}}/>
-      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" />
+      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" style={{height: 675}}/>
       <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} />} />
       <ImageCard imageURL={'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg'} footer="Example image" width={Dimensions.get('window').width * 0.8} height={200} />
       <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.8} height={200} />} />
@@ -360,6 +362,8 @@ const HomeScreen = () => {
       {currentScreen === 'plans' && <Text>Plans</Text>}
       {currentScreen === 'discussion' && <Text>Discussion</Text>}
       {currentScreen === 'jeffrey' && <Text>Jeffrey</Text>}
+      <ChallengeWriterBox challengeType="Smart" />
+      <EvidenceTypeSelector />
     </ScrollView>
     {/* </ImageBackground> */}
   </View>
