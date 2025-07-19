@@ -13,7 +13,7 @@ const MainButton = ({text, color, type}) => {
     return(
         <TouchableOpacity style={[styles.mainButton, dynamicStyle.mainButton]}>
             <Text style={styles.mainButtonText}>{text}</Text>
-            {type === 'suggest' && <EditSymbol />}
+            {type === 'suggest' && <EditSymbol size={20}/>}
             {type === 'doable' && <ConfirmSymbol size={20}/>}
         </TouchableOpacity>
     )

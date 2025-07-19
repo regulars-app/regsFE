@@ -25,10 +25,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  deleteSymbolImage: {
-    width:'70%',
-    height: '70%',
-  },
 });
 
 export default DeleteSymbol;

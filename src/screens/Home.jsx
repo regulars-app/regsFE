@@ -46,6 +46,7 @@ import ChallengeWriterBox from '../components/ChallengeWriterBox';
 import EvidenceTypeSelector from '../components/EvidenceTypeSelector';
 import EvidenceUploader from '../components/EvidenceUploader';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
+import DiaryInput from '../components/DiaryInput';
 
 const mapImage = require('../images/map.png');
 
@@ -368,6 +369,7 @@ const HomeScreen = () => {
       <EvidenceTypeSelector />
       <EvidenceUploader challenger="John Doe" evidenceType="text" />
       <AdditionalInfoInput />
+      <DiaryInput />
     </ScrollView>
     {/* </ImageBackground> */}
   </View>
