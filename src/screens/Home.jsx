@@ -44,6 +44,8 @@ import PlacesView from '../components/PlacesView';
 import SubNav from '../components/SubNav';
 import ChallengeWriterBox from '../components/ChallengeWriterBox';
 import EvidenceTypeSelector from '../components/EvidenceTypeSelector';
+import EvidenceUploader from '../components/EvidenceUploader';
+import AdditionalInfoInput from '../components/AdditionalInfoInput';
 
 const mapImage = require('../images/map.png');
 
@@ -362,8 +364,10 @@ const HomeScreen = () => {
       {currentScreen === 'plans' && <Text>Plans</Text>}
       {currentScreen === 'discussion' && <Text>Discussion</Text>}
       {currentScreen === 'jeffrey' && <Text>Jeffrey</Text>}
-      <ChallengeWriterBox challengeType="Smart" />
+      <ChallengeWriterBox challengeType="smart" />
       <EvidenceTypeSelector />
+      <EvidenceUploader challenger="John Doe" evidenceType="text" />
+      <AdditionalInfoInput />
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

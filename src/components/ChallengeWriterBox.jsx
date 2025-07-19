@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import GlassCard from './GlassCard';
 import SmartSymbolEnclosed from './SmartSymbolEnclosed';
+import HealthSymbolEnclosed from './HealthSymbolEnclosed';
+import WildSymbolEnclosed from './WildSymbolEnclosed';
 
 const ChallengeWriterBox = ({style, challengeType}) => {
     return (
         <View style={[styles.outerContainerWrapper, style]}>
             <View style={styles.outerContainer}>
-            <SmartSymbolEnclosed showScore={false} size={45} style={styles.smartSymbol}/>
+            {challengeType === 'smart' ? <SmartSymbolEnclosed showScore={false} size={45} style={styles.symbol}/> : challengeType === 'health' ? <HealthSymbolEnclosed showScore={false} size={45} style={styles.symbol}/> : <WildSymbolEnclosed showScore={false} size={45} style={styles.symbol}/>}
             <GlassCard style={styles.glassCard}>
                 <View style={styles.container}>
                     <TextInput 
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         padding: 20,
     },
-    smartSymbol: {
+    symbol: {
         position: 'absolute',
         top: -15,
         right: -15,

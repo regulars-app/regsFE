@@ -19,7 +19,6 @@ const HealthSymbol = ({size}) => {
 
 const styles = StyleSheet.create({
   healthSymbol: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
