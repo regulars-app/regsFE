@@ -6,20 +6,20 @@ import GallerySymbol from './GallerySymbol';
 import EditSymbol from './EditSymbol';
 import CancelSymbol from './CancelSymbol';
 
-const DiaryInput = () => {
+const DiaryInput = ({style}) => {
 
     const [image, setImage] = useState(null);
 
     return (
-        <GlassCard style={styles.glassCard}>
+        <GlassCard style={[styles.glassCard, style]}>
             {image ? 
             <View style={styles.container}>
                     <View style={styles.imageContainer}>
                         <TouchableOpacity style={styles.editSymbolContainer}>
-                            <EditSymbol size={20}/>
+                            <EditSymbol size={15}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.cancelSymbolContainer} onPress={() => setImage(null)}>
-                            <CancelSymbol size={20}/>
+                            <CancelSymbol size={15}/>
                         </TouchableOpacity>
                         <Image style={styles.selectedImage} source={{uri: image}}/>
                     </View>
@@ -89,18 +89,20 @@ const styles = StyleSheet.create({
         top: 4,
         right: 4,
         zIndex: 100,
-        backgroundColor: 'white',
+        backgroundColor: '#FBF7D5',
         borderRadius: 50,
         padding: 8,
+        elevation: 1,
     },
     cancelSymbolContainer: {
         position: 'absolute',
         top: 4,
         left: 4,
         zIndex: 100,
-        backgroundColor: 'white',
+        backgroundColor: '#F9C7C5',
         borderRadius: 50,
         padding: 8,
+        elevation: 1,
     },
     selectedImage: {
         width: '100%',

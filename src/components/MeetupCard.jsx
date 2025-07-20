@@ -10,7 +10,7 @@ import InfoSymbol from './InfoSymbol';
 import ConfirmedSymbol from './ConfirmedSymbol';
 import ProfileListCard from './ProfileListCard';
 
-const MeetupCard = ({datetime, activity, info, confirmed, style}) => {
+const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
 
     
   return(
@@ -22,7 +22,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style}) => {
         <GlassCard style={styles.meetupCardDetails}>
             <View style={styles.meetupCardDetailsItemWrapper}>
                 <View style={styles.meetupCardDetailsItem}>
-                    <CountdownSymbol />
+                    <CountdownSymbol size={15} />
                     <Text>{datetime}</Text>
                 </View>
                 <View style={styles.meetupCardDetailsItem}>
@@ -37,7 +37,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style}) => {
                     <ConfirmedSymbol />
                     <Text>Confirmed</Text>
                 </View>
-                <ProfileListCard style={styles.membersCard} showGroupButton={false} clickable={false}  type="members"/>
+                <ProfileListCard style={styles.membersCard} showGroupButton={false} clickable={false}  type="members" members={members}/>
             </View>
         </GlassCard>
         <View style={styles.meetupCardFooter}>
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
       paddingTop: 10,
       paddingBottom: 10,
+      alignItems: 'center',
     },
     membersCard: {
       width: '100%',

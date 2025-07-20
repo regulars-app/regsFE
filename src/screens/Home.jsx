@@ -47,6 +47,11 @@ import EvidenceTypeSelector from '../components/EvidenceTypeSelector';
 import EvidenceUploader from '../components/EvidenceUploader';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
 import DiaryInput from '../components/DiaryInput';
+import ChallengeDisplayer from '../components/ChallengeDisplayer';
+import ClashView from '../components/ClashView';
+import SurpriseEventToggle from '../components/SurpriseEventToggle';
+import ViewFinder from '../components/ViewFinder';
+import TakenPhoto from '../components/TakenPhoto';
 
 const mapImage = require('../images/map.png');
 
@@ -310,6 +315,13 @@ const tabs = [
   { title: 'Jeffrey', path: 'jeffrey' },
 ];
 
+const clashItems = [
+  { userID: '1', content: 'John Doe cannot do the dishes' },
+  { userID: '2', content: 'Jane Doe cannot do the dishes' },
+  { userID: '3', content: 'Jim Doe cannot do the dishes' },
+  { userID: '4', content: 'John Doe cannot do the dishes' },
+];
+
 const HomeScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('plans');
@@ -324,8 +336,8 @@ const HomeScreen = () => {
     <ScrollView contentContainerStyle={styles.centered}>
 
       <PostView style={{height: 500}}/>
-      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" style={{height: 675}}/>
-      <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} />} />
+      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" style={{height: 675}} members={members}/>
+      <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} members={members}/>} />
       <ImageCard imageURL={'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg'} footer="Example image" width={Dimensions.get('window').width * 0.8} height={200} />
       <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.8} height={200} />} />
       <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.4} aspectRatio={1} />} />
@@ -370,6 +382,12 @@ const HomeScreen = () => {
       <EvidenceUploader challenger="John Doe" evidenceType="text" />
       <AdditionalInfoInput />
       <DiaryInput />
+      <ChallengeDisplayer challengeType="smart" challengeContent={"Make a poem that encodes a secret message for us."}/>
+      <ClashView clashItems={clashItems}/>
+      <SurpriseEventToggle />
+      <Countdown />
+      <ViewFinder style={{height: 800}}/>
+      <TakenPhoto style={{height: 700}}/>
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

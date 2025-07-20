@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
-import SaveButton from './SaveButton';
+import SaveSymbol from './SaveSymbol';
 import CommentButton from './CommentButton';
 import GlassCard from './GlassCard';
 
@@ -51,7 +51,9 @@ const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
       </GlassCard>
       <View style={styles.postFooter}>
         <View style={styles.postFooterButtons}>
-          <SaveButton />
+          <TouchableOpacity>
+            <SaveSymbol size={25} />
+          </TouchableOpacity>
           <CommentButton numComments={3} />
         </View>
         <TouchableOpacity style={styles.postFooterText}>
