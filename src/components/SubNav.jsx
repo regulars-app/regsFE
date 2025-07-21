@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const SubNav = ({ tabs, onTabPress, initialActiveIndex = 0 }) => {
+const SubNav = ({ tabs, onTabPress, initialActiveIndex = 0, style }) => {
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
 
   const handleTabPress = (index, path) => {
@@ -12,7 +12,7 @@ const SubNav = ({ tabs, onTabPress, initialActiveIndex = 0 }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {tabs.map((tab, index) => (
         <TouchableOpacity
           key={index}
@@ -41,17 +41,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    justifyContent: 'space-around',
     alignItems: 'center',
+    justifyContent: 'center',
     maxWidth: '80%',
     gap:20,
+    alignSelf: 'center',
   },
   tabContainer: {
     alignItems: 'center',
   },
   tabText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     color: '#6E6E6E',
     marginBottom: 8,

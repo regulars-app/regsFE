@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/Home.jsx';
+import MeetupDetails from './src/screens/MeetupDetails.jsx';
 
 const Stack = createStackNavigator();
 
@@ -8,10 +9,15 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name="Home" 
           component={HomeScreen}
           options={{ title: 'Home' }}
+        /> */}
+        <Stack.Screen 
+          name="MeetupDetails"
+          component={MeetupDetails}
+          options={{ title: 'Meetup Details', headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

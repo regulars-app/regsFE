@@ -6,10 +6,10 @@ import ChallengeSymbol from './ChallengeSymbol';
 import ChatSymbol from './ChatSymbol';
 import GlassCard from './GlassCard';
 
-const GroupNav = () => {
+const GroupNav = ({style}) => {
     const [selectedIndex, setSelectedIndex] = useState(3);
     return (
-        <GlassCard style={styles.groupNav}>
+        <GlassCard style={[styles.groupNav, style]}>
             <View style={styles.groupNavItemsContainer}>
                 <TouchableOpacity style={[styles.groupNavItem, selectedIndex === 1 && styles.selectedNavItem]} onPress={() => setSelectedIndex(1)}>
                     <ProfilePic size={45} footer="" imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     groupNav: {
         width: '80%',
         height: 90,
-        marginVertical: 20,
     },
     groupNavItemsContainer: {
         flexDirection: 'row',

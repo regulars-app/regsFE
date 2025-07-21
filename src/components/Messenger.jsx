@@ -26,36 +26,41 @@ const Messenger = ({style, messages = []}) => {
                     ))}
                 </ScrollView>
             </View>
-            <MessageIO style={styles.messageIO}/>
+            <View style={styles.messageIOContainer}>
+                <MessageIO style={styles.messageIO}/>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginVertical: 10,
         width: '100%',
         alignItems: 'center',
         position: 'relative',
-        paddingVertical: 10,
         paddingHorizontal: 10,
-        borderWidth: 1,
+        paddingBottom: 60,
     },
     scrollViewContainer: {
         width: '100%',
-        height: '85%',
-    },
-    scrollView: {
-        width: '100%',
         flex: 1,
     },
+    scrollView: {
+    
+    },
     scrollViewContent: {
-        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    messageIOContainer: {
+        width: '100%',
+        height: 60,
+        position: 'absolute',
+        bottom: 0,
     },
     messageIO: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 2,
     },
 });
     export default Messenger;
