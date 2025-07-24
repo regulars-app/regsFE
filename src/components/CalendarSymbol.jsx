@@ -1,32 +1,32 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const ActivitySymbol = ({size}) => {
-  const activityIcon = require('../images/activity-icon.png');
+const CalendarSymbol = ({size}) => {
+  const calendarIcon = require('../images/calendar-icon.png');
   const dynamicStyles = {
-    activitySymbol: {
+    calendarSymbol: {
       width: size,
       height: size,
     },
   }
   return (
-      <View style={[styles.activitySymbol, dynamicStyles.activitySymbol]}>
-        <Image source={activityIcon} style={styles.activitySymbolImage} />
+      <View style={[styles.calendarSymbol, dynamicStyles.calendarSymbol]}>
+        <Image source={calendarIcon} style={styles.calendarSymbolImage} />
       </View>
 
   );
 };
 
 const styles = StyleSheet.create({
-  activitySymbol: {
+  calendarSymbol: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activitySymbolImage: {
+    calendarSymbolImage: {
     width: '100%',
     height: '100%',
   },
 });
 
-export default ActivitySymbol;
+export default CalendarSymbol;

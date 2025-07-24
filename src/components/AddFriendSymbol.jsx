@@ -1,32 +1,32 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const ActivitySymbol = ({size}) => {
-  const activityIcon = require('../images/activity-icon.png');
+const AddFriendSymbol = ({size}) => {
+  const addFriendIcon = require('../images/add-friend-icon.png');
   const dynamicStyles = {
-    activitySymbol: {
+    addFriendSymbol: {
       width: size,
       height: size,
     },
   }
   return (
-      <View style={[styles.activitySymbol, dynamicStyles.activitySymbol]}>
-        <Image source={activityIcon} style={styles.activitySymbolImage} />
+      <View style={[styles.addFriendSymbol, dynamicStyles.addFriendSymbol]}>
+        <Image source={addFriendIcon} style={styles.addFriendSymbolImage} />
       </View>
 
   );
 };
 
 const styles = StyleSheet.create({
-  activitySymbol: {
+  addFriendSymbol: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activitySymbolImage: {
+  addFriendSymbolImage: {
     width: '100%',
     height: '100%',
   },
 });
 
-export default ActivitySymbol;
+export default AddFriendSymbol;

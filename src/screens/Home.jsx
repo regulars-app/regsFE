@@ -18,7 +18,7 @@ import Popup from '../components/Popup';
 import Map from '../components/Map';
 import BackButton from '../components/BackButton';
 import GroupNav from '../components/GroupNav';
-import GlassCardClickable from '../components/GlassCardClickable';
+import GlassCardButton from '../components/GlassCardButton';
 import MainButton from '../components/MainButton';
 import SearchBar from '../components/SearchBar';
 import ImageCard from '../components/ImageCard';
@@ -388,6 +388,12 @@ const HomeScreen = () => {
       <Countdown />
       <ViewFinder style={{height: 800}}/>
       <TakenPhoto style={{height: 700}}/>
+      <GlassCardButton style={{width: '40%'}} type="activity"/>
+      <GlassCardButton style={{width: '40%'}} type="calendar"/>
+      <GlassCardButton style={{width: '40%'}} type="addFriend"/>
+      <GlassCardButton style={{width: '40%'}} type="myFriends"/>
+      <GlassCardButton style={{width: '40%'}} type="foodPreferences"/>
+      <GlassCardButton style={{width: '40%'}} type="myInterests"/>
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

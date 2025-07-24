@@ -10,11 +10,11 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen 
+        <Stack.Screen 
           name="Home" 
           component={HomeScreen}
           options={{ title: 'Home' }}
-        /> */}
+        />
           <Stack.Screen 
             name="UpcomingSurpriseEvent"
             options={{ title: 'Upcoming Surprise Event', headerShown: false }}

@@ -18,7 +18,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
     <View style={styles.meetupCardBodyWrapper}>
       <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.meetupCardBody}>
-        <MapWidget width={'85%'} height={165} />
+        <MapWidget width={'85%'} height={165} style={styles.mapWidget} />
         <GlassCard style={styles.meetupCardDetails}>
             <View style={styles.meetupCardDetailsItemWrapper}>
                 <View style={styles.meetupCardDetailsItem}>
@@ -26,7 +26,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
                     <Text>{datetime}</Text>
                 </View>
                 <View style={styles.meetupCardDetailsItem}>
-                    <ActivitySymbol />
+                    <ActivitySymbol size={15} />
                     <Text>{activity}</Text>
                 </View>
                 <View style={styles.meetupCardDetailsItem}>
@@ -75,6 +75,10 @@ const styles = StyleSheet.create({
       height: '100%',
       alignSelf: 'center',
       justifyContent: 'center',
+    },
+    mapWidget: {
+      marginTop: 20,
+      marginBottom: 20,
     },
     meetupCardDetailsItemWrapper: {
         width: '100%',
