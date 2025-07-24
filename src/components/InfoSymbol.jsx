@@ -1,10 +1,17 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const InfoSymbol = () => {
+const InfoSymbol = ({size}) => {
   const infoIcon = require('../images/info-icon.png');
+  const dynamicStyles = {
+    infoSymbol: {
+      width: size,
+      height: size,
+    }
+  };
+
   return (
-      <View style={styles.infoSymbol}>
+      <View style={[styles.infoSymbol, dynamicStyles.infoSymbol]}>
         <Image source={infoIcon} style={styles.infoSymbolImage} />
       </View>
 
@@ -18,8 +25,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   infoSymbolImage: {
-    width:15,
-    height: 15,
+    width: '100%',
+    height: '100%',
   },
 });
 

@@ -30,7 +30,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
                     <Text>{activity}</Text>
                 </View>
                 <View style={styles.meetupCardDetailsItem}>
-                    <InfoSymbol />
+                    <InfoSymbol size={15} />
                     <Text>{info}</Text>
                 </View>
                 <View style={styles.meetupCardDetailsItem}>

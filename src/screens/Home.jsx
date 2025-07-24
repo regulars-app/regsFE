@@ -344,7 +344,7 @@ const HomeScreen = () => {
       <Stack cardWidth={Dimensions.get('window').width/2} cardHeight={200} data={meetupExampleData} renderItem={({item}) => <MiniMeetupCard name={item.name} datetime={item.datetime} />} />
       <SearchBar />
       <ItemSelector />
-      <ItemDisplayer />
+      <ItemDisplayer title="My Preferences" />
       <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
         <Text>PopupDemo</Text>
       </TouchableOpacity>

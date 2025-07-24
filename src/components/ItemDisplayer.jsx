@@ -6,7 +6,7 @@ import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 import DeleteSymbol from './DeleteSymbol';
 
-const ItemDisplayer = () => {
+const ItemDisplayer = ({style, title, viewOnly = false, subjectActivities = [], subjectDietaryPreferences = []}) => {
     const [activities, setActivities] = useState([
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
@@ -88,9 +88,9 @@ const ItemDisplayer = () => {
     };
 
     return (
-        <GlassCard style={styles.glassCard}>
+        <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <Text style={styles.title}>My Preferences</Text>
+                <Text style={styles.title}>{title}</Text>
                 <View style={styles.scrollArea}>
                     <ScrollView
                         contentContainerStyle={styles.itemList}
@@ -100,23 +100,35 @@ const ItemDisplayer = () => {
                     >
                         {activities.map((activity, index) => (
                             <View key={index} style={{ position: 'relative', display: 'flex' }}>
-                                <TouchableOpacity onPress={() => handleToggle(index)} activeOpacity={0.7}>
+                                {viewOnly ? (
                                     <PreferenceItem
                                         text={activity.text}
                                         color={activity.color}
                                         type={activity.type}
-                                        isSelected={selectedIdx === index}
+                                        isSelected={false}
                                         showCheckmark={false}
                                     />
-                                </TouchableOpacity>
-                                {dropdownOpenIdx === index && (
-                                    <DropdownMenu
-                                        onColorChange={color => handleColorChange(index, color)}
-                                        onDelete={() => handleDelete(index)}
-                                        currentColor={activity.color}
-                                        selectedText={activity.text}
-                                        onClose={closeDropdown}
-                                    />
+                                ) : (
+                                    <>
+                                        <TouchableOpacity onPress={() => handleToggle(index)} activeOpacity={0.7}>
+                                            <PreferenceItem
+                                                text={activity.text}
+                                                color={activity.color}
+                                                type={activity.type}
+                                                isSelected={selectedIdx === index}
+                                                showCheckmark={false}
+                                            />
+                                        </TouchableOpacity>
+                                        {dropdownOpenIdx === index && (
+                                            <DropdownMenu
+                                                onColorChange={color => handleColorChange(index, color)}
+                                                onDelete={() => handleDelete(index)}
+                                                currentColor={activity.color}
+                                                selectedText={activity.text}
+                                                onClose={closeDropdown}
+                                            />
+                                        )}
+                                    </>
                                 )}
                             </View>
                         ))}
@@ -202,17 +214,17 @@ const dropdownStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     glassCard: {
         width: '90%',
-        height: 250,
+        maxHeight: 250,
         alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 20,
     },
     container: {
         height: '100%',
         width: '100%',
         position: 'relative',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 15,
+        paddingBottom: 15,
     },
     title: {
         fontSize: 16,
@@ -220,10 +232,11 @@ const styles = StyleSheet.create({
         marginBottom:8,
         color: '#6E6E6E',
         textAlign: 'center',
+        height: 20,
     },
     scrollArea: {
         width: '100%',
-        height: 175,
+        flex: 1,
         marginTop: 5,
     },
     itemListContainer: {
