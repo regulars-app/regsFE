@@ -4,6 +4,7 @@ import ProfilePic from './ProfilePic';
 import SaveSymbol from './SaveSymbol';
 import CommentButton from './CommentButton';
 import GlassCard from './GlassCard';
+import ReplySymbol from './ReplySymbol';
 
 // PROPS:
 // Can be given type: 'text', 'image', 'mixed'
@@ -17,6 +18,10 @@ const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
   const dynamicStyle = {
     container: {
       alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
+    },
+    replySymbol: {
+      left: position === 'right' ? -30 : 'none',
+      right: position === 'left' ? -30 : 'none',
     },
     profilePic: {
       top: position === 'left' ? -30 : -30,
@@ -33,22 +38,26 @@ const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
   <View style={[styles.container, dynamicStyle.container]}>
     <View style={styles.postBodyWrapper}>
       <ProfilePic size={60} footer="Ralphie" style={[styles.profilePic, dynamicStyle.profilePic]} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-      <GlassCard style={styles.postBody}>
-        {type === 'image' ? (
-          <Image source={{ uri: imageURL }} style={styles.postImage} />
-        ) : type === 'text' ? (
-          <View style={styles.textContainer}>
-            <Text style={[styles.postText, dynamicStyle.postText]}>{text}</Text>
-          </View>
-        ) : type === 'mixed' ? (
-          <View style={styles.imageTextContainer}>
+      <View style={styles.replyAreaContainer}>
+        {position === 'right' && <TouchableOpacity><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
+        <GlassCard style={styles.postBody}>
+          {type === 'image' ? (
             <Image source={{ uri: imageURL }} style={styles.postImage} />
+          ) : type === 'text' ? (
             <View style={styles.textContainer}>
-              <Text style={styles.postText}>{text}</Text>
+              <Text style={[styles.postText, dynamicStyle.postText]}>{text}</Text>
             </View>
-          </View>
-        ) : null}
-      </GlassCard>
+          ) : type === 'mixed' ? (
+            <View style={styles.imageTextContainer}>
+              <Image source={{ uri: imageURL }} style={styles.postImage} />
+              <View style={styles.textContainer}>
+                <Text style={styles.postText}>{text}</Text>
+              </View>
+            </View>
+          ) : null}
+        </GlassCard>
+        {position === 'left' && <TouchableOpacity><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
+      </View>
       <View style={styles.postFooter}>
         <View style={styles.postFooterButtons}>
           <TouchableOpacity>
@@ -82,6 +91,16 @@ const styles = StyleSheet.create({
     overflow: 'visible',
     alignSelf: 'flex-start',
     maxWidth: '100%',
+  },
+  replyAreaContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    overflow: 'visible'
+  },
+  replySymbol: {
+    zIndex: 100,
+    position: 'absolute',
   },
   postBody: {
     minHeight: 75,
