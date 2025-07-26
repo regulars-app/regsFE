@@ -19,7 +19,7 @@ function getFirstDayOfMonth(month, year) {
   return new Date(year, month, 1).getDay();
 }
 
-const Calendar = () => {
+const Calendar = ({style, dayCellWidth = `${100 / 7}%`}) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -61,7 +61,7 @@ const Calendar = () => {
 
   // Build days grid
   const daysArray = [];
-  for (let i = 0; i < firstDay; i++) {
+  for (let i = 0; i < firstDay; i++) {  
     daysArray.push(null);
   }
   for (let d = 1; d <= daysInMonth; d++) {
@@ -72,7 +72,7 @@ const Calendar = () => {
   const thisYear = today.getFullYear();
   const years = [];
   for (let y = thisYear - YEAR_RANGE; y <= thisYear + YEAR_RANGE; y++) {
-    years.push(y);
+    years.push(y);    
   }
 
   // Month/year picker handlers
@@ -115,8 +115,14 @@ const Calendar = () => {
     if (pickerMode === 'year') setYearPickerHeight(null);
   }, [pickerMode]);
 
+  const dynamicStyles = {
+    dayCell: {
+      width: dayCellWidth,
+    },
+  };
+
   return (
-    <GlassCard style={styles.glassCard}>
+    <GlassCard style={[styles.glassCard, style]}>
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerRow}>
@@ -150,7 +156,7 @@ const Calendar = () => {
           <View style={styles.daysGrid}>
             {daysArray.map((day, idx) => {
               if (day === null) {
-                return <View key={idx} style={styles.dayCell} />;
+                return <View key={idx} style={[styles.dayCell, dynamicStyles.dayCell]} />;
               }
               const isToday =
                 day === today.getDate() &&
@@ -164,7 +170,7 @@ const Calendar = () => {
               return (
                 <TouchableOpacity
                   key={idx}
-                  style={[styles.dayCell, isSelected && styles.selectedDayCell]}
+                  style={[styles.dayCell, dynamicStyles.dayCell, isSelected && styles.selectedDayCell]}
                   onPress={() => handleSelectDate(day)}
                   activeOpacity={0.7}
                 >
@@ -350,7 +356,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   dayCell: {
-    width: `${100 / 7}%`,
     aspectRatio: 1,
     alignItems: 'center',
     justifyContent: 'center',

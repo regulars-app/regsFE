@@ -8,32 +8,32 @@ import GroupSymbol from './GroupSymbol';
 import RestaurantSymbol from './RestaurantSymbol';
 import InterestsSymbol from './InterestsSymbol';
 
-const GlassCardButton = ({style, type}) => {
+const GlassCardButton = ({style, type, text}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <TouchableOpacity>
             {type === 'activity' && <View style={styles.container}>
-                <Text style={styles.text}>Activity</Text>
+                <Text style={styles.text}>{text}</Text>
                 <ActivitySymbol size={20} />
             </View>}
             {type === 'calendar' && <View style={styles.container}>
-                <Text style={styles.text}>Calendar</Text>
+                <Text style={styles.text}>{text}</Text>
                 <CalendarSymbol size={20} />
             </View>}
             {type === 'addFriend' && <View style={styles.container}>
-                <Text style={styles.text}>Add Friend</Text>
+                <Text style={styles.text}>{text}</Text>
                 <AddFriendSymbol size={20} />
             </View>}
             {type === 'myFriends' && <View style={styles.container}>
-                <Text style={styles.text}>My Friends</Text>
+                <Text style={styles.text}>{text}</Text>
                 <GroupSymbol size={20} />
             </View>}
             {type === 'foodPreferences' && <View style={styles.container}>
-                <Text style={styles.text}>Food Preferences</Text>
+                <Text style={styles.text}>{text}</Text>
                 <RestaurantSymbol size={25} />
             </View>}
             {type === 'myInterests' && <View style={styles.container}>
-                <Text style={styles.text}>My Interests</Text>
+                <Text style={styles.text}>{text}</Text>
                 <InterestsSymbol size={20} />
             </View>}
             </TouchableOpacity>

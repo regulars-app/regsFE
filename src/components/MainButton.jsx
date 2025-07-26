@@ -4,17 +4,17 @@ import EditSymbol from './EditSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
 //Props decide if green, yellow or red button
 
-const MainButton = ({text, color, type}) => {
+const MainButton = ({text, color, type, style}) => {
     const dynamicStyle = {
         mainButton: {
             backgroundColor: color === 'green' ? '#F2FFF6' : color === 'yellow' ? '#FBF7D5' : '#F9C7C5',
         },
       };
     return(
-        <TouchableOpacity style={[styles.mainButton, dynamicStyle.mainButton]}>
+        <TouchableOpacity style={[styles.mainButton, dynamicStyle.mainButton, style]}>
             <Text style={styles.mainButtonText}>{text}</Text>
             {type === 'suggest' && <EditSymbol size={20}/>}
-            {type === 'doable' && <ConfirmSymbol size={20}/>}
+            {type === 'confirm' && <ConfirmSymbol size={20}/>}
         </TouchableOpacity>
     )
 }

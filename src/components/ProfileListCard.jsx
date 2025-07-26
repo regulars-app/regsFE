@@ -32,6 +32,7 @@ const ProfileListCard = ({
 
   return (
     <GlassCard style={[styles.glassCard, style]}>
+      <View style={styles.wrapper}>
         {title && (
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{title}</Text>
@@ -66,6 +67,7 @@ const ProfileListCard = ({
           </ScrollView>
         </View>
         {showButton && <GroupButton style={styles.profileListButton} size={40} />}
+        </View>
     </GlassCard>
   );
 };
@@ -75,26 +77,30 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 200,
     }, 
-    container: {
-        width: '100%',
+    wrapper: {
         height: '100%',
-        position: 'relative',
-        alignItems: 'center',
-        justifyContent: 'center',
-        },
+        width: '100%',
+        marginBottom: 40,
+    },
         titleContainer: {
             width: '100%',
-            height: '20%',
-            alignItems: 'center',
-            justifyContent: 'center',
-  
+            paddingVertical: 20,
+            backgroundColor: 'red',
         },
         title: {
             fontSize: 17,
             fontWeight: 'bold',
             textAlign: 'center',
             color: '#6E6E6E',
+            backgroundColor: 'blue',
         },
+        container: {
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          alignItems: 'center',
+          justifyContent: 'center',
+          },
         profileListButton: {
             position: 'absolute',
             bottom: 10,
@@ -102,14 +108,14 @@ const styles = StyleSheet.create({
         },
         profileListContainer: {
             width: '100%',
-            flexDirection: 'column',
+         
         },
         scrollView: {
             height: '100%',
         },
         scrollViewContent: {
             justifyContent: 'center',
-            flexGrow: 1,
+    
         },
         profileList: {
             flexDirection: 'row',
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
             paddingTop: 10,
             paddingBottom: 40,
             gap: 15,
-            paddingLeft: 20,
+            justifyContent: 'center',
         },
         });
 

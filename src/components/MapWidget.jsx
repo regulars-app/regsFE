@@ -13,7 +13,7 @@ const MapWidget = ({width, height, style, placeSelected}) => {
     return(
         <GlassCard style={[styles.mapWidget, dynamicStyles.mapWidget, style]}>
             <View style={styles.wrapper}>
-                {placeSelected && <View style={styles.overlay}>
+                {!placeSelected && <View style={styles.overlay}>
                     <TouchableOpacity style={styles.addPlaceButton}>
                         <AddPlaceSymbol size={30} />
                     </TouchableOpacity>

@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput} from 'react-native';
 import GlassCard from './GlassCard';
 
-const AdditionalInfoInput = () => {
+const AdditionalInfoInput = ({style, placeholder}) => {
     return (
-        <GlassCard style={styles.glassCard}>
+        <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
                 <TextInput 
                     style={styles.input} 
-                    placeholder={`Write your additional info here...`}
+                    placeholder={placeholder}
                     multiline={true}
                     fontWeight="600"
                     placeholderTextColor="rgba(110, 110, 110, 0.5)"

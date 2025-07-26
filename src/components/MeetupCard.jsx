@@ -18,7 +18,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
     <View style={styles.meetupCardBodyWrapper}>
       <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <GlassCard style={styles.meetupCardBody}>
-        <MapWidget width={'85%'} height={165} style={styles.mapWidget} />
+        <MapWidget width={'85%'} height={165} style={styles.mapWidget} placeSelected={true}/>
         <GlassCard style={styles.meetupCardDetails}>
             <View style={styles.meetupCardDetailsItemWrapper}>
                 <View style={styles.meetupCardDetailsItem}>
@@ -42,7 +42,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
         </GlassCard>
         <View style={styles.meetupCardFooter}>
             <MainButton text="Suggest" color="yellow" type="suggest" />
-            <MainButton text="Doable" color="green" type="doable" />
+            <MainButton text="Doable" color="green" type="confirm" />
         </View>
       </GlassCard>
     </View>

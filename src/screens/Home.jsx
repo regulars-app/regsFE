@@ -388,12 +388,7 @@ const HomeScreen = () => {
       <Countdown />
       <ViewFinder style={{height: 800}}/>
       <TakenPhoto style={{height: 700}}/>
-      <GlassCardButton style={{width: '40%'}} type="activity"/>
-      <GlassCardButton style={{width: '40%'}} type="calendar"/>
-      <GlassCardButton style={{width: '40%'}} type="addFriend"/>
-      <GlassCardButton style={{width: '40%'}} type="myFriends"/>
-      <GlassCardButton style={{width: '40%'}} type="foodPreferences"/>
-      <GlassCardButton style={{width: '40%'}} type="myInterests"/>
+      <GlassCardButton style={{width: '40%'}} type="activity" text={"Add Activity"}/>
     </ScrollView>
     {/* </ImageBackground> */}
   </View>

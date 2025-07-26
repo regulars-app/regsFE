@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 
-const ItemSelector = () => {
+const ItemSelector = ({style}) => {
     const activities = [
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
@@ -67,9 +67,9 @@ const ItemSelector = () => {
     };
 
     return (
-        <GlassCard style={styles.glassCard}>
+        <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <SearchBar />
+                <SearchBar style={styles.searchBar}/>
                 <View style={styles.scrollArea}>
                     <ScrollView
                         contentContainerStyle={styles.itemList}
@@ -100,13 +100,15 @@ const styles = StyleSheet.create({
         width: '90%',
         height: 400,
         alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 20,
     },
     container: {
         height: '100%',
         width: '100%',
         position: 'relative',
+    },
+    searchBar: {
+        marginVertical: 20,
+        alignSelf: 'center',
     },
     scrollArea: {
         width: '100%',

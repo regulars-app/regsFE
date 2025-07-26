@@ -4,8 +4,8 @@ import GlassCard from './GlassCard';
 import HamburgerSymbol from './HamburgerSymbol';
 import SearchSymbol from './SearchSymbol';
 
-const SearchBar = () => (
-  <GlassCard style={styles.glassCard}>
+const SearchBar = ({style}) => (
+  <GlassCard style={[styles.glassCard, style]}>
     <View style={styles.container}>
       <TouchableOpacity>
         <HamburgerSymbol style={styles.hamburgerSymbol}/>
@@ -27,9 +27,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '250',
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 6,
