@@ -13,7 +13,7 @@ const tabs = [
   { title: 'Discussion', path: 'discussion' },
 ];
 
-const MeetupDetails = () => {
+const UpcomingMeetupDetails = () => {
   
   const [currentScreen, setCurrentScreen] = useState('plans');
 
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeetupDetails;
+export default UpcomingMeetupDetails;

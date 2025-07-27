@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions} from 'react-native';
 import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
-import ProfilePic from '../components/ProfilePic';
 import MapWidget from '../components/MapWidget';
-import GlassCardButton from '../components/GlassCardButton';
-import AdditionalInfoInput from '../components/AdditionalInfoInput';
+import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import ProfileListCard from '../components/ProfileListCard';
 import EditSymbol from '../components/EditSymbol';
+import Stack from '../components/Stack';
+import ImageCard from '../components/ImageCard';
 
 const PlacePage = () => {
+
+    const photoStackWideExampleData = [
+        {
+          id: '1',
+          imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
+          footer: 'Octopus pasta at Pani\'s house!',
+        },
+        {
+          id: '2',
+          imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
+          footer: 'Beach Freddo',
+        },
+        {
+          id: '3',
+          imageURL: 'https://cdn.pixabay.com/photo/2025/06/03/05/11/louvre-9638315_1280.jpg',
+          footer: 'Idiot sandwich',
+        },
+      ];
 
     const members = [
         { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
@@ -46,11 +64,11 @@ const PlacePage = () => {
         </View>
         <View style={styles.bodyContent}>
           <MapWidget width={'90%'} height={200} style={styles.mapWidget} placeSelected={"parkroyalcinema"}/>
-          <AdditionalInfoInput style={styles.additionalInfoInput} placeholder={"Add any additional info here e.g. bring crisps etc."}/>
+          <AdditionalInfoDisplay style={styles.additionalInfo} text="Bring crisps if you have them!Bring crisps if you have them!Bring c if you have them!Bring c if you have them!Bring c if you have them!Bring crisps if you have them!Bring crisps if you have them!Bring crisps if you have them!"/>
+          <Stack style={styles.photoStack} cardWidth={Dimensions.get('window').width} cardHeight={230} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.8} height={200} />} />
           <ProfileListCard style={styles.profileListCard} clickable={false} selectable={true} showButton={false} type="members" title="Associated Groups?" members={members}/>
         </View>
         <View style={styles.footer}>
-            <MainButton text="Add Place" color="green" type="confirm" style={styles.confirmButton} />    
         </View>
       </View>
     );
@@ -96,13 +114,17 @@ const PlacePage = () => {
       mapWidget: {
         marginTop: 20,
       },
-      additionalInfoInput: {
+      additionalInfo: {
         width: '90%',
         marginTop: 20,
+        maxHeight: 90,
+      },
+      photoStack: {
+        marginTop: 10,
       },
       profileListCard: {
         width: '90%',
-        height: 120,
+        height: 140,
         marginTop: 20,
       },
       backButton: {

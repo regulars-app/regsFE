@@ -24,24 +24,25 @@ const ProfileListCard = ({
 
   const TouchableWrapper = clickable ? TouchableOpacity : View;
 
-  const dynamicStyle = {
-    profileListContainer: {
-      height: title ? '80%' : '100%',
+  const profilePicSize = 50
+
+  const dynamicStyles = {
+    scrollView: {
+      height: title ? style.height - 80 : style.height - 10, 
     },
   };
 
   return (
     <GlassCard style={[styles.glassCard, style]}>
-      <View style={styles.wrapper}>
         {title && (
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{title}</Text>
           </View>
         )}
-        <View style={[styles.profileListContainer, dynamicStyle.profileListContainer]}>
+ 
           <ScrollView
             nestedScrollEnabled={true}
-            style={styles.scrollView}
+            style={[styles.scrollView, dynamicStyles.scrollView]}
             contentContainerStyle={styles.scrollViewContent}
           >
             <TouchableWrapper
@@ -53,7 +54,7 @@ const ProfileListCard = ({
               {members.map((member) => (
                 <ProfilePic
                   key={member.id}
-                  size={50}
+                  size={profilePicSize}
                   imageURL={member.imageURL}
                   selectable={!!selectable}
                   selected={selectable && selectedIds.includes(member.id)}
@@ -65,9 +66,8 @@ const ProfileListCard = ({
             </View>
             </TouchableWrapper>
           </ScrollView>
-        </View>
+     
         {showButton && <GroupButton style={styles.profileListButton} size={40} />}
-        </View>
     </GlassCard>
   );
 };
@@ -77,22 +77,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 200,
     }, 
-    wrapper: {
-        height: '100%',
-        width: '100%',
-        marginBottom: 40,
-    },
         titleContainer: {
             width: '100%',
             paddingVertical: 20,
-            backgroundColor: 'red',
         },
         title: {
             fontSize: 17,
             fontWeight: 'bold',
             textAlign: 'center',
             color: '#6E6E6E',
-            backgroundColor: 'blue',
         },
         container: {
           width: '100%',
@@ -106,16 +99,17 @@ const styles = StyleSheet.create({
             bottom: 10,
             right: 10,
         },
-        profileListContainer: {
+          profileListContainer: {
             width: '100%',
-         
+            flex: 1,
+            paddingHorizontal: 10,
         },
         scrollView: {
-            height: '100%',
+          
         },
         scrollViewContent: {
             justifyContent: 'center',
-    
+            paddingBottom: 20,
         },
         profileList: {
             flexDirection: 'row',

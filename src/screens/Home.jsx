@@ -355,8 +355,8 @@ const HomeScreen = () => {
       <MeetupView style={{height: 400}} type="meetup" meetups={meetupViewExampleData} />
       <MeetupView style={{height: 400}} type="surprise" meetups={meetupViewExampleData} />
       <ChatSummaryCard overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
-      <ProfileListCard clickable={true} selectable={false} showButton={true} type="groups" members={members}/>
-      <ProfileListCard clickable={false} selectable={true} showButton={true} type="members" title="Who's the surprise for?" members={members}/>
+      <ProfileListCard clickable={true} selectable={false} showButton={true} type="groups" members={members} style={{height: 100}}/>
+      <ProfileListCard clickable={false} selectable={true} showButton={true} type="members" title="Who's the surprise for?" members={members} style={{height: 100}}/>
       <GroupsScoreCard />
       <AvailabilityCard />
       <Calendar visualAdjust={100}/>

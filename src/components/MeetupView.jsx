@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MeetupItemCard from './MeetupItemCard';
 
-const MeetupView = ({style, type, meetups = []}) => {
+const MeetupView = ({style, type, meetups = [], screen='group'}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.titleContainer}>
@@ -14,7 +14,7 @@ const MeetupView = ({style, type, meetups = []}) => {
                 showsVerticalScrollIndicator={true}
                 nestedScrollEnabled={true}>
                     {meetups.map((meetup, index) => (
-                        <MeetupItemCard key={index} type="meetup" meetupTitle={meetup.name} meetupDatetime={meetup.datetime} meetupConfirmed={meetup.confirmed} />
+                        <MeetupItemCard key={index} type="meetup" meetupTitle={meetup.name} meetupDatetime={meetup.datetime} meetupConfirmed={meetup.confirmed} screen={screen} />
                     ))}
                 </ScrollView>
             </View>
@@ -24,18 +24,13 @@ const MeetupView = ({style, type, meetups = []}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginVertical: 10,
         width: '100%',
         alignItems: 'center',
         position: 'relative',
-        paddingVertical: 10,
         paddingHorizontal: 0,
-        borderWidth: 1,
     },
     titleContainer: {
         width: '100%',
-        height: '15%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -46,14 +41,13 @@ const styles = StyleSheet.create({
     },
     scrollViewContainer: {
         width: '100%',
-        height: '85%',
+        flex: 1,
+        paddingVertical: 10,
     },
     scrollView: {
         width: '100%',
-        flex: 1,
     },
     scrollViewContent: {
-        flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },

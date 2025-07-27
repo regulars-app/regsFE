@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, PanResponder, Dimensions, Easing } from 're
 import { BlurView } from '@react-native-community/blur';
 
 
-const Stack = ({ data, renderItem, cardWidth, cardHeight }) => {
+const Stack = ({ data, renderItem, cardWidth, cardHeight, style }) => {
 
   const SWIPE_THRESHOLD = cardWidth / 10;
 
@@ -79,7 +79,7 @@ const Stack = ({ data, renderItem, cardWidth, cardHeight }) => {
   const currentAnimatedIndex = Animated.add(animatedIndex, panX);
 
   return (
-    <View style={[styles.stackContainer, dynamicStyle.stackContainer]} {...panResponder.panHandlers}>
+    <View style={[styles.stackContainer, dynamicStyle.stackContainer, style]} {...panResponder.panHandlers}>
       {data.map((item, index) => {
         // Only render cards within focusedIndex-1, focusedIndex, focusedIndex+1
         if (index < focusedIndex - 1 || index > focusedIndex + 1) return null;

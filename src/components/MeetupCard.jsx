@@ -37,7 +37,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
                     <ConfirmedSymbol />
                     <Text>Confirmed</Text>
                 </View>
-                <ProfileListCard style={styles.membersCard} showGroupButton={false} clickable={false}  type="members" members={members}/>
+                <ProfileListCard style={styles.membersCard} titleshowGroupButton={false} clickable={false}  type="members" members={members}/>
             </View>
         </GlassCard>
         <View style={styles.meetupCardFooter}>
@@ -85,11 +85,12 @@ const styles = StyleSheet.create({
         height: '100%',
         alignSelf: 'center',
         justifyContent: 'center',
+        position: 'relative',
+        paddingBottom: 135,
     },
     meetupCardDetails: {
       width: '85%',
       height: '50%',
-      alignSelf: 'center',
     },
     meetupCardDetailsItem: {
       flexDirection: 'row',
@@ -106,6 +107,9 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       elevation: 0,
       backgroundColor: 'white',
+      position: 'absolute',
+      bottom: 0,
+      borderRadius: 0,
     },
     profilePic: {
       position: 'absolute',
