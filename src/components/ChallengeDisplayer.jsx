@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
 import SmartSymbol from './SmartSymbol';
 import HealthSymbol from './HealthSymbol';
@@ -19,7 +19,9 @@ const ChallengeDisplayer = ({style, challengeType, challengeContent}) => {
                 <ProfilePic size={60} style={styles.profilePic} footer={"Jeffrey"} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 <GlassCard style={styles.glassCard}>
                     <View style={styles.content}>
-                        <Text style={styles.contentText}>{challengeContent}</Text>
+                        <ScrollView style={styles.contentText}>
+                            <Text style={styles.contentText}>{challengeContent}</Text>
+                        </ScrollView>
                     </View>
                 </GlassCard>
             </View>
@@ -29,19 +31,19 @@ const ChallengeDisplayer = ({style, challengeType, challengeContent}) => {
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '90%',
-        height: 150,
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 40,
-        paddingHorizontal: 20,
-    },
-    container: {    
-        width: '100%',
-        height: '100%',
+        paddingHorizontal: 40,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
+    },
+    container: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     header: {
         flexDirection: 'row',
@@ -71,14 +73,13 @@ const styles = StyleSheet.create({
     },
     glassCard: {
         width: '100%',
-        height: '100%',
     },
     content: {
         width: '100%',
-        height: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
         paddingRight: 10,
+        paddingTop: 50,
+        paddingBottom: 20,
     },
     contentText: {  
         fontSize: 15,
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
         color: '#6E6E6E',
         textAlign: 'left',
         width: '100%',
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
         paddingVertical: 10,
     },
 });

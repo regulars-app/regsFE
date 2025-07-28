@@ -21,19 +21,16 @@ const AdditionalInfoInput = ({style, placeholder}) => {
 const styles = StyleSheet.create({
     glassCard: {
         width: '90%',
-        height: 70,
     },
     container: {
         minWidth: '100%',
         maxWidth: '100%',
-        height: '80%',
         alignItems: 'stretch',
         justifyContent: 'flex-start',
         paddingHorizontal: 20,
         paddingVertical: 0,
     },
     input: {
-        flex: 1,
         fontSize: 15,
         fontWeight: '400',
         color: '#6E6E6E',

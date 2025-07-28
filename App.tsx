@@ -13,6 +13,7 @@ import PlacePage from './src/screens/PlacePage.jsx';
 import GroupMeetups from './src/screens/GroupMeetups.jsx';
 import AllMeetups from './src/screens/AllMeetups.jsx';
 import DailyChallengeCreating from './src/screens/DailyChallengeCreating.jsx';
+import DailyChallengeView from './src/screens/DailyChallengeView.jsx';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,11 @@ function App(): React.JSX.Element {
           component={HomeScreen}
           options={{ title: 'Home' }}
         /> */}
+        <Stack.Screen 
+            name="DailyChallengeView"
+            component={DailyChallengeView}
+            options={{ title: 'Daily Challenge View', headerShown: false }}
+          />
         <Stack.Screen 
             name="DailyChallengeCreating"
             component={DailyChallengeCreating}
