@@ -5,9 +5,15 @@ import EmojiSymbol from './EmojiSymbol';
 import SendButton from './SendButton';
 import GlassCard from './GlassCard';
 
-const MessageIO = ({style}) => {
+const MessageIO = ({style, paddingHorizontal = 30}) => {
+    const dynamicStyles = {
+        container: {
+            paddingHorizontal: paddingHorizontal,
+        },
+    }
+    ;
     return (
-        <View style={[styles.container, style]}>
+        <View style={[styles.container, dynamicStyles.container, style]}>
             <AddButton size={50} />
             <GlassCard style={styles.glassCard}>
                 <View style={styles.inputContainer}>
@@ -33,7 +39,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '50',
-        paddingHorizontal: 30,
         gap: 10,
     },
     glassCard: {

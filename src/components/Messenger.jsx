@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MessageIO from './MessageIO';
 import Message from './Message';
 
-const Messenger = ({style, messages = []}) => {
+const Messenger = ({style, messages = [], paddingHorizontal = 30}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.scrollViewContainer}>
@@ -27,7 +27,7 @@ const Messenger = ({style, messages = []}) => {
                 </ScrollView>
             </View>
             <View style={styles.messageIOContainer}>
-                <MessageIO style={styles.messageIO}/>
+                <MessageIO style={styles.messageIO} paddingHorizontal={paddingHorizontal}/>
             </View>
         </View>
     );

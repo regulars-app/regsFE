@@ -3,7 +3,12 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Post from './Post';
 
 
-const PostView = ({style}) => {
+const PostView = ({style, posts = []}) => {
+
+    const postsToRender = posts.length > 0 ? posts : [];
+
+    
+
     return (
         <View style={[styles.container, style]}>
             <View style={styles.scrollViewContainer}>
@@ -11,9 +16,17 @@ const PostView = ({style}) => {
                 contentContainerStyle={styles.scrollViewContent}
                 showsVerticalScrollIndicator={true}
                 nestedScrollEnabled={true}>
-                    <Post type="text" position="left" text="This is an example of a text post. It's a bit longer than the others, but it's still readable." imageURL="" senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
-                    <Post type="image" position="right" text="" imageURL={'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg'} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
-                    <Post type="mixed" position="left" text="This is an example of a mixed post. It's a bit longer than the others, but it's still readable." imageURL={'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg'} senderName="Shyam" commentText="Hello, when did you get that? It's soo cool!" />
+                    {postsToRender.map((post) => (
+                        <Post 
+                            key={post.id}
+                            type={post.type} 
+                            position={post.position} 
+                            text={post.text} 
+                            imageURL={post.imageURL} 
+                            senderName={post.senderName} 
+                            commentText={post.commentText} 
+                        />
+                    ))}
                 </ScrollView>
             </View>
         </View>
@@ -22,14 +35,10 @@ const PostView = ({style}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginVertical: 10,
         width: '100%',
         alignItems: 'center',
         position: 'relative',
-        paddingVertical: 10,
         paddingHorizontal: 10,
-        borderWidth: 1,
     },
     scrollViewContainer: {
         width: '100%',
@@ -37,10 +46,9 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         width: '100%',
-        flex: 1,
     },
     scrollViewContent: {
-        flexGrow: 1,
+        flex: 1,
     },
 });
     export default PostView;

@@ -322,6 +322,36 @@ const clashItems = [
   { userID: '4', content: 'John Doe cannot do the dishes' },
 ];
 
+const posts = [
+  {
+      id: 1,
+      type: "text", 
+      position: "left", 
+      text: "This is an example of a text post. It's a bit longer than the others, but it's still readable.", 
+      imageURL: "", 
+      senderName: "Shyam", 
+      commentText: "Hello, when did you get that? It's soo cool!"
+  },
+  {
+      id: 2,
+      type: "image", 
+      position: "right", 
+      text: "", 
+      imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg', 
+      senderName: "Shyam", 
+      commentText: "Hello, when did you get that? It's soo cool!"
+  },
+  {
+      id: 3,
+      type: "mixed", 
+      position: "left", 
+      text: "This is an example of a mixed post. It's a bit longer than the others, but it's still readable.", 
+      imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg', 
+      senderName: "Shyam", 
+      commentText: "Hello, when did you get that? It's soo cool!"
+  }
+];
+
 const HomeScreen = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('plans');

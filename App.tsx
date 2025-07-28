@@ -14,6 +14,7 @@ import GroupMeetups from './src/screens/GroupMeetups.jsx';
 import AllMeetups from './src/screens/AllMeetups.jsx';
 import DailyChallengeCreating from './src/screens/DailyChallengeCreating.jsx';
 import DailyChallengeView from './src/screens/DailyChallengeView.jsx';
+import DailyChallengeEvidence from './src/screens/DailyChallengeEvidence.jsx';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ function App(): React.JSX.Element {
           component={HomeScreen}
           options={{ title: 'Home' }}
         /> */}
+        <Stack.Screen 
+            name="DailyChallengeEvidence"
+            component={DailyChallengeEvidence}
+            options={{ title: 'Daily Challenge Evidence', headerShown: false }}
+          />
         <Stack.Screen 
             name="DailyChallengeView"
             component={DailyChallengeView}

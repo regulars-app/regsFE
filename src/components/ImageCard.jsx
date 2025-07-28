@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-const ImageCard = ({ imageURL, footer, width, height, aspectRatio }) => {
+const ImageCard = ({ imageURL, footer, width, height, aspectRatio, style }) => {
 
   const dynamicStyles = {
     outer: {
@@ -12,7 +12,7 @@ const ImageCard = ({ imageURL, footer, width, height, aspectRatio }) => {
  };
   
   return(
-  <View style={[styles.container, dynamicStyles.outer]}>
+  <View style={[styles.container, dynamicStyles.outer, style]}>
     <Image source={{ uri: imageURL }} style={styles.image} />
     {footer && (
       <View style={styles.footerContainer}>
