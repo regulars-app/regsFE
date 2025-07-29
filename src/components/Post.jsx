@@ -14,7 +14,7 @@ import ReplySymbol from './ReplySymbol';
 // Can be given senderName: string
 // Can be given commentText: string
 
-const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
+const Post = ( {type, position, imageURL, text, senderName, commentText, onPostAction} ) => {
   const dynamicStyle = {
     container: {
       alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
@@ -39,7 +39,7 @@ const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
     <View style={styles.postBodyWrapper}>
       <ProfilePic size={60} footer="Ralphie" style={[styles.profilePic, dynamicStyle.profilePic]} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
       <View style={styles.replyAreaContainer}>
-        {position === 'right' && <TouchableOpacity><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
+        {position === 'right' && <TouchableOpacity onPress={() => onPostAction?.('comment', { type, position, imageURL, text, senderName, commentText })}><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
         <GlassCard style={styles.postBody}>
           {type === 'image' ? (
             <Image source={{ uri: imageURL }} style={styles.postImage} />
@@ -56,16 +56,18 @@ const Post = ( {type, position, imageURL, text, senderName, commentText} ) => {
             </View>
           ) : null}
         </GlassCard>
-        {position === 'left' && <TouchableOpacity><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
+        {position === 'left' && <TouchableOpacity onPress={() => onPostAction?.('comment', { type, position, imageURL, text, senderName, commentText })}><ReplySymbol size={25} style={[styles.replySymbol, dynamicStyle.replySymbol]}/></TouchableOpacity>}
       </View>
       <View style={styles.postFooter}>
         <View style={styles.postFooterButtons}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
             <SaveSymbol size={25} />
           </TouchableOpacity>
-          <CommentButton numComments={3} />
+          <TouchableOpacity onPress={() => onPostAction?.('comment', { type, position, imageURL, text, senderName, commentText })}>
+            <CommentButton numComments={3} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.postFooterText}>
+        <TouchableOpacity style={styles.postFooterText} onPress={() => onPostAction?.('comment', { type, position, imageURL, text, senderName, commentText })}>
           <Text style={styles.senderName}>{senderName}</Text>
           <Text style={styles.commentText} numberOfLines={1} ellipsizeMode="tail">{commentText}</Text>
         </TouchableOpacity>

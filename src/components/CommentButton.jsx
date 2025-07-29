@@ -1,13 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
+import { View, StyleSheet, Text} from 'react-native';
 import ChatSymbol from './ChatSymbol';
 
 const CommentButton = ({numComments}) => {
   return (
-    <TouchableOpacity style={styles.button}>
+    <View style={styles.button}>
       <ChatSymbol size={25} />
       <Text style={styles.buttonText}>{numComments}</Text>
-    </TouchableOpacity>
+    </View>
   );
 };
 

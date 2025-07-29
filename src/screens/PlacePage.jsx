@@ -120,7 +120,7 @@ const PlacePage = () => {
         maxHeight: 90,
       },
       photoStack: {
-        marginTop: 10,
+        marginTop: 20,
       },
       profileListCard: {
         width: '90%',

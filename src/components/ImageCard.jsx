@@ -25,7 +25,6 @@ const ImageCard = ({ imageURL, footer, width, height, aspectRatio, style }) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 20,
-    margin: 10,
     alignSelf: 'center',
     overflow: 'visible',
   },

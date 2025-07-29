@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Post from './Post';
 
 
-const PostView = ({style, posts = []}) => {
+const PostView = ({style, posts = [], onPostAction}) => {
 
     const postsToRender = posts.length > 0 ? posts : [];
 
@@ -25,6 +25,7 @@ const PostView = ({style, posts = []}) => {
                             imageURL={post.imageURL} 
                             senderName={post.senderName} 
                             commentText={post.commentText} 
+                            onPostAction={onPostAction}
                         />
                     ))}
                 </ScrollView>
@@ -46,9 +47,6 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         width: '100%',
-    },
-    scrollViewContent: {
-        flex: 1,
     },
 });
     export default PostView;

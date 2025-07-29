@@ -11,13 +11,14 @@ import DailyChallengeEvidencePopup from '../popups/DailyChallengeEvidencePopup';
 const DailyChallengeEvidence = () => {
 
     const [showPopup, setShowPopup] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
 
     const posts = [
         {
             id: 1,
             type: "text", 
             position: "left", 
-            text: "This is an example of a text post. It's a bit longer than the others, but it's still readable.", 
+            text: "This is an example of a text post. It's a bit longer than the others, but it's still readable.This is an example of a text post. It's a bit longer than the others, but it's still readable.", 
             imageURL: "", 
             senderName: "Shyam", 
             commentText: "Hello, when did you get that? It's soo cool!"
@@ -36,7 +37,7 @@ const DailyChallengeEvidence = () => {
             type: "mixed", 
             position: "left", 
             text: "This is an example of a mixed post. It's a bit longer than the others, but it's still readable.", 
-            imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg', 
+            imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg', 
             senderName: "Shyam", 
             commentText: "Hello, when did you get that? It's soo cool!"
         }
@@ -75,24 +76,30 @@ const DailyChallengeEvidence = () => {
         },
       ];
 
+  const handlePostAction = (action, postData) => {
+    setSelectedPost(postData);
+    setShowPopup(true);
+  };
+
   return (
     <View style={styles.container}>
       <Popup showPopup={showPopup} onClose={() => setShowPopup(false)}>
         <DailyChallengeEvidencePopup 
           onClose={() => setShowPopup(false)}
           onSubmit={() => {}}
-          imageURL="https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg"
-          footer="This is a footer"
+          imageURL={selectedPost?.imageURL || ""}
           width={'100%'}
           aspectRatio={1.2}
           messages={messagesSubDemoData}
+          text={selectedPost?.text || ""}
+          onPostAction={handlePostAction}
         />
       </Popup>
       <View style={styles.header}>
         <BackButton size={30} style={styles.backButton} />
       </View>
       <View style={styles.bodyContent}>
-        <PostView posts={posts} style={styles.postView} />
+        <PostView posts={posts} style={styles.postView} onPostAction={handlePostAction} />
       </View>
       <View style={styles.footer}>
         <GroupNav style={styles.groupNav}/>
