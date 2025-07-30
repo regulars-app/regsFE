@@ -25,7 +25,7 @@ const NewMeetupChooseActivity = () => {
           <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
         </View>
         <View style={styles.bodyContent}>
-            <ItemSelector />
+            <ItemSelector selectable={true} clickableOnly={false}/>
             <ClashView clashItems={clashItems} style={styles.clashView}/>
         </View>
         <View style={styles.footer}>

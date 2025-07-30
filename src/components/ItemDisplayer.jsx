@@ -6,8 +6,8 @@ import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 import DeleteSymbol from './DeleteSymbol';
 
-const ItemDisplayer = ({style, title, viewOnly = false, subjectActivities = [], subjectDietaryPreferences = []}) => {
-    const [activities, setActivities] = useState([
+const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivities = [], subjectDietaryPreferences = []}) => {
+    const [testActivities, setTestActivities] = useState([
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
         { text: "Cooking", color: "green", type: "activity" },
@@ -56,6 +56,7 @@ const ItemDisplayer = ({style, title, viewOnly = false, subjectActivities = [], 
         { text: "Paragliding", color: "red", type: "activity" },
         { text: "White Water Rafting", color: "red", type: "activity" },
     ]);
+    const [activities, setActivities] = useState(test ? testActivities : subjectActivities);
     const [selectedIdx, setSelectedIdx] = useState(null);
     const [dropdownOpenIdx, setDropdownOpenIdx] = useState(null);
 
@@ -70,7 +71,11 @@ const ItemDisplayer = ({style, title, viewOnly = false, subjectActivities = [], 
     };
 
     const handleColorChange = (index, color) => {
-        setActivities(prev => prev.map((item, i) => i === index ? { ...item, color } : item));
+        if (test) {
+            setTestActivities(prev => prev.map((item, i) => i === index ? { ...item, color } : item));
+        } else {
+            setActivities(prev => prev.map((item, i) => i === index ? { ...item, color } : item));
+        }
         setDropdownOpenIdx(null);
         setSelectedIdx(null);
     };

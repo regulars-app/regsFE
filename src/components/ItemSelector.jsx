@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 
-const ItemSelector = ({style}) => {
+const ItemSelector = ({style, selectable=false, clickableOnly=false}) => {
     const activities = [
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
@@ -81,8 +81,10 @@ const ItemSelector = ({style}) => {
                             <TouchableOpacity key={index} onPress={() => handleToggle(index)} activeOpacity={0.7}>
                                 <PreferenceItem
                                     text={activity.text}
-                                    color={activity.color}
+                                    color={'white'}
                                     type={activity.type}
+                                    selectable={selectable}
+                                    clickableOnly={clickableOnly}
                                     isSelected={selected[index]}
                                 />
                             </TouchableOpacity>

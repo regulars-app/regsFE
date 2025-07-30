@@ -8,10 +8,18 @@ const DRAG_CLOSE_THRESHOLD = SCREEN_HEIGHT * 0.15;
 const Popup = ({ showPopup, style, onClose, children }) => {
     const translateY = useRef(new Animated.Value(0)).current;
 
-    // Reset translateY when popup is true
+    // Reset translateY when popup is true and animate opening
     useEffect(() => {
         if (showPopup) {
-            translateY.setValue(0);
+            // Start from bottom of screen
+            translateY.setValue(SCREEN_HEIGHT);
+            // Animate to top
+            Animated.spring(translateY, {
+                toValue: 0,
+                useNativeDriver: true,
+                tension: 50,
+                friction: 8,
+            }).start();
         }
     }, [showPopup]);
 

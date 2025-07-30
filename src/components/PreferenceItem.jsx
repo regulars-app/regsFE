@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const PreferenceItem = ({ style, text, color, type, isSelected, showCheckmark = true }) => {
+const PreferenceItem = ({ style, text, color, type, isSelected, showCheckmark = true, selectable = false, clickableOnly = false, onPress }) => {
     const dynamicStyle = {
         container: {
             backgroundColor: color === 'green' ? '#ECF5E1' : color === 'yellow' ? '#FFF7D5' : color === 'red' ? '#FAD2D1' : '#ffffff',
@@ -10,10 +10,10 @@ const PreferenceItem = ({ style, text, color, type, isSelected, showCheckmark = 
         },
     };
 
-    return (
+    const content = (
         <View style={[styles.container, dynamicStyle.container, style]}>
             <Text style={styles.text} ellipsizeMode="tail" numberOfLines={1}>{text}</Text>
-            {isSelected && (
+            {isSelected && selectable && (
                 <>
                     <View style={styles.overlay} />
                     {showCheckmark && (
@@ -25,6 +25,16 @@ const PreferenceItem = ({ style, text, color, type, isSelected, showCheckmark = 
             )}
         </View>
     );
+
+    if (clickableOnly) {
+        return (
+            <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+                {content}
+            </TouchableOpacity>
+        );
+    }
+
+    return content;
 };
 
 const styles = StyleSheet.create({

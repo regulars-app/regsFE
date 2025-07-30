@@ -15,6 +15,9 @@ import AllMeetups from './src/screens/AllMeetups.jsx';
 import DailyChallengeCreating from './src/screens/DailyChallengeCreating.jsx';
 import DailyChallengeView from './src/screens/DailyChallengeView.jsx';
 import DailyChallengeEvidence from './src/screens/DailyChallengeEvidence.jsx';
+import DailyDiaryPosting from './src/screens/DailyDiaryPosting.jsx';
+import DailyDiaryReceived from './src/screens/DailyDiaryReceived.jsx';
+import EditDietaryPreferences from './src/screens/EditDietaryPreferences.jsx';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,21 @@ function App(): React.JSX.Element {
           component={HomeScreen}
           options={{ title: 'Home' }}
         /> */}
+        <Stack.Screen 
+            name="EditDietaryPreferences"
+            component={EditDietaryPreferences}
+            options={{ title: 'Edit Dietary Preferences', headerShown: false }}
+          />
+        <Stack.Screen 
+            name="DailyDiaryReceived"
+            component={DailyDiaryReceived}
+            options={{ title: 'Daily Diary Received', headerShown: false }}
+          />
+        <Stack.Screen 
+            name="DailyDiaryPosting"
+            component={DailyDiaryPosting}
+            options={{ title: 'Daily Diary Posting', headerShown: false }}
+          />
         <Stack.Screen 
             name="DailyChallengeEvidence"
             component={DailyChallengeEvidence}
