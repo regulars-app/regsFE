@@ -18,6 +18,8 @@ import DailyChallengeEvidence from './src/screens/DailyChallengeEvidence.jsx';
 import DailyDiaryPosting from './src/screens/DailyDiaryPosting.jsx';
 import DailyDiaryReceived from './src/screens/DailyDiaryReceived.jsx';
 import EditDietaryPreferences from './src/screens/EditDietaryPreferences.jsx';
+import EditInterestPreferences from './src/screens/EditInterestPreferences.jsx';
+import Profile from './src/screens/Profile.jsx';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +32,17 @@ function App(): React.JSX.Element {
           component={HomeScreen}
           options={{ title: 'Home' }}
         /> */}
+        <Stack.Screen 
+            name="Profile"
+            options={{ title: 'Profile', headerShown: false }}
+          >
+            {() => <Profile name="John Doe" username="john_doe" />}
+          </Stack.Screen>
+        <Stack.Screen 
+            name="EditInterestPreferences"
+            component={EditInterestPreferences}
+            options={{ title: 'Edit Interest Preferences', headerShown: false }}
+          />
         <Stack.Screen 
             name="EditDietaryPreferences"
             component={EditDietaryPreferences}

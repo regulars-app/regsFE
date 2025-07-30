@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import GlassCard from './GlassCard';
 import SearchBar from './SearchBar';
 import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 
-const ItemSelector = ({style, selectable=false, clickableOnly=false}) => {
-    const activities = [
+const ItemSelector = ({style, selectable=false, onSelectionChange, onItemReturned, itemType="activity"}) => {
+    // List of available activities that can be selected
+    const [availableActivities, setAvailableActivities] = useState([
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
         { text: "Cooking", color: "green", type: "activity" },
@@ -37,34 +38,87 @@ const ItemSelector = ({style, selectable=false, clickableOnly=false}) => {
         { text: "Bungee Jumping", color: "red", type: "activity" },
         { text: "Paragliding", color: "red", type: "activity" },
         { text: "White Water Rafting", color: "red", type: "activity" },
-        { text: "Movie Night", color: "yellow", type: "activity" },
-        { text: "Coding", color: "yellow", type: "activity" },
-        { text: "Karaoke", color: "yellow", type: "activity" },
-        { text: "Potluck", color: "yellow", type: "activity" },
-        { text: "Picnic", color: "yellow", type: "activity" },
-        { text: "Bowling", color: "yellow", type: "activity" },
-        { text: "Tennis", color: "yellow", type: "activity" },
-        { text: "Escape Room", color: "red", type: "activity" },
-        { text: "Paintball", color: "red", type: "activity" },
-        { text: "Skydiving", color: "red", type: "activity" },
-        { text: "Surfing", color: "red", type: "activity" },
-        { text: "Rock Climbing", color: "red", type: "activity" },
-        { text: "Skiing", color: "red", type: "activity" },
-        { text: "Scuba Diving", color: "red", type: "activity" },
-        { text: "Bungee Jumping", color: "red", type: "activity" },
-        { text: "Paragliding", color: "red", type: "activity" },
-        { text: "White Water Rafting", color: "red", type: "activity" },
-    ];
+    ]);
 
-    const [selected, setSelected] = useState(Array(activities.length).fill(false));
+    // List of available dietary preferences
+    const [availableDietary, setAvailableDietary] = useState([
+        { text: "Vegetarian", color: "green", type: "dietary" },
+        { text: "Vegan", color: "green", type: "dietary" },
+        { text: "Gluten-Free", color: "green", type: "dietary" },
+        { text: "Dairy-Free", color: "green", type: "dietary" },
+        { text: "Nut-Free", color: "green", type: "dietary" },
+        { text: "Halal", color: "yellow", type: "dietary" },
+        { text: "Kosher", color: "yellow", type: "dietary" },
+        { text: "Low-Carb", color: "yellow", type: "dietary" },
+        { text: "Keto", color: "yellow", type: "dietary" },
+        { text: "Paleo", color: "yellow", type: "dietary" },
+        { text: "Pescatarian", color: "yellow", type: "dietary" },
+        { text: "Raw Food", color: "red", type: "dietary" },
+        { text: "Fruitarian", color: "red", type: "dietary" },
+        { text: "Liquid Diet", color: "red", type: "dietary" },
+        { text: "Intermittent Fasting", color: "red", type: "dietary" },
+    ]);
 
+    // Track which items are selected (for selection mode)
+    const [selectedItems, setSelectedItems] = useState(
+        Array(itemType === "dietary" ? availableDietary.length : availableActivities.length).fill(false)
+    );
+
+    /**
+     * Handle when an item is selected from the list
+     * In transfer mode: removes item and sends to parent
+     * In selection mode: toggles selection state
+     */
     const handleToggle = (index) => {
-        setSelected(prev => {
-            const updated = [...prev];
-            updated[index] = !updated[index];
-            return updated;
-        });
+        if (selectable) {
+            // Selection mode - toggle selection state
+            setSelectedItems(prev => {
+                const updated = [...prev];
+                updated[index] = !updated[index];
+                return updated;
+            });
+        } else {
+            // Transfer mode - remove item and send to parent
+            const currentList = itemType === "dietary" ? availableDietary : availableActivities;
+            const selectedItem = currentList[index];
+            
+            // Remove the selected item from available list
+            if (itemType === "dietary") {
+                setAvailableDietary(prev => prev.filter((_, i) => i !== index));
+            } else {
+                setAvailableActivities(prev => prev.filter((_, i) => i !== index));
+            }
+            
+            // Notify parent component about the selection
+            if (onSelectionChange) {
+                onSelectionChange(selectedItem);
+            }
+        }
     };
+
+    /**
+     * Function to add an item back to the available list
+     * Called when an item is deleted from the ItemDisplayer
+     */
+    const addItemBack = (item) => {
+        // Safety check for item
+        if (!item || !item.text) {
+            return;
+        }
+        
+        if (itemType === "dietary") {
+            setAvailableDietary(prev => [...prev, item]);
+        } else {
+            setAvailableActivities(prev => [...prev, item]);
+        }
+    };
+
+    // Set up the callback for returning items when component mounts
+    React.useEffect(() => {
+        if (onItemReturned) {
+            onItemReturned(addItemBack);
+        }
+    }, [onItemReturned]);
 
     return (
         <GlassCard style={[styles.glassCard, style]}>
@@ -77,17 +131,17 @@ const ItemSelector = ({style, selectable=false, clickableOnly=false}) => {
                         style={styles.itemListContainer}
                         nestedScrollEnabled={true}
                     >
-                        {activities.map((activity, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleToggle(index)} activeOpacity={0.7}>
-                                <PreferenceItem
-                                    text={activity.text}
-                                    color={'white'}
-                                    type={activity.type}
-                                    selectable={selectable}
-                                    clickableOnly={clickableOnly}
-                                    isSelected={selected[index]}
-                                />
-                            </TouchableOpacity>
+                        {(itemType === "dietary" ? availableDietary : availableActivities).map((item, index) => (
+                            <PreferenceItem
+                                key={index}
+                                text={item.text}
+                                color={'white'}
+                                type={item.type}
+                                selectable={selectable}
+                                clickableOnly={true}
+                                onPress={() => handleToggle(index)}
+                                isSelected={selectable ? selectedItems[index] : false}
+                            />
                         ))}
                     </ScrollView>
                 </View>

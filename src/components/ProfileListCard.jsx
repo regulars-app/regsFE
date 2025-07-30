@@ -29,6 +29,7 @@ const ProfileListCard = ({
   const dynamicStyles = {
     scrollView: {
       height: title ? style.height - 80 : style.height - 10, 
+      marginRight: showButton ? 40 : 0,
     },
   };
 

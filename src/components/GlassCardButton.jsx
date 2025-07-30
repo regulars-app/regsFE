@@ -11,7 +11,7 @@ import InterestsSymbol from './InterestsSymbol';
 const GlassCardButton = ({style, type, text}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
-            <TouchableOpacity>
+            <View>
             {type === 'activity' && <View style={styles.container}>
                 <Text style={styles.text}>{text}</Text>
                 <ActivitySymbol size={20} />
@@ -36,7 +36,7 @@ const GlassCardButton = ({style, type, text}) => {
                 <Text style={styles.text}>{text}</Text>
                 <InterestsSymbol size={20} />
             </View>}
-            </TouchableOpacity>
+            </View>
         </GlassCard>
     );
 };

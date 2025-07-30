@@ -6,7 +6,8 @@ import PreferenceItem from './PreferenceItem';
 import AddButton from './AddButton';
 import DeleteSymbol from './DeleteSymbol';
 
-const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivities = [], subjectDietaryPreferences = []}) => {
+const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivities = [], subjectDietaryPreferences = [], onItemDeleted}) => {
+    // Test data for when test prop is true
     const [testActivities, setTestActivities] = useState([
         { text: "Hiking", color: "green", type: "activity" },
         { text: "Yoga", color: "green", type: "activity" },
@@ -56,10 +57,21 @@ const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivi
         { text: "Paragliding", color: "red", type: "activity" },
         { text: "White Water Rafting", color: "red", type: "activity" },
     ]);
+    // Activities to display - either test data or prop data
     const [activities, setActivities] = useState(test ? testActivities : subjectActivities);
+    
+    // Update activities when subjectActivities prop changes
+    React.useEffect(() => {
+        if (!test) {
+            setActivities(subjectActivities);
+        }
+    }, [subjectActivities, test]);
     const [selectedIdx, setSelectedIdx] = useState(null);
     const [dropdownOpenIdx, setDropdownOpenIdx] = useState(null);
 
+    /**
+     * Handle toggling the dropdown for an item
+     */
     const handleToggle = (index) => {
         if (selectedIdx === index) {
             setSelectedIdx(null);
@@ -70,6 +82,9 @@ const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivi
         }
     };
 
+    /**
+     * Handle changing the color of an item
+     */
     const handleColorChange = (index, color) => {
         if (test) {
             setTestActivities(prev => prev.map((item, i) => i === index ? { ...item, color } : item));
@@ -80,13 +95,26 @@ const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivi
         setSelectedIdx(null);
     };
 
+    /**
+     * Handle deleting an item
+     * Removes the item from the list and notifies parent component
+     */
     const handleDelete = (index) => {
+        const deletedItem = activities[index];
+        
         setActivities(prev => prev.filter((_, i) => i !== index));
         setDropdownOpenIdx(null);
         setSelectedIdx(null);
+        
+        // Notify parent component about the deletion
+        if (onItemDeleted) {
+            onItemDeleted(deletedItem);
+        }
     };
 
-    // Add a closeDropdown function for convenience
+    /**
+     * Close the currently open dropdown
+     */
     const closeDropdown = () => {
         setDropdownOpenIdx(null);
         setSelectedIdx(null);
@@ -103,40 +131,47 @@ const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivi
                         style={styles.itemListContainer}
                         nestedScrollEnabled={true}
                     >
-                        {activities.map((activity, index) => (
+                        {activities.map((activity, index) => {
+                            // Safety check for activity object
+                            if (!activity || typeof activity !== 'object') {
+                                return null;
+                            }
+                            
+                            return (
                             <View key={index} style={{ position: 'relative', display: 'flex' }}>
                                 {viewOnly ? (
                                     <PreferenceItem
-                                        text={activity.text}
-                                        color={activity.color}
-                                        type={activity.type}
+                                        text={activity.text || 'Unknown'}
+                                        color={activity.color || 'white'}
+                                        type={activity.type || 'activity'}
                                         isSelected={false}
                                         showCheckmark={false}
                                     />
                                 ) : (
                                     <>
-                                        <TouchableOpacity onPress={() => handleToggle(index)} activeOpacity={0.7}>
-                                            <PreferenceItem
-                                                text={activity.text}
-                                                color={activity.color}
-                                                type={activity.type}
-                                                isSelected={selectedIdx === index}
-                                                showCheckmark={false}
-                                            />
-                                        </TouchableOpacity>
+                                                                            <TouchableOpacity onPress={() => handleToggle(index)} activeOpacity={0.7}>
+                                        <PreferenceItem
+                                            text={activity.text || 'Unknown'}
+                                            color={activity.color || 'white'}
+                                            type={activity.type || 'activity'}
+                                            isSelected={selectedIdx === index}
+                                            showCheckmark={false}
+                                        />
+                                    </TouchableOpacity>
                                         {dropdownOpenIdx === index && (
                                             <DropdownMenu
                                                 onColorChange={color => handleColorChange(index, color)}
                                                 onDelete={() => handleDelete(index)}
-                                                currentColor={activity.color}
-                                                selectedText={activity.text}
+                                                currentColor={activity.color || 'white'}
+                                                selectedText={activity.text || 'Unknown'}
                                                 onClose={closeDropdown}
                                             />
                                         )}
                                     </>
                                 )}
                             </View>
-                        ))}
+                        );
+                        })}
                     </ScrollView>
                 </View>
             </View>
@@ -145,6 +180,11 @@ const ItemDisplayer = ({style, test=true, title, viewOnly = false, subjectActivi
 };
 
 const DropdownMenu = ({ onColorChange, onDelete, currentColor, selectedText, onClose }) => {
+    // Safety checks for props
+    if (!selectedText || !currentColor) {
+        return null;
+    }
+    
     // Define the color options
     const colorOptions = [
         { color: 'green', bg: '#ECF5E1', border: '#B6E799' },

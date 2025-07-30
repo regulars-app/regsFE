@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ConfirmSymbol from './ConfirmSymbol';
 
 const PreferenceItem = ({ style, text, color, type, isSelected, showCheckmark = true, selectable = false, clickableOnly = false, onPress }) => {
+    // Safety check for text prop
+    if (!text) {
+        console.warn('PreferenceItem: text prop is null or undefined');
+        return null;
+    }
     const dynamicStyle = {
         container: {
             backgroundColor: color === 'green' ? '#ECF5E1' : color === 'yellow' ? '#FFF7D5' : color === 'red' ? '#FAD2D1' : '#ffffff',

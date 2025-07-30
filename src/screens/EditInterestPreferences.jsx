@@ -5,7 +5,7 @@ import MainButton from '../components/MainButton';
 import ItemSelector from '../components/ItemSelector';
 import ItemDisplayer from '../components/ItemDisplayer';
 
-const EditDietaryPreferences = () => {
+const EditInterestPreferences = () => {
     // State to track items selected from the ItemSelector
     const [selectedItems, setSelectedItems] = useState([]);
     
@@ -54,18 +54,18 @@ const EditDietaryPreferences = () => {
         <View style={styles.bodyContent}>
             <ItemSelector 
                 selectable={false} 
-                itemType="dietary"
-                style={styles.dietarySelector}
+                itemType="activity"
+                style={styles.interestSelector}
                 onSelectionChange={handleSelectionChange}
                 onItemReturned={setAddItemBackToSelectorCallback}
             />
             <ItemDisplayer 
-                title={`My Dietary Preferences`} 
+                title={`My Interests`} 
                 viewOnly={false} 
                 test={false} 
                 subjectActivities={selectedItems}
                 onItemDeleted={handleItemDeleted}
-                style={styles.dietaryDisplayer} 
+                style={styles.interestDisplayer} 
             />
         </View>
         <View style={styles.footer}>
@@ -108,10 +108,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         },
-        dietarySelector: {
+        interestSelector: {
             marginTop: 20,
         },
-        dietaryDisplayer: {
+        interestDisplayer: {
             marginTop: 20,
             height: 200,
         },
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
         },
 });
 
-export default EditDietaryPreferences;
+export default EditInterestPreferences;
