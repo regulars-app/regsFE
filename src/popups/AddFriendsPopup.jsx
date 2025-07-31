@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import IncommingFriendRequestView from '../components/IncommingFriendRequestView';
+import AddFriendsView from '../components/AddFriendsView';
 
 const AddFriendsPopup = ({onClose}) => {
 
@@ -9,12 +10,34 @@ const AddFriendsPopup = ({onClose}) => {
         { name: 'John Doe' },
         { name: 'Jane Doe' },
         { name: 'Jim Doe' },
+        { name: 'John Doe' },
+        { name: 'Jane Doe' },
+        { name: 'Jim Doe' },
+        { name: 'John Doe' },
+        { name: 'Jane Doe' },
+        { name: 'Jim Doe' },
+        { name: 'John Doe' },
+        { name: 'Jane Doe' },
+        { name: 'Jim Doe' },
       ];
+
+    const potentialFriends = [
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+    { name: 'John Doe' },
+    { name: 'Jane Doe' },
+    { name: 'Jim Doe' },
+];
 
     return (
         <View style={styles.container}>
             <SearchBar style={styles.searchBar}/>
-            <IncommingFriendRequestView height={200} requests={requests} style={styles.incommingFriendRequestView}/>
+            <IncommingFriendRequestView height={250} requests={requests} style={styles.incommingFriendRequestView}/>
+            <AddFriendsView height={400} potentialFriends={potentialFriends} style={styles.addFriendsView}/>
         </View>
     );
 };
@@ -31,6 +54,12 @@ const styles = StyleSheet.create({
     },
     incommingFriendRequestView: {
         marginTop: 20,
+        minWidth: '95%',
+    },
+    addFriendsView: {
+        marginTop: 20,
+        marginBottom: 30,
+        minWidth: '95%',
     },
 });
 

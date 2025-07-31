@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, PanResponder, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Animated, PanResponder, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import GlassCard from './GlassCard';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const DRAG_CLOSE_THRESHOLD = SCREEN_HEIGHT * 0.15;
 
-const Popup = ({ showPopup, style, onClose, children }) => {
+const Popup = ({ showPopup, style, onClose, children, isScrolling = false }) => {
     const translateY = useRef(new Animated.Value(0)).current;
 
     // Reset translateY when popup is true and animate opening
@@ -25,10 +25,8 @@ const Popup = ({ showPopup, style, onClose, children }) => {
 
     const panResponder = useRef(
         PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gestureState) => {
-                // Only vertical drags
-                return Math.abs(gestureState.dy) > 10;
-            },
+            onStartShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: () => false,
             onPanResponderMove: (_, gestureState) => {
                 if (gestureState.dy > 0) {
                     translateY.setValue(gestureState.dy);
@@ -55,29 +53,55 @@ const Popup = ({ showPopup, style, onClose, children }) => {
 
     if (!showPopup) return null;
     return (
-        <Animated.View
-            style={[{ transform: [{ translateY }] }, styles.animatedWrapper, style]}
-            {...panResponder.panHandlers}
-        >
-            <GlassCard style={styles.popup}>
-                <View style={styles.pillContainer}>
-                    <View style={styles.pill} />
-                </View>
-                <View style={styles.popupContainer}>
-                    {children ? children : <Text>Popup Placeholder</Text>}
-                </View>
-            </GlassCard>
-        </Animated.View>
+        <View style={styles.backdrop}>
+            <TouchableWithoutFeedback onPress={() => {
+                Animated.timing(translateY, {
+                    toValue: SCREEN_HEIGHT,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start(() => {
+                    if (onClose) onClose();
+                });
+            }}>
+                <View style={styles.backdropTouchable} />
+            </TouchableWithoutFeedback>
+            <Animated.View
+                style={[{ transform: [{ translateY }] }, styles.animatedWrapper, style]}
+            >
+                <GlassCard style={styles.popup}>
+                    <View style={styles.dragHandle} {...panResponder.panHandlers}>
+                        <View style={styles.pillContainer}>
+                            <View style={styles.pill} />
+                        </View>
+                    </View>
+                    <View style={styles.popupContainer}>
+                        {children ? children : <Text>Popup Placeholder</Text>}
+                    </View>
+                </GlassCard>
+            </Animated.View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    backdrop: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 1000,
+    },
+    backdropTouchable: {
+        flex: 1,
+    },
     animatedWrapper: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        zIndex: 1000,
+        zIndex: 1001,
         minHeight: '50%',
     },
     popup: {
@@ -91,6 +115,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    dragHandle: {
+        height: 50,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     pillContainer: {
         alignItems: 'center',
         marginBottom: 10,
@@ -100,11 +130,10 @@ const styles = StyleSheet.create({
         width: 50,
         height: 6,
         borderRadius: 3,
-        backgroundColor: '#ccc',
+        backgroundColor: '#6E6E6E',
     },
     popupContainer: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
     },
 });

@@ -13,6 +13,7 @@ const ProfileListCard = ({
   title,
   type,
   onPress, // for clickable card
+  scrollEnabled = true,
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -43,6 +44,7 @@ const ProfileListCard = ({
  
           <ScrollView
             nestedScrollEnabled={true}
+            scrollEnabled={scrollEnabled}
             style={[styles.scrollView, dynamicStyles.scrollView]}
             contentContainerStyle={styles.scrollViewContent}
           >

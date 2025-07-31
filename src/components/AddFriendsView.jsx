@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
 import AddFriendItem from './AddFriendItem';
 
-const AddFriendsView = ({height, potentialFriends}) => {
+const AddFriendsView = ({height, potentialFriends, style}) => {
     const [requestedFriends, setRequestedFriends] = useState({});
 
     const handleToggleRequest = (index) => {
@@ -19,7 +19,7 @@ const AddFriendsView = ({height, potentialFriends}) => {
         },
     };
     return (
-        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard]}>
+        <GlassCard style={[style, styles.glassCard, dynamicStyles.glassCard]}>
             <View style={styles.container}>
                 <Text style={styles.title}>Add Friends View</Text>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>

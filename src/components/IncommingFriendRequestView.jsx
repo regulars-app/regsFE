@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
 import AcceptFriendItem from './AcceptFriendItem';
 
-const IncommingFriendRequestView = ({height, requests}) => {
+const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = true}) => {
 
     const dynamicStyles = {
         glassCard: {
@@ -11,10 +11,17 @@ const IncommingFriendRequestView = ({height, requests}) => {
         },
     };
     return (
-        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard]}>
+        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard, style]}>
             <View style={styles.container}>
-                <Text style={styles.title}>Incomming Friend Request View</Text>
-                <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>
+                <Text style={styles.title}>Incomming Friend Requests</Text>
+                <ScrollView 
+                    style={styles.scrollView} 
+                    contentContainerStyle={styles.scrollViewContent} 
+                    nestedScrollEnabled={true}
+                    scrollEnabled={scrollEnabled}
+                    showsVerticalScrollIndicator={true}
+                    bounces={false}
+                >
                     {requests.map((request, index) => (
                         <AcceptFriendItem key={index} name={request.name}/>
                     ))}
@@ -26,7 +33,7 @@ const IncommingFriendRequestView = ({height, requests}) => {
 
 const styles = StyleSheet.create({
     glassCard: {
-        width: '90%',
+        minWidth: '90%',
     },
     container: {
         alignItems: 'center',

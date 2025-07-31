@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
 import SettingsItem from './SettingsItem';
 
-const SettingsView = ({height, settings}) => {
+const SettingsView = ({height, settings, style}) => {
 
     const dynamicStyles = {
         glassCard: {
@@ -11,7 +11,7 @@ const SettingsView = ({height, settings}) => {
         },
     };
     return (
-        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard]}>
+        <GlassCard style={[style, styles.glassCard, dynamicStyles.glassCard]}>
             <View style={styles.container}>
                 <Text style={styles.title}>Settings View</Text>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>

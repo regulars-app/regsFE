@@ -9,11 +9,14 @@ import ProfileListCard from '../components/ProfileListCard';
 import MapWidget from '../components/MapWidget';
 import Popup from '../components/Popup';
 import AddFriendsPopup from '../popups/AddFriendsPopup';
+import MyFriendsPopup from '../popups/MyFriendsPopup';
+import SettingsPopup from '../popups/SettingsPopup';
 
 const Profile = ({name, username}) => {
 
     const [showAddFriendsPopup, setShowAddFriendsPopup] = useState(false);
     const [showMyFriendsPopup, setShowMyFriendsPopup] = useState(false);
+    const [showSettingsPopup, setShowSettingsPopup] = useState(false);
 
     const members = [
         { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
@@ -46,9 +49,19 @@ const Profile = ({name, username}) => {
               onClose={() => setShowAddFriendsPopup(false)}
             />
           </Popup>
+          <Popup showPopup={showMyFriendsPopup} onClose={() => setShowMyFriendsPopup(false)}>
+            <MyFriendsPopup 
+              onClose={() => setShowMyFriendsPopup(false)}
+            />
+          </Popup>
+          <Popup showPopup={showSettingsPopup} onClose={() => setShowSettingsPopup(false)}>
+            <SettingsPopup 
+              onClose={() => setShowSettingsPopup(false)}
+            />
+          </Popup>
         <View style={styles.header}>
           <BackButton size={30} style={styles.backButton} />
-          <TouchableOpacity style={styles.settingsButton}>
+          <TouchableOpacity onPress={() => setShowSettingsPopup(true)} style={styles.settingsButton}>
             <SettingsSymbol size={30} />
           </TouchableOpacity>
         </View>
@@ -66,20 +79,20 @@ const Profile = ({name, username}) => {
                 </View>
            </View>
            <View style={styles.glassButtonsContainer}>
-                <TouchableOpacity onPress={() => setShowAddFriendsPopup(true)} style={styles.glassButton}>
+                <TouchableOpacity onPress={() => setShowMyFriendsPopup(true)} style={styles.glassButton}>
                     <GlassCardButton type="myFriends" text={"My Friends"}/> 
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setShowPopup(true)} style={styles.glassButton}>
+                <TouchableOpacity onPress={() => setShowAddFriendsPopup(true)} style={styles.glassButton}>
                     <GlassCardButton type="addFriend" text={"Add Friend"}/> 
                 </TouchableOpacity>
             </View>
-            <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard}/>
+            <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup}/>
             <MapWidget width={'90%'} height={200} style={styles.mapWidget} placeSelected={true}/>
             <View style={styles.glassButtonsContainer2}>
-                <TouchableOpacity onPress={() =>  setShowPopup(true)} style={styles.glassButton}>
+                <TouchableOpacity style={styles.glassButton}>
                     <GlassCardButton type="myInterests" text={"My Interests"}/> 
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setShowPopup(true)} style={styles.glassButton}>
+                <TouchableOpacity style={styles.glassButton}>
                     <GlassCardButton type="foodPreferences" text={"Food Preferences"}/> 
                 </TouchableOpacity>
             </View>
@@ -95,6 +108,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFF6F0',
         height: '100%',
+        width: '100%',
         alignItems: 'center',
         position: 'relative',
         paddingTop: 100,
