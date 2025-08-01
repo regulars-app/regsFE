@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/Home.jsx';
+import Test from './src/screens/Test.jsx';
 import UpcomingMeetupDetails from './src/screens/UpcomingMeetupDetails.jsx';
 import UpcomingSurpriseEvent from './src/screens/UpcomingSurpriseEvent.jsx';
 import NewMeetupDetails from './src/screens/NewMeetupDetails.jsx';
@@ -20,6 +20,10 @@ import DailyDiaryReceived from './src/screens/DailyDiaryReceived.jsx';
 import EditDietaryPreferences from './src/screens/EditDietaryPreferences.jsx';
 import EditInterestPreferences from './src/screens/EditInterestPreferences.jsx';
 import Profile from './src/screens/Profile.jsx';
+import Camera from './src/screens/Camera.jsx';
+import Memories from './src/screens/Memories.jsx';
+import Home from './src/screens/Home.jsx';
+import GroupPage from './src/screens/GroupPage.jsx';
 
 const Stack = createStackNavigator();
 
@@ -28,10 +32,25 @@ function App(): React.JSX.Element {
     <NavigationContainer>
       <Stack.Navigator>
         {/* <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
-          options={{ title: 'Home' }}
-        /> */}
+            name="Home" 
+            component={Home}
+            options={{ title: 'Home', headerShown: false }}
+          /> */}
+        <Stack.Screen 
+            name="GroupPage"
+            component={GroupPage}
+            options={{ title: 'Group Page', headerShown: false }}
+          />
+        <Stack.Screen 
+            name="Memories"
+            component={Memories}
+            options={{ title: 'Memories', headerShown: false }}
+          />
+        <Stack.Screen 
+            name="Camera"
+            component={Camera}
+            options={{ title: 'Camera', headerShown: false }}
+          />
         <Stack.Screen 
             name="Profile"
             options={{ title: 'Profile', headerShown: false }}
@@ -57,7 +76,7 @@ function App(): React.JSX.Element {
             name="DailyDiaryPosting"
             component={DailyDiaryPosting}
             options={{ title: 'Daily Diary Posting', headerShown: false }}
-          />
+          />      
         <Stack.Screen 
             name="DailyChallengeEvidence"
             component={DailyChallengeEvidence}

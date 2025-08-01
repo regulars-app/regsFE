@@ -5,7 +5,7 @@ import PlaceItem from './PlaceItem';
 import UpSymbol from './UpSymbol';
 import DownSymbol from './DownSymbol';
 
-const PlacesView = ({height, places}) => {
+const PlacesView = ({height, places, style}) => {
     const [expandedSections, setExpandedSections] = useState({});
 
     const toggleSection = (sectionName) => {
@@ -35,7 +35,7 @@ const PlacesView = ({height, places}) => {
         },
     };
     return (
-        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard]}>
+        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard, style]}>
             <View style={styles.container}>
                 <Text style={styles.title}>Places View</Text>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>
@@ -103,20 +103,21 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         width: '100%',
-        height: '100%',
-        paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontSize: 18,
         fontWeight: '600',
         color: '#6E6E6E',
+        paddingVertical: 20,
     },
     scrollView: {
         width: '100%',
-        marginTop: 10,
+        maxHeight: '90%'
     },
     scrollViewContent: {
         width: '100%',
+        paddingBottom: 100,
     },
     section: {
         width: '100%',

@@ -1,11 +1,17 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const SendSymbol = ({style}) => {
+const SendSymbol = ({style, size}) => {
    
   const sendIcon = require('../images/send-icon.png');
+  const dynamicStyle = {
+    sendSymbol: {
+      width: size,
+      height: size,
+    },
+  };
   return (
-      <View style={[styles.sendSymbol, style]}>
+      <View style={[styles.sendSymbol, dynamicStyle.sendSymbol, style]}>
         <Image source={sendIcon} style={styles.sendSymbolImage} />
       </View>
 
@@ -17,8 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50%',
-    height: '50%',
   },
   sendSymbolImage: {
     width:'100%',

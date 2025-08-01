@@ -70,7 +70,7 @@ const ProfileListCard = ({
             </TouchableWrapper>
           </ScrollView>
      
-        {showButton && <GroupButton style={styles.profileListButton} size={40} />}
+        {showButton && <GroupButton style={styles.profileListButton} size={40} onPress={onPress}/>}
     </GlassCard>
   );
 };

@@ -30,7 +30,7 @@ const UpcomingMeetupDetails = () => {
       </View>
       <View style={styles.tabContent}>
         {/* Render different content based on currentScreen */}
-        {currentScreen === 'plans' && <MeetupDetailPlans />}
+        {currentScreen === 'plans' && <MeetupDetailPlans meetupConfirmed={false} />}
         {currentScreen === 'discussion' && <MeetupDetailDiscussion />}
       </View>
       <View style={styles.footer}>

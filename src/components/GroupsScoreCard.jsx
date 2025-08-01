@@ -11,11 +11,11 @@ const GroupsScoreCard = ({style}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <WildSymbolEnclosed size={45} style={styles.wildSymbol} wildScore={100} showScore={true}/>
-                <BondSymbolEnclosed size={70} style={styles.bondSymbol} bondScore={253} showScore={true}/>
-                <DiarySymbolEnclosed size={45} style={styles.diarySymbol} diaryScore={100} showScore={true}/>
-                <SmartSymbolEnclosed size={45} style={styles.smartSymbol} smartScore={100} showScore={true}/>
-                <HealthSymbolEnclosed size={45} style={styles.healthSymbol} healthScore={100} showScore={true}/>
+                <WildSymbolEnclosed size={30} style={styles.wildSymbol} wildScore={100} showScore={true}/>
+                <BondSymbolEnclosed size={60} style={styles.bondSymbol} bondScore={253} showScore={true}/>
+                <DiarySymbolEnclosed size={30} style={styles.diarySymbol} diaryScore={100} showScore={true}/>
+                <SmartSymbolEnclosed size={30} style={styles.smartSymbol} smartScore={100} showScore={true}/>
+                <HealthSymbolEnclosed size={30} style={styles.healthSymbol} healthScore={100} showScore={true}/>
             </View>
         </GlassCard>
     );

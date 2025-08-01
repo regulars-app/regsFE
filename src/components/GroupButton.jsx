@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import GroupSymbol from './GroupSymbol';
 
-const GroupButton = ({style, size}) => {
+const GroupButton = ({style, size, onPress}) => {
     const dynamicStyle = {
         groupButton: {
             width: size,
@@ -10,7 +10,7 @@ const GroupButton = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.groupButton, dynamicStyle.groupButton, style]}>
+    <TouchableOpacity style={[styles.groupButton, dynamicStyle.groupButton, style]} onPress={onPress}>
         <GroupSymbol size={'60%'} />
     </TouchableOpacity>
   );

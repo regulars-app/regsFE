@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, PanResponder, Dimensions, Easing } from 're
 import { BlurView } from '@react-native-community/blur';
 
 
-const Stack = ({ data, renderItem, cardWidth, cardHeight, style }) => {
+const Stack = ({ data, renderItem, cardWidth, cardHeight, style, sideOffset=30 }) => {
 
   const SWIPE_THRESHOLD = cardWidth / 10;
 
@@ -85,7 +85,6 @@ const Stack = ({ data, renderItem, cardWidth, cardHeight, style }) => {
         if (index < focusedIndex - 1 || index > focusedIndex + 1) return null;
         // Distance from animated index
         const offset = Animated.subtract(index, currentAnimatedIndex);
-        const sideOffset = 30;
         const scale = offset.interpolate({
           inputRange: [-1, 0, 1],
           outputRange: [0.92, 1, 0.92],

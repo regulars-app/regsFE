@@ -6,7 +6,7 @@ import PreferenceItem from './PreferenceItem';
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const colors = ['red', 'yellow', 'green'];
 
-const AvailabilityCard = () => {
+const AvailabilityCard = ({style}) => {
   const [selected, setSelected] = useState({});
 
   const handleSelect = (day, color) => {
@@ -17,7 +17,7 @@ const AvailabilityCard = () => {
   };
 
   return (
-    <GlassCard style={styles.glassCard}>
+    <GlassCard style={[styles.glassCard, style]}>
       <View style={styles.container}>
         <ScrollView nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.availabilityContainer}>
@@ -35,9 +35,12 @@ const AvailabilityCard = () => {
                       <PreferenceItem
                         style={styles.preferenceItem}
                         color={color}
-                        text=""
+                        text=" "
                         showCheckmark={true}
                         isSelected={selected[day] === color}
+                        selectable={true}
+                        clickableOnly={false}
+                        onPress={() => handleSelect(day, color)}
                       />
                     </TouchableOpacity>
                   ))}

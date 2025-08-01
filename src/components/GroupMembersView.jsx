@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
-import FriendItem from './FriendItem';
+import FriendItem from './MemberItem';
 
 const MyFriendsView = ({height, friends, style}) => {
 
@@ -13,7 +13,7 @@ const MyFriendsView = ({height, friends, style}) => {
     return (
         <GlassCard style={[style, styles.glassCard, dynamicStyles.glassCard]}>
             <View style={styles.container}>
-                <Text style={styles.title}>My Friends View</Text>
+                <Text style={styles.title}>My Friends</Text>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>
                     {friends.map((friend, index) => (
                         <FriendItem 

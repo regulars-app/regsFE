@@ -4,11 +4,11 @@ import GlassCard from './GlassCard';
 import CameraSettingsSymbol from './CameraSettingsSymbol';
 import CameraFilterSymbol from './CameraFilterSymbol';
 
-const CaptureTools = ({style}) => {
+const CaptureTools = ({style, onCapture}) => {
     return (
         <View style={[styles.wrapper, style]}>
             <View style={styles.container}>
-                <TouchableOpacity style={styles.captureButton} />
+                <TouchableOpacity style={styles.captureButton} onPress={onCapture} />
                 <GlassCard style={styles.glassCard}>
                     <View style={styles.content}>
                         <TouchableOpacity style={styles.cameraSettingsButton}>
@@ -28,11 +28,11 @@ const CaptureTools = ({style}) => {
 const styles = StyleSheet.create({
     wrapper: {
         width: '60%',
-        height: 70,
+        height: 40,
     },
     container: {
         width: '100%',
-        height: 40,
+        height: '100%',
         position: 'relative',
         alignItems: 'center',
         justifyContent: 'center',

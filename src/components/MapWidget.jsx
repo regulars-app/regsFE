@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import GlassCard from './GlassCard';
 import AddPlaceSymbol from './AddPlaceSymbol';
 
-const MapWidget = ({width, height, style, placeSelected}) => {
+const MapWidget = ({width, height, style, placeSelected, scrollEnabled = true}) => {
     const dynamicStyles = {
         mapWidget: {
         width: width,
@@ -13,7 +13,7 @@ const MapWidget = ({width, height, style, placeSelected}) => {
     return(
         <GlassCard style={[styles.mapWidget, dynamicStyles.mapWidget, style]}>
             <View style={styles.wrapper}>
-                {!placeSelected && <View style={styles.overlay}>
+                {!placeSelected && scrollEnabled && <View style={styles.overlay}>
                     <TouchableOpacity style={styles.addPlaceButton}>
                         <AddPlaceSymbol size={30} />
                     </TouchableOpacity>

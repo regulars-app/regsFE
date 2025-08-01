@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'rea
 import MembersView from '../components/MembersView';
 import SearchBar from '../components/SearchBar';
 
-const MyFriendsPopup = ({onClose}) => {
+const GroupMembersPopup = ({onClose}) => {
 
-    const friends = [
+    const members = [
         { name: 'John Doe' },
         { name: 'Jane Doe' },
         { name: 'Jim Doe' },
@@ -42,7 +42,7 @@ const MyFriendsPopup = ({onClose}) => {
     return (
         <View style={styles.container}>
             <SearchBar style={styles.searchBar}/>
-            <MembersView height={600} style={styles.myFriendsView} members={friends} title="My Friends"/>
+            <MembersView height={600} style={styles.myFriendsView} members={members} title="Group Members"/>
         </View>
     );
 };
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MyFriendsPopup; 
+export default GroupMembersPopup; 

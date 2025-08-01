@@ -11,7 +11,7 @@ const SendButton = ({style, size}) => {
     };
   return (
     <TouchableOpacity style={[styles.sendButton, dynamicStyle.sendButton, style]}>
-      <SendSymbol />
+      <SendSymbol size={size/2}/>
     </TouchableOpacity>
   );
 };

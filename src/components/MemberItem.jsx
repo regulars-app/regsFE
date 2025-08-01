@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
 import MoreSymbol from './MoreSymbol';
 
-const FriendItem = ({style, name}) => {
+const MemberItem = ({style, name}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.leftContainer}>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FriendItem;
+export default MemberItem;

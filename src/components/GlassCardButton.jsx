@@ -22,7 +22,7 @@ const GlassCardButton = ({style, type, text}) => {
             </View>}
             {type === 'addFriend' && <View style={styles.container}>
                 <Text style={styles.text}>{text}</Text>
-                <AddFriendSymbol size={20} />
+                <AddFriendSymbol size={30} />
             </View>}
             {type === 'myFriends' && <View style={styles.container}>
                 <Text style={styles.text}>{text}</Text>

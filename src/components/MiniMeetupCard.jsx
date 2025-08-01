@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import GlassCard from './GlassCard';
 
-const MiniMeetupCard = ({name, datetime}) => {
+const MiniMeetupCard = ({name, datetime, width, height}) => {
 
     const dynamicStyle = {
         titleText: {
@@ -14,10 +14,14 @@ const MiniMeetupCard = ({name, datetime}) => {
         datetime: {
             fontSize: Dimensions.get('window').width * 0.035,
         },
+        card: {
+            width: width,
+            height: height,
+        },
     };
 
     return (
-        <GlassCard style={styles.card}>
+        <GlassCard style={[styles.card, dynamicStyle.card]}>
             <GlassCard style={styles.title}>
                 <Text style={[styles.titleText, dynamicStyle.titleText]}>Upcoming Meetup</Text>
             </GlassCard>
@@ -31,11 +35,7 @@ const MiniMeetupCard = ({name, datetime}) => {
 
 const styles = StyleSheet.create({
     card: {
-        width: '80%',
-        aspectRatio: 1.1,
         alignItems: 'center',
-        marginBottom: 20,
-        marginTop: 20,
         alignSelf: 'center',
     
     },

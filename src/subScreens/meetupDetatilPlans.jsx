@@ -54,15 +54,19 @@ const members = [
     { id: 21, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
   ];
 
-const MeetupDetailPlans = () => {
+const MeetupDetailPlans = ({meetupConfirmed}) => {
     return (
+      <View>
+        {meetupConfirmed ?
+        <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" style={{height: 650}} members={members}/>
+        :
         <Stack
         cardWidth={Dimensions.get('window').width}
         cardHeight={650}
         data={meetupExampleData}
         renderItem={({ item }) => <MeetupCard {...item} members={members}/>}
-        />
-
+        />}
+      </View>
     )
 }
 

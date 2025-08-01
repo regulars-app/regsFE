@@ -1,462 +1,306 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import GlassCard from '../components/GlassCard';
-import Countdown from '../components/Countdown';
-import MeetupItemCard from '../components/MeetupItemCard';
-import MeetupCard from '../components/MeetupCard';
-import EditSymbol from '../components/EditSymbol';
-import ScrollList from '../components/ScrollList';
-import ProfilePic from '../components/ProfilePic';
-import MapWidget from '../components/MapWidget';
-import Post from '../components/Post';
-import ItemDisplayer from '../components/ItemDisplayer';
-import ItemSelector from '../components/ItemSelector';
-import TimeSelector from '../components/TimeSelector';
-import Calendar from '../components/Calendar';
-import Stack from '../components/Stack';
-import Popup from '../components/Popup';
-import Map from '../components/Map';
-import BackButton from '../components/BackButton';
-import GroupNav from '../components/GroupNav';
-import GlassCardButton from '../components/GlassCardButton';
-import MainButton from '../components/MainButton';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar';
-import ImageCard from '../components/ImageCard';
-import MiniMeetupCard from '../components/MiniMeetupCard';
-import Messenger from '../components/Messenger';
-import PostView from '../components/PostView';
-import MeetupView from '../components/MeetupView';
-import ChatSummaryCard from '../components/ChatSummaryCard';
-import ProfileListCard from '../components/ProfileListCard';
-import GroupsScoreCard from '../components/GroupsScoreCard';
-import AvailabilityCard from '../components/AvailabilityCard';
-import PreviousSymbol from '../components/PreviousSymbol';
-import AddFriendItem from '../components/AddFriendItem';
-import FriendItem from '../components/FriendItem';
-import SettingsItem from '../components/SettingsItem';
-import PlaceItem from '../components/PlaceItem';
-import AcceptFriendItem from '../components/AcceptFriendItem';
-import IncommingFriendRequestView from '../components/IncommingFriendRequestView';
-import AddFriendsView from '../components/AddFriendsView';
-import MyFriendsView from '../components/MyFriendsView';
-import SettingsView from '../components/SettingsView';
-import PlacesView from '../components/PlacesView';
-import SubNav from '../components/SubNav';
-import ChallengeWriterBox from '../components/ChallengeWriterBox';
-import EvidenceTypeSelector from '../components/EvidenceTypeSelector';
-import EvidenceUploader from '../components/EvidenceUploader';
-import AdditionalInfoInput from '../components/AdditionalInfoInput';
-import DiaryInput from '../components/DiaryInput';
-import ChallengeDisplayer from '../components/ChallengeDisplayer';
-import ClashView from '../components/ClashView';
-import SurpriseEventToggle from '../components/SurpriseEventToggle';
-import ViewFinder from '../components/ViewFinder';
-import TakenPhoto from '../components/TakenPhoto';
+import ProfilePic from '../components/ProfilePic';
+import GlassCard from '../components/GlassCard';
+import MeetupSymbol from '../components/MeetupSymbol';
+import SurpriseEventSymbol from '../components/SurpriseEventSymbol';
+import SmartSymbol from '../components/SmartSymbol';
+import WildSymbol from '../components/WildSymbol';
+import HealthSymbol from '../components/HealthSymbol';
+import DiarySymbol from '../components/DiarySymbol';
+import CalendarSymbol from '../components/CalendarSymbol';
+import GallerySymbol from '../components/GallerySymbol';
+import AddPlaceSymbol from '../components/AddPlaceSymbol';
+import CameraSymbol from '../components/CameraSymbol';
+import NewMeetupSymbol from '../components/NewMeetupSymbol';
+import Popup from '../components/Popup';
+import PlacePopup from '../popups/PlacePopup';
+import AvailabilityPopup from '../popups/AvailabilityPopup';
 
-const mapImage = require('../images/map.png');
+const Home = () => {
 
-const meetupExampleData = [
-  {
-    id: '1',
-    name: 'Football',
-    datetime: '10:00 AM',
-    activity: 'Golf, Cooking, Movie',
-    info: 'Bring crisps.',
-    confirmed: '130001, 3493833,33434343,3434343455',
-  },
-  {
-    id: '2',
-    name: 'Hiking',
-    datetime: '2:30 PM',
-    activity: 'Hiking, Painting',
-    info: 'Meet at the park entrance.',
-    confirmed: '230002, 4593844,33434343,3434343455',
-  },
-  {
-    id: '3',
-    name: 'Dinner',
-    datetime: '6:00 PM',
-    activity: 'Dinner, Board Games',
-    info: 'Don\'t forget your favorite game!',
-    confirmed: '330003, 5593855,33434343,3434343455',
-  },
-];
-const photoStackWideExampleData = [
-  {
-    id: '1',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-    footer: 'Octopus pasta at Pani\'s house!',
-  },
-  {
-    id: '2',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
-    footer: 'Beach Freddo',
-  },
-  {
-    id: '3',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/03/05/11/louvre-9638315_1280.jpg',
-    footer: 'Idiot sandwich',
-  },
-];
+    const [placePopupVisible, setPlacePopupVisible] = useState(false);
+    const [availabilityPopupVisible, setAvailabilityPopupVisible] = useState(true);
 
-const messagesMainDemoData = [
-  {
-    chatType: 'main',
-    time: '12:00',
-    position: 'left',
-    messageType: 'text',
-    senderName: 'John Doe',
-    messageText: 'Hello, how are you?',
-    imageURL: '',
-  },
-  {
-    chatType: 'main',
-    time: '12:00',
-    position: 'right',
-    messageType: 'image',
-    senderName: 'John Doe',
-    messageText: '',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-  },
-  {
-    chatType: 'main',
-    time: '12:00',
-    position: 'left',
-    messageType: 'mixed',
-    senderName: 'John Doe',
-    messageText: 'I\'m ok thanks, i\'ve been doing lots of arts and crafts!',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-  },
-];
+    const mapImage = require('../images/map.png');
 
-const messagesSubDemoData = [
-  {
-    chatType: 'sub',
-    time: '12:00',
-    position: 'left',
-    messageType: 'text',
-    senderName: 'John Doe',
-    messageText: 'Hello, how are you?',
-    imageURL: '',
-    userID: '1',
-  },
-  {
-    chatType: 'sub',
-    time: '12:00',
-    position: 'left',
-    messageType: 'image',
-    senderName: 'John Doe',
-    messageText: '',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-    userID: '2',
-  },
-  {
-    chatType: 'sub',
-    time: '12:00',
-    position: 'left',
-    messageType: 'mixed',
-    senderName: 'John Doe',
-    messageText: 'I\'m ok thanks, i\'ve been doing lots of arts and crafts!',
-    imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-    userID: '3',
-  },
-];
+    const groups = [
+        {
+            id: 1,
+            name: 'Group 1',
+            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+            upcomingMeetup: true,
+            upcomingSurpriseEvent: false,
+            challenge: 'smart',
+        },
+        {
+            id: 2,
+            name: 'Group 2',
+            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+            upcomingMeetup: true,
+            upcomingSurpriseEvent: true,
+            challenge: 'wild',
+        },
+        {
+            id: 3,
+            name: 'Group 3',
+            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+            upcomingMeetup: false,
+            upcomingSurpriseEvent: true,
+            challenge: 'health',
+        },
+        {
+            id: 4,
+            name: 'Group 4',
+            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+            upcomingMeetup: true,
+            upcomingSurpriseEvent: true,
+            challenge: false,
+        },
+    ];
 
-const meetupViewExampleData = [
-  {
-    id: '1',
-    name: 'Football',
-    datetime: '10:00 AM',
-    activity: 'Golf, Cooking, Movie',
-    info: 'Bring crisps.',
-    confirmed: '130001, 3493833,33434343,3434343455',
-  },
-  {
-    id: '2',
-    name: 'Hiking',
-    datetime: '2:30 PM',
-    activity: 'Hiking, Painting',
-    info: 'Meet at the park entrance.',
-    confirmed: '',
-  },
-  {
-    id: '3',
-    name: 'Dinner',
-    datetime: '6:00 PM',
-    activity: 'Dinner, Board Games',
-    info: 'Don\'t forget your favorite game!',
-    confirmed: '330003, 5593855,33434343,3434343455',
-  },
-  {
-    id: '4',
-    name: 'Dinner',
-    datetime: '6:00 PM',
-    activity: 'Dinner, Board Games',
-    info: 'Don\'t forget your favorite game!',
-    confirmed: '330003, 5593855,33434343,3434343455',
-  },
-  {
-    id: '5',
-    name: 'Dinner',
-    datetime: '6:00 PM',
-    activity: 'Dinner, Board Games',
-    info: 'Don\'t forget your favorite game!',
-    confirmed: '',
-  },
-];
-
-const members = [
-  { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 2, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 3, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 4, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 5, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 6, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 7, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 8, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 9, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 10, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 11, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 12, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 13, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 14, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 15, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 16, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 17, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 18, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 19, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 20, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-  { id: 21, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
-];
-
-const requests = [
-  { name: 'John Doe' },
-  { name: 'Jane Doe' },
-  { name: 'Jim Doe' },
-];
-
-const potentialFriends = [
-    { name: 'John Doe' },
-    { name: 'Jane Doe' },
-    { name: 'Jim Doe' },
-    { name: 'John Doe' },
-    { name: 'Jane Doe' },
-    { name: 'Jim Doe' },
-    { name: 'John Doe' },
-    { name: 'Jane Doe' },
-    { name: 'Jim Doe' },
-];
-
-const friends = [
-  { name: 'John Doe' },
-  { name: 'Jane Doe' },
-  { name: 'Jim Doe' },
-  { name: 'John Doe' },
-  { name: 'Jane Doe' },
-  { name: 'Jim Doe' },
-  { name: 'John Doe' },
-  { name: 'Jane Doe' },
-  { name: 'Jim Doe' },
-];
-
-const settings = [
-  { name: 'Privacy' },
-  { name: 'Notifications' },
-  { name: 'Language' },
-  { name: 'About' },
-  { name: 'Privacy' },
-  { name: 'Notifications' },
-  { name: 'Language' },
-  { name: 'About' },
-];
-
-const places = [
-  { name: 'Pani\'s house',
-    myPlace: true,
-    group: 'group1',
-   },
-  { name: 'Pani\'s house',
-    myPlace: true,
-    group: 'group1',
-   },
-  { name: 'Pani\'s house',
-    myPlace: false,
-    group: 'group2',
-   },
-  { name: 'Pani\'s house',
-    myPlace: false,
-    group: 'group1',
-   },
-  { name: 'Pani\'s house',
-    myPlace: true,
-    group: null,
-   },
-  { name: 'Pani\'s house',
-    myPlace: false,
-    group: 'group1',
-   },
-  { name: 'Pani\'s house',
-    myPlace: false,
-    group: 'group1',
-   },
-  { name: 'Pani\'s house',
-    myPlace: true,
-    group: null,
-   },
-  { name: 'Pani\'s house',
-    myPlace: false,
-    group: 'group1',
-   },
-];
-
-const tabs = [
-  { title: 'Plans', path: 'plans' },
-  { title: 'Discussion', path: 'discussion' },
-  { title: 'Jeffrey', path: 'jeffrey' },
-];
-
-const clashItems = [
-  { userID: '1', content: 'John Doe cannot do the dishes' },
-  { userID: '2', content: 'Jane Doe cannot do the dishes' },
-  { userID: '3', content: 'Jim Doe cannot do the dishes' },
-  { userID: '4', content: 'John Doe cannot do the dishes' },
-];
-
-const posts = [
-  {
-      id: 1,
-      type: "text", 
-      position: "left", 
-      text: "This is an example of a text post. It's a bit longer than the others, but it's still readable.", 
-      imageURL: "", 
-      senderName: "Shyam", 
-      commentText: "Hello, when did you get that? It's soo cool!"
-  },
-  {
-      id: 2,
-      type: "image", 
-      position: "right", 
-      text: "", 
-      imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg', 
-      senderName: "Shyam", 
-      commentText: "Hello, when did you get that? It's soo cool!"
-  },
-  {
-      id: 3,
-      type: "mixed", 
-      position: "left", 
-      text: "This is an example of a mixed post. It's a bit longer than the others, but it's still readable.", 
-      imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg', 
-      senderName: "Shyam", 
-      commentText: "Hello, when did you get that? It's soo cool!"
-  }
-];
-
-const HomeScreen = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState('plans');
-
-  const handleTabPress = (path, index) => {
-    setCurrentScreen(path);
-  };
-  return(
-  <View style={styles.bg}>
-    <Popup showPopup={showPopup} onClose={() => setShowPopup(false)} />
-    {/* <ImageBackground source={testImage} style={styles.bg} resizeMode="cover"> */}
-    <ScrollView contentContainerStyle={styles.centered}>
-
-      <PostView style={{height: 500}}/>
-      <MeetupCard datetime="10:00 AM" activity="Golf, Cooking, Movie" info="Bring crisps." confirmed="130001, 3493833,33434343,3434343455" style={{height: 675}} members={members}/>
-      <Stack cardWidth={Dimensions.get('window').width} cardHeight={700} data={meetupExampleData} renderItem={({item}) => <MeetupCard {...item} members={members}/>} />
-      <ImageCard imageURL={'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg'} footer="Example image" width={Dimensions.get('window').width * 0.8} height={200} />
-      <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.8} height={200} />} />
-      <Stack cardWidth={Dimensions.get('window').width} cardHeight={250} data={photoStackWideExampleData} renderItem={({item}) => <ImageCard imageURL={item.imageURL} footer={item.footer} width={Dimensions.get('window').width * 0.4} aspectRatio={1} />} />
-      <Stack cardWidth={Dimensions.get('window').width/2} cardHeight={200} data={meetupExampleData} renderItem={({item}) => <MiniMeetupCard name={item.name} datetime={item.datetime} />} />
-      <SearchBar />
-      <ItemSelector />
-      <ItemDisplayer title="My Preferences" />
-      <TouchableOpacity style={styles.popupDemoButton} onPress={() => setShowPopup(true)}>
-        <Text>PopupDemo</Text>
-      </TouchableOpacity>
-      <Messenger style={{height: 500}} messages={messagesMainDemoData}/>
-      <Messenger style={{height: 500}} messages={messagesSubDemoData}/>
-      <BackButton size={40}/>
-      <GroupNav />
-      <MeetupView style={{height: 400}} type="meetup" meetups={meetupViewExampleData} />
-      <MeetupView style={{height: 400}} type="surprise" meetups={meetupViewExampleData} />
-      <ChatSummaryCard overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
-      <ProfileListCard clickable={true} selectable={false} showButton={true} type="groups" members={members} style={{height: 100}}/>
-      <ProfileListCard clickable={false} selectable={true} showButton={true} type="members" title="Who's the surprise for?" members={members} style={{height: 100}}/>
-      <GroupsScoreCard />
-      <AvailabilityCard />
-      <Calendar visualAdjust={100}/>
-      <TimeSelector title="From:"/>
-      <TimeSelector title="To:"/>
-      <AddFriendItem name="John Doe" requested={false}/>
-      <FriendItem name="John Doe"/>
-      <SettingsItem name="Privacy"/>
-      <PlaceItem name="Pani's house"/>
-      <AcceptFriendItem name="John Doe"/>
-      <IncommingFriendRequestView height={200} requests={requests}/>
-      <AddFriendsView height={400} potentialFriends={potentialFriends}/>
-      <MyFriendsView height={400} friends={friends}/>
-      <SettingsView height={400} settings={settings}/>
-      <PlacesView height={400} places={places}/>
-      <SubNav tabs={tabs} onTabPress={handleTabPress} initialActiveIndex={0}/>
-      {/* Render different content based on currentScreen */}
-      {currentScreen === 'plans' && <Text>Plans</Text>}
-      {currentScreen === 'discussion' && <Text>Discussion</Text>}
-      {currentScreen === 'jeffrey' && <Text>Jeffrey</Text>}
-      <ChallengeWriterBox challengeType="smart" />
-      <EvidenceTypeSelector />
-      <EvidenceUploader challenger="John Doe" evidenceType="text" />
-      <AdditionalInfoInput />
-      <DiaryInput />
-      <ChallengeDisplayer challengeType="smart" challengeContent={"Make a poem that encodes a secret message for us."}/>
-      <ClashView clashItems={clashItems}/>
-      <SurpriseEventToggle />
-      <Countdown />
-      <ViewFinder style={{height: 800}}/>
-      <TakenPhoto style={{height: 700}}/>
-      <GlassCardButton style={{width: '40%'}} type="activity" text={"Add Activity"}/>
-    </ScrollView>
-    {/* </ImageBackground> */}
-  </View>
-  );
+    return (
+        <View>
+            <Popup showPopup={placePopupVisible} onClose={() => setPlacePopupVisible(false)}>
+                <PlacePopup 
+                    onClose={() => setPlacePopupVisible(false)}
+                />
+            </Popup>
+            <Popup showPopup={availabilityPopupVisible} onClose={() => setAvailabilityPopupVisible(false)}>
+                <AvailabilityPopup 
+                    onClose={() => setAvailabilityPopupVisible(false)}
+                />
+            </Popup>
+            <View style={styles.header}>
+                <SearchBar style={styles.searchBar}/>
+                <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+            </View>
+            <View style={styles.content}>
+                <Image source={mapImage} style={styles.mapImage} />
+                <TouchableOpacity style={styles.meetupsButton}>
+                    <GlassCard style={styles.buttonGlassCard}>
+                        <MeetupSymbol size={25} />
+                    </GlassCard>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.addPlaceButton}>
+                    <GlassCard style={styles.buttonGlassCard}>
+                        <AddPlaceSymbol size={35} style={{paddingTop: 6}}/>
+                    </GlassCard>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cameraButton}>
+                    <GlassCard style={styles.buttonGlassCard}>
+                        <CameraSymbol size={30} />
+                    </GlassCard>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.newMeetupButton}>
+                    <GlassCard style={styles.buttonGlassCard}>
+                        <NewMeetupSymbol size={30} />
+                    </GlassCard>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.memoriesButton}>
+                    <GlassCard style={styles.buttonGlassCard}>
+                        <GallerySymbol size={30} />
+                    </GlassCard>
+                </TouchableOpacity>
+                <View style={styles.sideButtons}>
+                    <TouchableOpacity style={styles.availabilityButton}>
+                        <GlassCard style={styles.buttonGlassCard}>
+                            <DiarySymbol size={30} />
+                        </GlassCard>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.dailyDiaryButton}>
+                        <GlassCard style={styles.buttonGlassCard}>
+                            <CalendarSymbol size={30} />
+                        </GlassCard>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView style={styles.groupsScrollView} contentContainerStyle={styles.groupsScrollViewContent}>
+                    {groups.map((group, index) => (
+                            <GlassCard style={styles.groupCardContainer} key={index}>
+                                <View style={styles.groupCard} key={index}>
+                                    <TouchableOpacity style={styles.profilePicTouchableOpacity}>
+                                        <ProfilePic size={40} imageURL={group.imageURL}/>
+                                    </TouchableOpacity>
+                                    {group.upcomingMeetup && <TouchableOpacity style={styles.groupUpcomingMeetup}><MeetupSymbol size={23} /></TouchableOpacity>}
+                                    {group.upcomingSurpriseEvent && <TouchableOpacity style={styles.groupUpcomingSurpriseEvent}><SurpriseEventSymbol size={30} /></TouchableOpacity>}
+                                    {group.challenge && <TouchableOpacity style={styles.groupChallenge}>{group.challenge === 'smart' ? <SmartSymbol size={30} /> : group.challenge === 'wild' ? <WildSymbol size={30} /> : group.challenge === 'health' ? <HealthSymbol size={30} /> : null}</TouchableOpacity>}
+                                </View>
+                            </GlassCard>
+                    ))}
+                </ScrollView>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  bg: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FFF6F0',
-    position: 'relative',
-  },
-  centered: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 40,
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 24,
-    marginBottom: 8,
-    color: '#333',
-  },
-  popupDemoButton: {
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: 'white',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+        position: 'relative',
+    },
+    header: {
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        height: 150,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 40,
+      },
+    searchBar: {
+        zIndex: 100,
+      },
+    profilePic: {   
+        zIndex: 100,
+      },
+    content: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mapImage: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+    },
+    buttonGlassCard: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    meetupsButton: {
+        position: 'absolute',
+        bottom: 30,
+        left: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    addPlaceButton: {
+        position: 'absolute',
+        bottom: 100,
+        left: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cameraButton: {
+        position: 'absolute',
+        bottom: 170,
+        left: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    newMeetupButton: {
+        position: 'absolute',
+        bottom: 30,
+        left: 90,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    memoriesButton: {
+        position: 'absolute',
+        bottom: 30,
+        left: 160,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    sideButtons: {
+        position: 'absolute',
+        right: 20,
+        flexDirection: 'column',
+        gap: 20,
+    },
+    availabilityButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dailyDiaryButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    groupsScrollView: {
+        position: 'absolute',
+        bottom: 30,
+        right: 20,
+        maxHeight: 172,
+    },
+    groupsScrollViewContent: {
+        gap: 10,
+        paddingBottom: 10,
+        paddingTop: 2,
+    },
+    groupCardContainer: {
+        borderRadius: 50,
+        backgroundColor: 'transparent',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignSelf: 'flex-start',
+    },
+    groupCard: {
+        padding: 5,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 5,
+    },
+    groupUpcomingMeetup: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        elevation: 1,
+    },
+    groupUpcomingSurpriseEvent: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        elevation: 1,
+    },
+    groupChallenge: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,   
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',   
+        elevation: 1,
+    },
 });
 
-export default HomeScreen;
+export default Home;

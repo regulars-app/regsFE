@@ -86,9 +86,11 @@ const Profile = ({name, username}) => {
                     <GlassCardButton type="addFriend" text={"Add Friend"}/> 
                 </TouchableOpacity>
             </View>
-            <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup}/>
-            <MapWidget width={'90%'} height={200} style={styles.mapWidget} placeSelected={true}/>
-            <View style={styles.glassButtonsContainer2}>
+            <View pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup ? "none" : "auto"}>
+                <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup}/>
+            </View>
+            <MapWidget width={'90%'} height={200} style={[styles.mapWidget, { pointerEvents: showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup ? "none" : "auto" }]} placeSelected={true} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup}/>
+            <View style={styles.glassButtonsContainer2} pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup ? "none" : "auto"}>
                 <TouchableOpacity style={styles.glassButton}>
                     <GlassCardButton type="myInterests" text={"My Interests"}/> 
                 </TouchableOpacity>

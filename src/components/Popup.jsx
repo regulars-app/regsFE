@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 1001,
-        minHeight: '50%',
+        minHeight: '10%',
     },
     popup: {
         height: '100%',

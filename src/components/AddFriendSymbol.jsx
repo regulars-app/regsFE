@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addFriendSymbolImage: {
+    resizeMode: 'contain',
     width: '100%',
     height: '100%',
   },

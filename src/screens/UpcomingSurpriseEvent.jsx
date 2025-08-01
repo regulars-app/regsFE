@@ -33,7 +33,7 @@ const UpcomingSurpriseEvent = ({subject}) => {
       </View>
       <View style={styles.tabContent}>
         {/* Render different content based on currentScreen */}
-        {currentScreen === 'plans' && <MeetupDetailPlans />}
+        {currentScreen === 'plans' && <MeetupDetailPlans meetupConfirmed={false} />}
         {currentScreen === 'discussion' && <MeetupDetailDiscussion />}
         {currentScreen === 'subjectPreferences' && <SurpriseSubjectPreferences subject={subject} />}
       </View>
