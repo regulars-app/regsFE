@@ -14,7 +14,7 @@ const AddFriendButton = ({style, requested = false}) => {
                     </View> :
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Add</Text>
-                        <AddSymbol style={styles.addSymbol}/>
+                        <AddSymbol size={25}/>
                     </View>}
         </View>
     );
@@ -60,10 +60,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#6E6E6E',
     },      
-    addSymbol: {
-        width: 25,
-        height: 25,
-    },
     confirmSymbol: {
         paddingHorizontal: 5,
     },

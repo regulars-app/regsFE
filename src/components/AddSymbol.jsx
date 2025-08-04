@@ -1,10 +1,16 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 
-const AddSymbol = ({style}) => {
+const AddSymbol = ({style, size}) => {
   const addIcon = require('../images/add-icon.png');
+  const dynamicStyles = {
+    addSymbol: {
+      width: size,
+      height: size,
+    },
+  };
   return (
-      <View style={[styles.addSymbol, style]}>
+      <View style={[styles.addSymbol, dynamicStyles.addSymbol, style]}>
         <Image source={addIcon} style={styles.addSymbolImage} />
       </View>
 
@@ -16,12 +22,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
-    height: '100%',
   },
   addSymbolImage: {
-    width:'70%',
-    height: '70%',
+    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
   },
 });
 

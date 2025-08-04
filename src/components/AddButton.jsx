@@ -11,7 +11,7 @@ const AddButton = ({style, size}) => {
     };
   return (
     <TouchableOpacity style={[styles.addButton, dynamicStyle.addButton, style]}>
-      <AddSymbol />
+      <AddSymbol size={30} />
     </TouchableOpacity>
   );
 };

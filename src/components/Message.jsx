@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         gap: 10,
-        maxWidth: '85%',
+        maxWidth: '95%',
         position: 'relative',
     },
     mainMessageProfilePic: {
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
         color: '#6E6E6E',
     },
     mainMessageImage: {
-        width: 280,
-        height: 280,
+        width: '100%',
+        aspectRatio: 1,
         borderRadius: 8,
         resizeMode: 'cover',
     },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: 8,
-        width: 250,
+        width: '100%',
     },
     subSenderLabel: {
       backgroundColor: '#F5F5F5',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     },
     subMessageImage: {
       width: 250,
-      height: 250,
+      aspectRatio: 1,
       borderRadius: 20,
       marginRight: 8,
     },

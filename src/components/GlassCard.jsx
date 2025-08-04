@@ -2,18 +2,25 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 
-const GlassCard = ({ children, style }) => (
-  <View style={[styles.wrapper, style]}>
+const GlassCard = ({ children, style, disableShadow = false }) => 
+  {
+    const dynamicStyles = {
+        wrapper: {
+            shadowColor: disableShadow ? 'transparent' : '#000',
+        },
+    };
+    return (
+  <View style={[styles.wrapper, dynamicStyles.wrapper, style]}>
     <BlurView
       style={StyleSheet.absoluteFill}
       blurType="light"
-      blurAmount={24} // Increased blur
+      blurAmount={24} 
       reducedTransparencyFallbackColor="white"
     />
     <View style={styles.whiteOverlay} />
     <View style={styles.content}>{children}</View>
   </View>
-);
+)}; 
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -22,15 +29,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.08,
         shadowRadius: 16,
       },
       android: {
-        elevation: 0.5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0 },
+        elevation: 1,
+        shadowOffset: { width: 0, height: 2 },
       },
     }),
   },
@@ -44,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
 });
 
 export default GlassCard;

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import EditSymbol from './EditSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
 import SendSymbol from './SendSymbol';
+import AddSymbol from './AddSymbol';
 //Props decide if green, yellow or red button
 
 const MainButton = ({text, color, type, style, onPress}) => {
@@ -17,6 +18,7 @@ const MainButton = ({text, color, type, style, onPress}) => {
             {type === 'suggest' && <EditSymbol size={20}/>}
             {type === 'confirm' && <ConfirmSymbol size={20}/>}
             {type === 'send' && <SendSymbol size={20}/>}
+            {type === 'add' && <AddSymbol size={20}/>}
         </TouchableOpacity>
     )
 }

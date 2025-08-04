@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   cardContent: {
     flex: 1,
     borderRadius: 20,
-    overflow: 'hidden',
+    overflow: 'visible',
     position: 'relative',
   },
 });

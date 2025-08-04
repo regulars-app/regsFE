@@ -17,6 +17,7 @@ import NewMeetupSymbol from '../components/NewMeetupSymbol';
 import Popup from '../components/Popup';
 import PlacePopup from '../popups/PlacePopup';
 import AvailabilityPopup from '../popups/AvailabilityPopup';
+import PlaceSymbol from '../components/PlaceSymbol';
 
 const Home = () => {
 
@@ -112,6 +113,11 @@ const Home = () => {
                     <TouchableOpacity style={styles.dailyDiaryButton}>
                         <GlassCard style={styles.buttonGlassCard}>
                             <CalendarSymbol size={30} />
+                        </GlassCard>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.placeButton}>
+                        <GlassCard style={styles.buttonGlassCard}>
+                            <PlaceSymbol size={30} />
                         </GlassCard>
                     </TouchableOpacity>
                 </View>
@@ -242,6 +248,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     dailyDiaryButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    placeButton: {
         width: 50,
         height: 50,
         borderRadius: 100,

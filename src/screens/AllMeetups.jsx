@@ -5,6 +5,7 @@ import { Dimensions } from 'react-native';
 import { useState } from 'react';
 import GroupNav from '../components/GroupNav';
 import MeetupView from '../components/MeetupView';
+import MainButton from '../components/MainButton';
 
 const AllMeetups = () => {
 
@@ -61,9 +62,10 @@ const AllMeetups = () => {
         <MeetupView style={styles.surpriseMeetupView} type="surprise" meetups={meetupViewExampleData} screen="all" />
         <View style={styles.meetupViewSeparator} />
         <MeetupView style={styles.meetupView} type="meetup" meetups={meetupViewExampleData} screen="all" />
+        <View style={styles.meetupViewSeparator} />
       </View>
       <View style={styles.footer}>
-        
+        <MainButton text="Create Meetup" color='green' type='add' style={styles.createMeetupButton}/>
       </View>
     </View>
   );
@@ -117,6 +119,10 @@ const styles = StyleSheet.create({
     height: 370,
   },
   groupNav: {
+  },
+  createMeetupButton: {
+    position: 'absolute',
+    right: 40,
   },
 });
 

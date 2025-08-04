@@ -124,11 +124,11 @@ const GroupPage = () => {
         </View>
         <ChatSummaryCard style={styles.chatSummaryCard} overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
         <TouchableOpacity onPress={() => setShowGroupMembersPopup(true)}>
-            <ProfileListCard style={styles.profileListCard} clickable={true} selectable={false} showButton={true} type="members" title={false} members={members} onPress={() => setShowGroupMembersPopup(true)}/>
+            <ProfileListCard style={styles.profileListCard} clickable={true} selectable={false} showButton={true} type="members" title={false} members={members} onPress={() => setShowGroupMembersPopup(true)} scrollEnabled={!showGroupMembersPopup && !showPlacesPopup}/>
         </TouchableOpacity>
       </View>
       <View style={styles.footer}>
-        <GroupNav style={styles.groupNav}/>
+        <GroupNav style={[styles.groupNav, { pointerEvents: showPlacesPopup || showGroupMembersPopup ? "none" : "auto" }]} scrollEnabled={!showPlacesPopup && !showGroupMembersPopup}/>
       </View>
     </View>
   );

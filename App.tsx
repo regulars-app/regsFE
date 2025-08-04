@@ -24,6 +24,7 @@ import Camera from './src/screens/Camera.jsx';
 import Memories from './src/screens/Memories.jsx';
 import Home from './src/screens/Home.jsx';
 import GroupPage from './src/screens/GroupPage.jsx';
+import GroupChatPage from './src/screens/GroupChatPage.jsx';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,11 @@ function App(): React.JSX.Element {
             component={Home}
             options={{ title: 'Home', headerShown: false }}
           /> */}
+        <Stack.Screen 
+            name="GroupChatPage"
+            component={GroupChatPage}
+            options={{ title: 'Group Chat Page', headerShown: false }}
+          />
         <Stack.Screen 
             name="GroupPage"
             component={GroupPage}

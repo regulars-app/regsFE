@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, onPress }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, newMessage = false, onPress }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -21,6 +21,7 @@ const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, se
       onPress={selectable ? onPress : undefined}
       activeOpacity={0.8}
     >
+      {newMessage && <View style={styles.newMessageIndicator} />}
       <View style={[styles.outer, dynamicStyles.outer]}>
         <Image
           source={{ uri: imageURL }}
@@ -46,7 +47,9 @@ const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, se
 };
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center' },
+  container: { alignItems: 'center',
+    position: 'relative',
+   },
   outer: {
     borderRadius: 50,
     borderWidth: 1,
@@ -81,6 +84,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 2,
     elevation: 2,
+  },
+  newMessageIndicator: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    width: 10,
+    height: 10,
+    backgroundColor: '#F9C7C5',
+    borderRadius: 100,
   },
   footer: {
     marginTop: -7,

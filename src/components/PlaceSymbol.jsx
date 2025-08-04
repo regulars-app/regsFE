@@ -1,33 +1,32 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Image, View} from 'react-native';
 
-const SaveSymbol = ({size}) => {
-  const saveIcon = require('../images/save-icon.png');
+const PlaceSymbol = ({size}) => {
+  const placeIcon = require('../images/place-icon.png');
   const dynamicStyles = {
-    saveSymbol: {
+    placeSymbol: {
       width: size,
       height: size,
     },
   };
   return (
-      <View style={[styles.saveSymbol, dynamicStyles.saveSymbol]}>
-        <Image source={saveIcon} style={styles.saveSymbolImage} />
+      <View style={[styles.placeSymbol, dynamicStyles.placeSymbol]}>
+        <Image source={placeIcon} style={styles.placeSymbolImage} />
       </View>
 
   );
 };
 
 const styles = StyleSheet.create({
-  saveSymbol: {
+  placeSymbol: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center', 
   },
-  saveSymbolImage: {
-    resizeMode: 'contain',
+  placeSymbolImage: {
     width: '100%',
     height: '100%',
   },
 });
 
-export default SaveSymbol;
+export default PlaceSymbol;
