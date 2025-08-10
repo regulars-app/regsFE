@@ -14,6 +14,8 @@ const ProfileListCard = ({
   type,
   onPress, // for clickable card
   scrollEnabled = true,
+  removeable = false,
+  onRemoveMember,
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -23,13 +25,19 @@ const ProfileListCard = ({
     );
   };
 
+  const handleRemove = (id) => {
+    if (onRemoveMember) {
+      onRemoveMember(id);
+    }
+  };
+
   const TouchableWrapper = clickable ? TouchableOpacity : View;
 
   const profilePicSize = 50
 
   const dynamicStyles = {
     scrollView: {
-      height: title ? style.height - 80 : style.height - 10, 
+      height: title ? Math.max(style.height - 60, 100) : Math.max(style.height - 10, 100), 
       marginRight: showButton ? 40 : 0,
     },
   };
@@ -41,12 +49,12 @@ const ProfileListCard = ({
             <Text style={styles.title}>{title}</Text>
           </View>
         )}
- 
           <ScrollView
             nestedScrollEnabled={true}
             scrollEnabled={scrollEnabled}
             style={[styles.scrollView, dynamicStyles.scrollView]}
             contentContainerStyle={styles.scrollViewContent}
+            showsVerticalScrollIndicator={false}
           >
             <TouchableWrapper
         style={styles.container}
@@ -61,6 +69,8 @@ const ProfileListCard = ({
                   imageURL={member.imageURL}
                   selectable={!!selectable}
                   selected={selectable && selectedIds.includes(member.id)}
+                  removeable={removeable}
+                  onRemove={removeable ? () => handleRemove(member.id) : undefined}
                   onPress={
                     selectable ? () => handleSelect(member.id) : undefined
                   }
@@ -69,7 +79,6 @@ const ProfileListCard = ({
             </View>
             </TouchableWrapper>
           </ScrollView>
-     
         {showButton && <GroupButton style={styles.profileListButton} size={40} onPress={onPress}/>}
     </GlassCard>
   );
@@ -111,16 +120,16 @@ const styles = StyleSheet.create({
           
         },
         scrollViewContent: {
-            justifyContent: 'center',
             paddingBottom: 20,
         },
         profileList: {
             flexDirection: 'row',
             flexWrap: 'wrap',
             paddingTop: 10,
-            paddingBottom: 40,
+            paddingBottom: 20,
             gap: 15,
             justifyContent: 'center',
+            minHeight: '100%',
         },
         });
 

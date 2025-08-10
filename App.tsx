@@ -25,6 +25,7 @@ import Memories from './src/screens/Memories.jsx';
 import Home from './src/screens/Home.jsx';
 import GroupPage from './src/screens/GroupPage.jsx';
 import GroupChatPage from './src/screens/GroupChatPage.jsx';
+import SignUp from './src/screens/SignUp.jsx';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,11 @@ function App(): React.JSX.Element {
             component={Home}
             options={{ title: 'Home', headerShown: false }}
           /> */}
+        {/* <Stack.Screen 
+            name="SignUp"
+            component={SignUp}
+            options={{ title: 'Sign Up', headerShown: false }}
+          />
         <Stack.Screen 
             name="GroupChatPage"
             component={GroupChatPage}
@@ -56,7 +62,7 @@ function App(): React.JSX.Element {
             name="Camera"
             component={Camera}
             options={{ title: 'Camera', headerShown: false }}
-          />
+          /> */}
         <Stack.Screen 
             name="Profile"
             options={{ title: 'Profile', headerShown: false }}

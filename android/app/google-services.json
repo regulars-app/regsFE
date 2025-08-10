@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "21743597469",
+    "firebase_url": "https://regulars-a911e-default-rtdb.firebaseio.com",
+    "project_id": "regulars-a911e",
+    "storage_bucket": "regulars-a911e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21743597469:android:86d9c6a67d4e83ef1ce174",
+        "android_client_info": {
+          "package_name": "com.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21743597469-i664c0v4ut7fr38iu2ein34m0av4aeft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.frontend",
+            "certificate_hash": "3f6135198e24a20b8bd43148f84b428e01ec8da1"
+          }
+        },
+        {
+          "client_id": "21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf61b4gDzYdxIss4ilpkrJvpf95Rs_O6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21743597469:android:e59f26771a07190e1ce174",
+        "android_client_info": {
+          "package_name": "com.regsfeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf61b4gDzYdxIss4ilpkrJvpf95Rs_O6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

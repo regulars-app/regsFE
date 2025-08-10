@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ConfirmSymbol from './ConfirmSymbol';
+import CancelSymbol from './CancelSymbol';
 
-const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, newMessage = false, onPress }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, removeable = false, onRemove, newMessage = false, onPress }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -22,6 +23,9 @@ const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, se
       activeOpacity={0.8}
     >
       {newMessage && <View style={styles.newMessageIndicator} />}
+      {removeable && <TouchableOpacity style={styles.removeIndicator} onPress={onRemove}>
+        <CancelSymbol size={10} />
+      </TouchableOpacity>}
       <View style={[styles.outer, dynamicStyles.outer]}>
         <Image
           source={{ uri: imageURL }}
@@ -90,10 +94,17 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     zIndex: 2,
-    width: 10,
-    height: 10,
     backgroundColor: '#F9C7C5',
     borderRadius: 100,
+  },
+  removeIndicator: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    backgroundColor: '#F9C7C5',
+    borderRadius: 100,
+    padding: 5,
   },
   footer: {
     marginTop: -7,

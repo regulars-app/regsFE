@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import GlassCard from './GlassCard';
 import AddFriendItem from './AddFriendItem';
 
-const AddFriendsView = ({height, potentialFriends, style}) => {
+const AddFriendsView = ({height, potentialFriends, style, type="request", onToggleFriend, selectedMembers = []}) => {
     const [requestedFriends, setRequestedFriends] = useState({});
+    const [addedFriends, setAddedFriends] = useState({});
+
+    // Update addedFriends state when selectedMembers changes
+    useEffect(() => {
+        const newAddedFriends = {};
+        potentialFriends.forEach((friend, index) => {
+            newAddedFriends[index] = selectedMembers.some(member => member.id === friend.id);
+        });
+        setAddedFriends(newAddedFriends);
+    }, [selectedMembers, potentialFriends]);
 
     const handleToggleRequest = (index) => {
         setRequestedFriends(prev => ({
             ...prev,
             [index]: !prev[index]
         }));
+    };
+
+    const handleToggleAdd = (index) => {
+        const friend = potentialFriends[index];
+        const isCurrentlyAdded = addedFriends[index] || false;
+        
+        // Toggle the local state
+        setAddedFriends(prev => ({
+            ...prev,
+            [index]: !isCurrentlyAdded
+        }));
+        
+        // Notify parent component
+        if (onToggleFriend) {
+            onToggleFriend(friend, !isCurrentlyAdded);
+        }
     };
 
     const dynamicStyles = {
@@ -28,7 +54,10 @@ const AddFriendsView = ({height, potentialFriends, style}) => {
                             key={index} 
                             name={friend.name} 
                             requested={requestedFriends[index] || false}
+                            added={addedFriends[index] || false}
                             onToggle={() => handleToggleRequest(index)}
+                            onToggleAdd={() => handleToggleAdd(index)}
+                            type={type}
                         />
                     ))}
                 </ScrollView>

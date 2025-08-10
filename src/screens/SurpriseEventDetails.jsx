@@ -108,7 +108,7 @@ const SurpriseEventDetails = () => {
       profileListCard: {
         width: '90%',
         marginTop: 20,
-        height: 220
+        height: 220,
       },
       backButton: {
         position: 'absolute',

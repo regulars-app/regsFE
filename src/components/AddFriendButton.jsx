@@ -3,16 +3,23 @@ import {View, StyleSheet, Text} from 'react-native';
 import AddSymbol from './AddSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const AddFriendButton = ({style, requested = false}) => {
+const AddFriendButton = ({style, type="request", requested = false, added = false, onToggleAdd = () => {}}) => {
     return (
         <View style={[styles.container, style]}>
-            {requested ? <View style={styles.overlay}></View> : null}
-                {requested ? 
+            {requested || added ? <View style={styles.overlay}></View> : null}
+                {type === "request" && requested ? 
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Requested</Text>
                         <ConfirmSymbol style={styles.confirmSymbol} size={18}/>
                     </View> :
+                    
+                type === "add" && added ? 
                     <View style={styles.button}>
+                        <Text style={styles.buttonText}>Added</Text>
+                        <ConfirmSymbol style={styles.confirmSymbol} size={18}/>
+                    </View> 
+                    : 
+                    <View style={styles.button} onPress={onToggleAdd}>
                         <Text style={styles.buttonText}>Add</Text>
                         <AddSymbol size={25}/>
                     </View>}
