@@ -18,11 +18,15 @@ import Popup from '../components/Popup';
 import PlacePopup from '../popups/PlacePopup';
 import AvailabilityPopup from '../popups/AvailabilityPopup';
 import PlaceSymbol from '../components/PlaceSymbol';
+import GlassCardButton from '../components/GlassCardButton';
+import CreateGroupPopup from '../popups/CreateGroupPopup';
 
-const Home = () => {
+const Home = ({navigation}) => {
+    
 
     const [placePopupVisible, setPlacePopupVisible] = useState(false);
-    const [availabilityPopupVisible, setAvailabilityPopupVisible] = useState(true);
+    const [availabilityPopupVisible, setAvailabilityPopupVisible] = useState(false);
+    const [createGroupPopupVisible, setCreateGroupPopupVisible] = useState(false);
 
     const mapImage = require('../images/map.png');
 
@@ -73,49 +77,56 @@ const Home = () => {
                     onClose={() => setAvailabilityPopupVisible(false)}
                 />
             </Popup>
+            <Popup showPopup={createGroupPopupVisible} onClose={() => setCreateGroupPopupVisible(false)}>
+                <CreateGroupPopup 
+                    onClose={() => setCreateGroupPopupVisible(false)}
+                />
+            </Popup>
             <View style={styles.header}>
                 <SearchBar style={styles.searchBar}/>
-                <ProfilePic size={60} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                <TouchableOpacity style={styles.profilePic} onPress={() => navigation.navigate('Profile')}>
+                    <ProfilePic size={60} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                </TouchableOpacity>
             </View>
             <View style={styles.content}>
                 <Image source={mapImage} style={styles.mapImage} />
-                <TouchableOpacity style={styles.meetupsButton}>
+                <TouchableOpacity style={styles.meetupsButton} onPress={() => navigation.navigate('AllMeetups')}>
                     <GlassCard style={styles.buttonGlassCard}>
                         <MeetupSymbol size={25} />
                     </GlassCard>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addPlaceButton}>
+                <TouchableOpacity style={styles.addPlaceButton} onPress={() => navigation.navigate('AddPlace')}>
                     <GlassCard style={styles.buttonGlassCard}>
                         <AddPlaceSymbol size={35} style={{paddingTop: 6}}/>
                     </GlassCard>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cameraButton}>
+                <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
                     <GlassCard style={styles.buttonGlassCard}>
                         <CameraSymbol size={30} />
                     </GlassCard>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.newMeetupButton}>
+                <TouchableOpacity style={styles.newMeetupButton} onPress={() => navigation.navigate('NewMeetupDetails')}>
                     <GlassCard style={styles.buttonGlassCard}>
                         <NewMeetupSymbol size={30} />
                     </GlassCard>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.memoriesButton}>
+                <TouchableOpacity style={styles.memoriesButton} onPress={() => navigation.navigate('Memories')}>
                     <GlassCard style={styles.buttonGlassCard}>
                         <GallerySymbol size={30} />
                     </GlassCard>
                 </TouchableOpacity>
                 <View style={styles.sideButtons}>
-                    <TouchableOpacity style={styles.availabilityButton}>
-                        <GlassCard style={styles.buttonGlassCard}>
-                            <DiarySymbol size={30} />
-                        </GlassCard>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dailyDiaryButton}>
+                    <TouchableOpacity style={styles.availabilityButton} onPress={() => {setAvailabilityPopupVisible(true)}}>
                         <GlassCard style={styles.buttonGlassCard}>
                             <CalendarSymbol size={30} />
                         </GlassCard>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.placeButton}>
+                    <TouchableOpacity style={styles.dailyDiaryButton} onPress={() => navigation.navigate('DailyDiaryPosting')}>
+                        <GlassCard style={styles.buttonGlassCard}>
+                            <DiarySymbol size={30} />
+                        </GlassCard>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.placeButton} onPress={() => {setPlacePopupVisible(true)}}>
                         <GlassCard style={styles.buttonGlassCard}>
                             <PlaceSymbol size={30} />
                         </GlassCard>
@@ -134,6 +145,7 @@ const Home = () => {
                                 </View>
                             </GlassCard>
                     ))}
+                    <GlassCardButton style={styles.createGroupButton} type="addFriend" text="Create Group" onPress={() => setCreateGroupPopupVisible(true)}/>
                 </ScrollView>
             </View>
         </View>
@@ -263,14 +275,22 @@ const styles = StyleSheet.create({
     },
     groupsScrollView: {
         position: 'absolute',
-        bottom: 30,
+        bottom: 25,
         right: 20,
         maxHeight: 172,
+        maxWidth: 185,
     },
     groupsScrollViewContent: {
         gap: 10,
-        paddingBottom: 10,
         paddingTop: 2,
+        paddingBottom: 10,
+    },
+    createGroupButton: {
+        height: 40,
+        width: 160,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     groupCardContainer: {
         borderRadius: 50,

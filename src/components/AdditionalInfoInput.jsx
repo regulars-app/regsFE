@@ -2,19 +2,20 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput} from 'react-native';
 import GlassCard from './GlassCard';
 
-const AdditionalInfoInput = ({style, placeholder, onChangeText, value, secureTextEntry}) => {
+const AdditionalInfoInput = ({style, placeholder, onChangeText, value, secureTextEntry, multiline=true, maxLength=null}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
                 <TextInput 
                     style={styles.input} 
                     placeholder={placeholder}
-                    multiline={true}
+                    multiline={multiline}
                     fontWeight="600"
                     placeholderTextColor="rgba(110, 110, 110, 0.5)"
                     onChangeText={onChangeText}
                     value={value}
                     secureTextEntry={secureTextEntry}
+                    maxLength={maxLength}
                 />
             </View>
         </GlassCard>

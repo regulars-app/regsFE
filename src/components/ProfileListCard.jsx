@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
           
         },
         scrollViewContent: {
-            paddingBottom: 20,
+            
         },
         profileList: {
             flexDirection: 'row',

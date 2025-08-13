@@ -4,29 +4,16 @@ import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
 import ProfilePic from '../components/ProfilePic';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
-import { signUp } from '../Services/auth';
+import { signIn } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import GoogleSymbol from '../components/GoogleSymbol';
 
-const SignUp = () => {
-
-  const [date, setDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
-
-  const handleDateChange = (event, selectedDate) => {
-    setShowPicker(false);
-    if (selectedDate) {
-      setDate(selectedDate);
-    }
-  };
+const SignIn = () => {
 
 
   const [formData, setFormData] = useState({
-      name: '',
       email: '',
       password: '',
-      confirmPassword: ''
   });
 
     const handleInputChange = (field, value) => {
@@ -37,21 +24,13 @@ const SignUp = () => {
     };
 
     const handleConfirm = async () => {
-        await signUp(formData.email, formData.password);
+        await signIn(formData.email, formData.password);
   
         // Validate the form data
-        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+        if (!formData.email || !formData.password) {
             alert('Please fill in all fields');
             return;
         }
-        
-        if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match');
-            return;
-        }
-        
-   
-      
     };
   
     return (
@@ -60,14 +39,7 @@ const SignUp = () => {
           <BackButton size={30} style={styles.backButton} />
         </View>
         <View style={styles.bodyContent}>
-            <ProfilePic size={120} style={styles.profilePic} addProfilePic={true} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
-            <AdditionalInfoInput 
-                style={styles.additionalInfoInput} 
-                multiline={false}
-                placeholder="Name"
-                value={formData.name}
-                onChangeText={(value) => handleInputChange('name', value)}
-            />
+            <ProfilePic size={120} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
             <AdditionalInfoInput 
                 style={styles.additionalInfoInput} 
                 multiline={false}
@@ -76,20 +48,6 @@ const SignUp = () => {
                 value={formData.email}
                 onChangeText={(value) => handleInputChange('email', value)}
             />
-            <View style={styles.dobContainer}>
-              <AdditionalInfoDisplay style={styles.dobLabel} text="Date of Birth:"/>
-              <TouchableOpacity style={styles.dobDisplay} onPress={() => setShowPicker(true)}>
-                <AdditionalInfoDisplay style={styles.dobDisplayText} text={date.toLocaleDateString()} />
-                {showPicker && (
-                  <DateTimePicker
-                    value={date}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
-                  />
-                )}
-              </TouchableOpacity>
-            </View>
             <AdditionalInfoInput 
                 style={styles.additionalInfoInput} 
                 multiline={false}
@@ -99,24 +57,21 @@ const SignUp = () => {
                 onChangeText={(value) => handleInputChange('password', value)}
                 secureTextEntry={true}
             />
-            <AdditionalInfoInput 
-                style={styles.additionalInfoInput} 
-                multiline={false}
-                maxLength={30}
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChangeText={(value) => handleInputChange('confirmPassword', value)}
-                secureTextEntry={true}
-            />
             <TouchableOpacity onPress={() => {}}>
-                <AdditionalInfoDisplay style={styles.googleSignUp} text="Sign up with Google">
+                <AdditionalInfoDisplay style={styles.googleSignIn} text="Sign in with Google">
                     <GoogleSymbol size={20}/>
                 </AdditionalInfoDisplay>
             </TouchableOpacity>
-        </View>
+        </View>     
         <View style={styles.footer}>
+        <MainButton 
+                text="Sign Up" 
+                color="yellow" 
+                style={styles.signUpButton}
+                onPress={() => navigation.navigate('SignUp')}
+            />    
             <MainButton 
-                text="Confirm" 
+                text="Login" 
                 color="green" 
                 type="confirm" 
                 style={styles.confirmButton}
@@ -162,38 +117,25 @@ const SignUp = () => {
         left: 20,
       },
       profilePic: {
-        marginBottom: 60,
+        marginTop: 100,
+        marginBottom: 120,
       },
       additionalInfoInput: {
         marginTop: 20,
         width: '80%',
       },
-      dobContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 20,
-        width: '80%',
-        marginTop: 20,
-      },
-      dobLabel: {
-        width: 130,
-      },
-      dobDisplay: {
-        width: 115,
-      },
-      dobDisplayText: {
-        width: 120,
-        backgroundColor: '#F2FFF6',
-      },
-      googleSignUp: {
+      googleSignIn: {
         marginTop: 20,
         width: 210,
       },
       confirmButton: {
         position: 'absolute',
-        right: 20,
+        right: 30,
+      },
+      signUpButton: {
+        position: 'absolute',
+        left: 30,
       },
   });
   
-  export default SignUp;
+  export default SignIn;

@@ -2,11 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView} from 'react-native';
 import GlassCard from './GlassCard';
 
-const AdditionalInfoDisplay = ({style, text}) => {
+const AdditionalInfoDisplay = ({style, text, children}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={styles.contentContainer}>
+                    {children && children}
                 <Text style={styles.text} multiline={true}>
                     {text}
                 </Text>
@@ -27,6 +28,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingHorizontal: 20,
         paddingVertical: 10,
+    },
+    contentContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
     },
     text: {
    

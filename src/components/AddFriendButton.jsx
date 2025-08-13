@@ -21,7 +21,7 @@ const AddFriendButton = ({style, type="request", requested = false, added = fals
                     : 
                     <View style={styles.button} onPress={onToggleAdd}>
                         <Text style={styles.buttonText}>Add</Text>
-                        <AddSymbol size={25}/>
+                        <AddSymbol size={20}/>
                     </View>}
         </View>
     );
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',
+        gap: 5,
     },
     buttonText: {
         fontSize: 12,

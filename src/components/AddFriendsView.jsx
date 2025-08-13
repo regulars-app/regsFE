@@ -9,12 +9,15 @@ const AddFriendsView = ({height, potentialFriends, style, type="request", onTogg
 
     // Update addedFriends state when selectedMembers changes
     useEffect(() => {
-        const newAddedFriends = {};
-        potentialFriends.forEach((friend, index) => {
-            newAddedFriends[index] = selectedMembers.some(member => member.id === friend.id);
-        });
-        setAddedFriends(newAddedFriends);
-    }, [selectedMembers, potentialFriends]);
+        // Only run this effect if we have the required props for group creation
+        if (onToggleFriend && selectedMembers) {
+            const newAddedFriends = {};
+            potentialFriends.forEach((friend, index) => {
+                newAddedFriends[index] = selectedMembers.some(member => member.id === friend.id);
+            });
+            setAddedFriends(newAddedFriends);
+        }
+    }, [selectedMembers, potentialFriends, onToggleFriend]);
 
     const handleToggleRequest = (index) => {
         setRequestedFriends(prev => ({

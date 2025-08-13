@@ -12,6 +12,8 @@ async function signUp(email, password) {
 
 async function signIn(email, password) {
     let authUser = await auth().signInWithEmailAndPassword(email, password);
+    let user = await initConnectyCube();
+    let chatUser = await authenticateChatUser(user);
     return authUser;
 }
 

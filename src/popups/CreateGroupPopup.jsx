@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'rea
 import AddFriendsView from '../components/AddFriendsView';
 import MainButton from '../components/MainButton';
 import ProfileListCard from '../components/ProfileListCard';
+import AdditionalInfoInput from '../components/AdditionalInfoInput';
 
 const CreateGroupPopup = ({onClose}) => {
 
@@ -45,6 +46,7 @@ const CreateGroupPopup = ({onClose}) => {
 
     return (
         <View style={styles.container}>
+            <AdditionalInfoInput style={styles.additionalInfoInput} placeholder={"Give your group a name..."} multiline={false} maxLength={30}/>
             <ProfileListCard 
                 style={styles.profileListCard} 
                 clickable={false} 

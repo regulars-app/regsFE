@@ -7,11 +7,13 @@ import AddFriendSymbol from './AddFriendSymbol';
 import GroupSymbol from './GroupSymbol';
 import RestaurantSymbol from './RestaurantSymbol';
 import InterestsSymbol from './InterestsSymbol';
+import NewMeetupSymbol from './NewMeetupSymbol';
+import PlaceSymbol from './PlaceSymbol';
 
-const GlassCardButton = ({style, type, text}) => {
+const GlassCardButton = ({style, type, text, onPress}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
-            <View>
+            <TouchableOpacity onPress={onPress}>
             {type === 'activity' && <View style={styles.container}>
                 <Text style={styles.text}>{text}</Text>
                 <ActivitySymbol size={20} />
@@ -36,7 +38,15 @@ const GlassCardButton = ({style, type, text}) => {
                 <Text style={styles.text}>{text}</Text>
                 <InterestsSymbol size={20} />
             </View>}
-            </View>
+            {type === 'newMeetup' && <View style={styles.container}>
+                <Text style={styles.text}>{text}</Text>
+                <NewMeetupSymbol size={30} />
+            </View>}
+            {type === 'place' && <View style={styles.container}>
+                <Text style={styles.text}>{text}</Text>
+                <PlaceSymbol size={25} />
+            </View>}
+            </TouchableOpacity>
         </GlassCard>
     );
 };

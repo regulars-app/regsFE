@@ -39,10 +39,10 @@ const PlacePopup = ({onClose}) => {
             <ProfileListCard style={styles.profileListCard} clickable={false} selectable={false} showButton={false} type="members" title="Associated Groups?" members={members}/>
             <View style={styles.glassButtonsContainer}>
                 <TouchableOpacity style={styles.glassButton}>
-                    <GlassCardButton type="myFriends" text={"My Friends"}/> 
+                    <GlassCardButton type="place" text={"View Place"}/> 
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.glassButton}>
-                    <GlassCardButton type="addFriend" text={"Add Friend"}/> 
+                    <GlassCardButton type="newMeetup" text={"New Meetup"}/> 
                 </TouchableOpacity>
             </View>
         </View>

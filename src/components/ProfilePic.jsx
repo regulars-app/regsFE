@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ConfirmSymbol from './ConfirmSymbol';
 import CancelSymbol from './CancelSymbol';
+import AddSymbol from './AddSymbol';
 
-const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, removeable = false, onRemove, newMessage = false, onPress }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, removeable = false, onRemove, newMessage = false, addProfilePic = false, onPress }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -22,6 +23,11 @@ const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, se
       onPress={selectable ? onPress : undefined}
       activeOpacity={0.8}
     >
+      {addProfilePic && <View style={styles.addProfilePic}>
+          <TouchableOpacity style={styles.addButton}>
+            <AddSymbol size={30} />
+          </TouchableOpacity>
+        </View>}
       {newMessage && <View style={styles.newMessageIndicator} />}
       {removeable && <TouchableOpacity style={styles.removeIndicator} onPress={onRemove}>
         <CancelSymbol size={10} />
@@ -105,6 +111,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9C7C5',
     borderRadius: 100,
     padding: 5,
+  },
+  addProfilePic: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+    borderRadius: 100,
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButton: {
+    backgroundColor: 'white',
+    borderRadius: 100,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   footer: {
     marginTop: -7,
