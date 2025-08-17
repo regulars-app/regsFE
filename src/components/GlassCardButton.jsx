@@ -13,7 +13,7 @@ import PlaceSymbol from './PlaceSymbol';
 const GlassCardButton = ({style, type, text, onPress}) => {
     return (
         <GlassCard style={[styles.glassCard, style]}>
-            <TouchableOpacity onPress={onPress}>
+            <View>
             {type === 'activity' && <View style={styles.container}>
                 <Text style={styles.text}>{text}</Text>
                 <ActivitySymbol size={20} />
@@ -46,7 +46,7 @@ const GlassCardButton = ({style, type, text, onPress}) => {
                 <Text style={styles.text}>{text}</Text>
                 <PlaceSymbol size={25} />
             </View>}
-            </TouchableOpacity>
+            </View>
         </GlassCard>
     );
 };

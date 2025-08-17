@@ -6,8 +6,11 @@ import { useState } from 'react';
 import GroupNav from '../components/GroupNav';
 import MeetupView from '../components/MeetupView';
 import MainButton from '../components/MainButton';
+import { useNavigation } from '@react-navigation/native';
 
 const AllMeetups = () => {
+
+    const navigation = useNavigation();
 
     const meetupViewExampleData = [
         {
@@ -65,7 +68,7 @@ const AllMeetups = () => {
         <View style={styles.meetupViewSeparator} />
       </View>
       <View style={styles.footer}>
-        <MainButton text="Create Meetup" color='green' type='add' style={styles.createMeetupButton}/>
+        <MainButton text="Create Meetup" color='green' type='add' style={styles.createMeetupButton} onPress={() => navigation.navigate('NewMeetupDetails')}/>
       </View>
     </View>
   );

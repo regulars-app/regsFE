@@ -5,8 +5,11 @@ import SearchBar from '../components/SearchBar';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import ProfileListCard from '../components/ProfileListCard';
 import GlassCardButton from '../components/GlassCardButton';
+import { useNavigation } from '@react-navigation/native';
 
 const PlacePopup = ({onClose}) => {
+
+    const navigation = useNavigation();
 
     const members = [
         { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
@@ -38,10 +41,10 @@ const PlacePopup = ({onClose}) => {
             <AdditionalInfoDisplay style={styles.additionalInfo} text="Bring crisps if you have them!Bring crisps if you have them!Bring c if you have them!Bring c if you have them!Bring c if you have them!Bring crisps if you have them!Bring crisps if you have them!Bring crisps if you have them!"/>
             <ProfileListCard style={styles.profileListCard} clickable={false} selectable={false} showButton={false} type="members" title="Associated Groups?" members={members}/>
             <View style={styles.glassButtonsContainer}>
-                <TouchableOpacity style={styles.glassButton}>
+                <TouchableOpacity style={styles.glassButton} onPress={() => navigation.navigate('PlacePage')}>
                     <GlassCardButton type="place" text={"View Place"}/> 
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.glassButton}>
+                <TouchableOpacity style={styles.glassButton} onPress={() => navigation.navigate('NewMeetupDetails')}>
                     <GlassCardButton type="newMeetup" text={"New Meetup"}/> 
                 </TouchableOpacity>
             </View>

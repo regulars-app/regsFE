@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import ChatSymbol from './ChatSymbol';
 
-const ChatButton = ({style, size}) => {
+const ChatButton = ({style, size, onPress}) => {
     const dynamicStyle = {
         chatButton: {
             width: size,
@@ -10,7 +10,7 @@ const ChatButton = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.chatButton, dynamicStyle.chatButton, style]}>
+    <TouchableOpacity style={[styles.chatButton, dynamicStyle.chatButton, style]} onPress={onPress}>
         <ChatSymbol size={'70%'} />
     </TouchableOpacity>
   );

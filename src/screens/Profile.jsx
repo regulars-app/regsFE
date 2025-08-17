@@ -13,14 +13,18 @@ import MyFriendsPopup from '../popups/MyFriendsPopup';
 import MyGroupsPopup from '../popups/MyGroupsPopup';
 import SettingsPopup from '../popups/SettingsPopup';
 import CreateGroupPopup from '../popups/CreateGroupPopup';
+import PlacePopup from '../popups/PlacePopup';
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = ({name, username}) => {
-
+  
+    const navigation = useNavigation();
     const [showAddFriendsPopup, setShowAddFriendsPopup] = useState(false);
     const [showMyFriendsPopup, setShowMyFriendsPopup] = useState(false);
     const [showMyGroupsPopup, setShowMyGroupsPopup] = useState(false);
     const [showSettingsPopup, setShowSettingsPopup] = useState(false);
     const [showCreateGroupPopup, setShowCreateGroupPopup] = useState(false);
+    const [showPlacePopup, setShowPlacePopup] = useState(false);
 
     const members = [
         { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },
@@ -73,6 +77,11 @@ const Profile = ({name, username}) => {
               onClose={() => setShowCreateGroupPopup(false)}
             />
           </Popup>
+          <Popup showPopup={showPlacePopup} onClose={() => setShowPlacePopup(false)}>
+            <PlacePopup 
+              onClose={() => setShowPlacePopup(false)}
+            />
+          </Popup>
         <View style={styles.header}>
           <BackButton size={30} style={styles.backButton} />
           <TouchableOpacity onPress={() => setShowSettingsPopup(true)} style={styles.settingsButton}>
@@ -100,19 +109,21 @@ const Profile = ({name, username}) => {
                     <GlassCardButton type="addFriend" text={"Add Friend"}/> 
                 </TouchableOpacity>
             </View>
-            <View pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup ? "none" : "auto"}>
-                <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup && !showMyGroupsPopup && !showCreateGroupPopup}/>
+            <View pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup || showPlacePopup ? "none" : "auto"}>
+                <ProfileListCard title={"My Groups"} clickable={true} selectable={false} showButton={true} type="groups" members={members} style={styles.profileListCard} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup && !showMyGroupsPopup && !showCreateGroupPopup && !showPlacePopup}/>
             </View>
-            <MapWidget width={'90%'} height={200} style={[styles.mapWidget, { pointerEvents: showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup ? "none" : "auto" }]} placeSelected={true} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup && !showMyGroupsPopup && !showCreateGroupPopup}/>
-            <View style={styles.glassButtonsContainer2} pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup ? "none" : "auto"}>
-                <TouchableOpacity style={styles.glassButton}>
+            <TouchableOpacity onPress={() => setShowPlacePopup(true)} style={styles.mapWidgetContainer}>
+                <MapWidget width={'90%'} height={200} style={[styles.mapWidget, { pointerEvents: showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup || showPlacePopup ? "none" : "auto" }]} placeSelected={true} scrollEnabled={!showAddFriendsPopup && !showMyFriendsPopup && !showSettingsPopup && !showMyGroupsPopup && !showCreateGroupPopup && !showPlacePopup}/>
+            </TouchableOpacity>
+            <View style={styles.glassButtonsContainer2} pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup || showPlacePopup ? "none" : "auto"}>
+                <TouchableOpacity style={styles.glassButton} onPress={() => navigation.navigate('EditInterestPreferences')}>
                     <GlassCardButton type="myInterests" text={"My Interests"}/> 
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.glassButton}>
+                <TouchableOpacity style={styles.glassButton} onPress={() => navigation.navigate('EditDietaryPreferences')}>
                     <GlassCardButton type="foodPreferences" text={"Food Preferences"}/> 
                 </TouchableOpacity>
             </View>
-            <View style={styles.glassButtonsContainer2} pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup ? "none" : "auto"}>
+            <View style={styles.glassButtonsContainer2} pointerEvents={showAddFriendsPopup || showMyFriendsPopup || showSettingsPopup || showMyGroupsPopup || showCreateGroupPopup || showPlacePopup ? "none" : "auto"}>
                 <TouchableOpacity onPress={() => setShowMyGroupsPopup(true)} style={styles.glassButton}>
                     <GlassCardButton type="myFriends" text={"My Groups"}/> 
                 </TouchableOpacity>
@@ -193,6 +204,11 @@ const styles = StyleSheet.create({
             marginTop: 20,
             height: 210,
             width: '90%',
+          },
+          mapWidgetContainer: {
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
           },
           mapWidget: {
             marginTop: 20,

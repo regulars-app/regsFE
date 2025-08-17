@@ -5,8 +5,11 @@ import MainButton from '../components/MainButton';
 import Countdown from '../components/Countdown';
 import ProfileListCard from '../components/ProfileListCard';
 import DiaryInput from '../components/DiaryInput';
+import { useNavigation } from '@react-navigation/native';
 
 const DailyDiaryPosting = () => {
+
+    const navigation = useNavigation();
 
     const members = [
         { id: 1, imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg' },

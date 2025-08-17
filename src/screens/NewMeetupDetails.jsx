@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
 import ProfilePic from '../components/ProfilePic';
 import MapWidget from '../components/MapWidget';
 import GlassCardButton from '../components/GlassCardButton';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
+import { useNavigation } from '@react-navigation/native';
 
 const NewMeetupDetails = () => {
+    const navigation = useNavigation();
   
     return (
         <View style={styles.container}>
@@ -27,8 +29,12 @@ const NewMeetupDetails = () => {
         <View style={styles.bodyContent}>
           <MapWidget width={'90%'} height={200} placeSelected={null}/>
           <View style={styles.glassButtonsContainer}>
-            <GlassCardButton style={{width: '40%'}} type="calendar" text={"Choose when"}/> 
-            <GlassCardButton style={{width: '40%'}} type="activity" text={"Add activity"}/> 
+            <TouchableOpacity style={{width: '40%'}} onPress={() => navigation.navigate('NewMeetupChooseDate')}>
+              <GlassCardButton style={{width: '100%'}} type="calendar" text={"Choose when"}/> 
+            </TouchableOpacity>
+            <TouchableOpacity style={{width: '40%'}} onPress={() => navigation.navigate('NewMeetupChooseActivity')}>
+              <GlassCardButton style={{width: '100%'}} type="activity" text={"Add activity"}/> 
+            </TouchableOpacity>
           </View>
           <AdditionalInfoInput style={styles.additionalInfoInput} placeholder={"Add any additional info here e.g. bring crisps etc."}/>
         </View>

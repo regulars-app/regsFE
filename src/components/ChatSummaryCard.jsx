@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import GlassCard from './GlassCard';
 import ChatButton from './ChatButton';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatSummaryCard = ({style, overallSummary, vibeSummary, personalSummary, groupID}) => {
+    const navigation = useNavigation();
     return (
         <GlassCard style={[styles.glassCard, style]}>
             <View style={styles.container}>
@@ -18,7 +20,7 @@ const ChatSummaryCard = ({style, overallSummary, vibeSummary, personalSummary, g
                         <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{personalSummary}</Text>
                     </View>
                 </View>
-                <ChatButton style={styles.chatButton} size={40} />
+                <ChatButton style={styles.chatButton} size={40} onPress={() => navigation.navigate('GroupChatPage', {groupID: groupID})}/>
             </View>
         </GlassCard>
     );

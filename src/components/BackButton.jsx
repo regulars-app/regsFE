@@ -1,8 +1,10 @@
 import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import BackSymbol from './BackSymbol';
+import { useNavigation } from '@react-navigation/native';
 
 const BackButton = ({style, size}) => {
+    const navigation = useNavigation();
     const dynamicStyle = {
         backButton: {
             width: size,
@@ -10,7 +12,7 @@ const BackButton = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.backButton, dynamicStyle.backButton, style]}>
+    <TouchableOpacity style={[styles.backButton, dynamicStyle.backButton, style]} onPress={() => navigation.goBack()}>
       <BackSymbol />
     </TouchableOpacity>
   );

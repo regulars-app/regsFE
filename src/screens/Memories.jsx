@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        backgroundColor: '#FFF6F0',
     },
     header: {
         position: 'absolute',
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
     },
     widePhotoStack: {
         marginTop: 20,
+        marginBottom: 20,
     },
     scrollView: {
         width: '100%',

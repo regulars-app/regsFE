@@ -9,9 +9,10 @@ import ActivitySymbol from './ActivitySymbol';
 import InfoSymbol from './InfoSymbol';
 import ConfirmedSymbol from './ConfirmedSymbol';
 import ProfileListCard from './ProfileListCard';
+import { useNavigation } from '@react-navigation/native';
 
 const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
-
+    const navigation = useNavigation();
     
   return(
 <View style={[styles.container, style]}>
@@ -41,7 +42,7 @@ const MeetupCard = ({datetime, activity, info, confirmed, style, members}) => {
             </View>
         </GlassCard>
         <View style={styles.meetupCardFooter}>
-            <MainButton text="Suggest" color="yellow" type="suggest" />
+            <MainButton text="Suggest" color="yellow" type="suggest" onPress={() => navigation.navigate('NewMeetupDetails', {meetup: null})}/>
             <MainButton text="Doable" color="green" type="confirm" />
         </View>
       </GlassCard>
@@ -121,7 +122,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        padding: 12,
+        paddingHorizontal: 25,
+        paddingVertical: 12,
     },
   });
 export default MeetupCard;
