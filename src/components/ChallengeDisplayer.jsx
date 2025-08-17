@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     profilePic: {
         position: 'absolute',
         top: -30,
-        right: -30,
+        right: -20,
         zIndex: 100,
     },
     glassCard: {
