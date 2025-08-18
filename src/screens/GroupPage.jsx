@@ -2,8 +2,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import BackButton from '../components/BackButton';
 import { Text } from 'react-native';
 import { Dimensions } from 'react-native';
-import { useState } from 'react';
-import GroupNav from '../components/GroupNav';
+import { useState, useEffect } from 'react';
 import ProfilePic from '../components/ProfilePic';
 import Stack from '../components/Stack';
 import ImageCard from '../components/ImageCard';
@@ -16,10 +15,17 @@ import MiniMeetupCard from '../components/MiniMeetupCard';
 import ChatSummaryCard from '../components/ChatSummaryCard';
 import ProfileListCard from '../components/ProfileListCard';
 
-const GroupPage = () => {
+const GroupPage = ({ routeParams }) => {
 
     const [showPlacesPopup, setShowPlacesPopup] = useState(false);
     const [showGroupMembersPopup, setShowGroupMembersPopup] = useState(false);
+
+    // Handle route params
+    useEffect(() => {
+        if (routeParams?.upcomingSurpriseEvent) {
+            console.log('Upcoming surprise event:', routeParams.upcomingSurpriseEvent);
+        }
+    }, [routeParams]);
 
     const photoStackWideExampleData = [
         {
@@ -115,7 +121,7 @@ const GroupPage = () => {
                 renderItem={({item}) => <ImageCard imageURL={item.imageURL} height={150} width={150} />} 
             />
             <TouchableOpacity onPress={() => setShowPlacesPopup(true)}>
-                <MapWidget placeSelected={true} style={[styles.mapWidget, { pointerEvents: showPlacesPopup || showGroupMembersPopup ? "none" : "auto" }]} scrollEnabled={!showPlacesPopup && !showGroupMembersPopup} />
+                <MapWidget placeSelected={true} style={styles.mapWidget} />
             </TouchableOpacity>
         </View>
         <View style={styles.row}>
@@ -124,11 +130,8 @@ const GroupPage = () => {
         </View>
         <ChatSummaryCard style={styles.chatSummaryCard} overallSummary="This is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat. It is a summary of the overall vibe of the chat." vibeSummary="This is a summary of the vibe of the chat. It is a summary of the vibe of the chat. It is a summary of the vibe of the chat." personalSummary="This is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat. It is a summary of the personal vibe of the chat." groupID="1" />
         <TouchableOpacity onPress={() => setShowGroupMembersPopup(true)}>
-            <ProfileListCard style={styles.profileListCard} clickable={true} selectable={false} showButton={true} type="members" title={false} members={members} onPress={() => setShowGroupMembersPopup(true)} scrollEnabled={!showGroupMembersPopup && !showPlacesPopup}/>
+            <ProfileListCard style={styles.profileListCard} clickable={true} selectable={false} showButton={true} type="members" title={false} members={members} onPress={() => setShowGroupMembersPopup(true)} />
         </TouchableOpacity>
-      </View>
-      <View style={styles.footer}>
-        <GroupNav style={[styles.groupNav, { pointerEvents: showPlacesPopup || showGroupMembersPopup ? "none" : "auto" }]} scrollEnabled={!showPlacesPopup && !showGroupMembersPopup}/>
       </View>
     </View>
   );
@@ -147,19 +150,6 @@ const styles = StyleSheet.create({
     height: 75,
     alignItems: 'center',
   },
-  footer: {
-    position: 'absolute',
-    width: '100%',
-    height: 120,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-  },
   bodyContent: {
     marginTop: 75,
     marginBottom: 120,
@@ -168,6 +158,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
   },
   profilePic: {
     position: 'absolute',
@@ -208,10 +203,6 @@ const styles = StyleSheet.create({
     height: 135,
     width: '85%',
     marginTop: 10,
-  },
-  groupNav: {
-    position: 'absolute',
-    bottom: 20,
   },
 });
 

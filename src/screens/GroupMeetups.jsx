@@ -1,15 +1,13 @@
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import BackButton from '../components/BackButton';
 import { Text } from 'react-native';
 import { Dimensions } from 'react-native';
-import { useState } from 'react';
-import GroupNav from '../components/GroupNav';
+import { useState, useEffect } from 'react';
+import BackButton from '../components/BackButton';
 import MeetupView from '../components/MeetupView';
 import MainButton from '../components/MainButton';
 
-const GroupMeetups = () => {
-
-    const meetupViewExampleData = [
+const GroupMeetups = ({ routeParams }) => {
+    const [meetupViewExampleData, setMeetupViewExampleData] = useState([
         {
           id: '1',
           name: 'Football',
@@ -50,8 +48,15 @@ const GroupMeetups = () => {
           info: 'Don\'t forget your favorite game!',
           confirmed: '',
         },
-      ];
+      ]);
 
+    // Handle upcoming meetup data from route params
+    useEffect(() => {
+        if (routeParams?.upcomingMeetup) {
+            // If there's an upcoming meetup, you could highlight it or show it differently
+            console.log('Upcoming meetup:', routeParams.upcomingMeetup);
+        }
+    }, [routeParams]);
 
   return (
     <View style={styles.container}>
@@ -64,10 +69,8 @@ const GroupMeetups = () => {
         <MeetupView style={styles.meetupView} type="meetup" meetups={meetupViewExampleData} screen="group" />
         <View style={styles.meetupViewSeparator} />
       </View>
-      <View style={styles.footer}>
-        <MainButton text="Create Meetup" color='green' type='add' style={styles.createMeetupButton}/>
-        <GroupNav style={styles.groupNav}/>
-      </View>
+      <View style={styles.footer} />
+      <MainButton text="Create Meetup" color='green' type='add' style={styles.createMeetupButton}/>
     </View>
   );
 };
@@ -85,10 +88,19 @@ const styles = StyleSheet.create({
     height: 75,
     alignItems: 'center',
   },
+  bodyContent: {
+    marginTop: 75,
+    marginBottom: 150,
+    overflow: 'hidden',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
   footer: {
     position: 'absolute',
     width: '100%',
-    height: 210,
+    height: 0,
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -98,17 +110,10 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
   },
-  bodyContent: {
-    marginTop: 75,
-    marginBottom: 210,
-    overflow: 'hidden',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  surpriseMeetupView: {
-    height: 240,
+  createMeetupButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 140,
   },
   meetupViewSeparator: {
     width: '70%',
@@ -116,17 +121,13 @@ const styles = StyleSheet.create({
     borderColor: '#6E6E6E',
     marginVertical: 10,
   },
+  surpriseMeetupView: {
+    width: '90%',
+    height: 240,
+  },
   meetupView: {
+    width: '90%',
     height: 350,
-  },
-  createMeetupButton: {
-    position: 'absolute',
-    right: 40,
-    top: 0,
-  },
-  groupNav: {
-    position: 'absolute',
-    bottom: 20,
   },
 });
 

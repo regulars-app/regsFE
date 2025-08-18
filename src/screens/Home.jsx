@@ -136,12 +136,12 @@ const Home = ({navigation}) => {
                     {groups.map((group, index) => (
                             <GlassCard style={styles.groupCardContainer} key={index}>
                                 <View style={styles.groupCard} key={index}>
-                                    <TouchableOpacity style={styles.profilePicTouchableOpacity} onPress={() => navigation.navigate('GroupPage', {group: group})}>
+                                    <TouchableOpacity style={styles.profilePicTouchableOpacity} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 0})}>
                                         <ProfilePic size={40} imageURL={group.imageURL}/>
                                     </TouchableOpacity>
-                                    {group.upcomingMeetup && <TouchableOpacity style={styles.groupUpcomingMeetup} onPress={() => navigation.navigate('UpcomingMeetupDetails', {group: group})}><MeetupSymbol size={23} /></TouchableOpacity>}
-                                    {group.upcomingSurpriseEvent && <TouchableOpacity style={styles.groupUpcomingSurpriseEvent} onPress={() => navigation.navigate('UpcomingSurpriseEvent', {group: group})}><SurpriseEventSymbol size={30} /></TouchableOpacity>}
-                                    {group.challenge && <TouchableOpacity style={styles.groupChallenge} onPress={() => navigation.navigate('DailyChallengeView', {group: group})}>{group.challenge === 'smart' ? <SmartSymbol size={30} /> : group.challenge === 'wild' ? <WildSymbol size={30} /> : group.challenge === 'health' ? <HealthSymbol size={30} /> : null}</TouchableOpacity>}
+                                    {group.upcomingMeetup && <TouchableOpacity style={styles.groupUpcomingMeetup} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 1, upcomingMeetup: group.upcomingMeetup})}><MeetupSymbol size={23} /></TouchableOpacity>}
+                                    {group.upcomingSurpriseEvent && <TouchableOpacity style={styles.groupUpcomingSurpriseEvent} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 0, upcomingSurpriseEvent: group.upcomingSurpriseEvent})}><SurpriseEventSymbol size={30} /></TouchableOpacity>}
+                                    {group.challenge && <TouchableOpacity style={styles.groupChallenge} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 2})}>{group.challenge === 'smart' ? <SmartSymbol size={30} /> : group.challenge === 'wild' ? <WildSymbol size={30} /> : group.challenge === 'health' ? <HealthSymbol size={30} /> : null}</TouchableOpacity>}
                                 </View>
                             </GlassCard>
                     ))}

@@ -1,19 +1,18 @@
-import {React, useState } from 'react';
+import {React, useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import BackButton from '../components/BackButton';
 import { Text } from 'react-native';
-import GroupNav from '../components/GroupNav';
+import BackButton from '../components/BackButton';
 import MoreSymbol from '../components/MoreSymbol';
 import Messenger from '../components/Messenger';
 import DirectMessagesWidget from '../components/DirectMessagesWidget';
 import Popup from '../components/Popup';
 import DirectMessagerPopup from '../popups/DirectMessagerPopup';
 
-const GroupChatPage = () => {
+const GroupChatPage = ({ routeParams }) => {
     const [showDirectMessagerPopup, setShowDirectMessagerPopup] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
 
-    const groupName = 'Ealing Divas';
+    const groupName = routeParams?.group?.name || 'Ealing Divas';
 
     const messagesMainDemoData = [
         {
@@ -45,6 +44,13 @@ const GroupChatPage = () => {
         },
       ];      
 
+    // Handle route params
+    useEffect(() => {
+        if (routeParams?.groupID) {
+            console.log('Group ID:', routeParams.groupID);
+        }
+    }, [routeParams]);
+
   const handleMemberPress = (member) => {
     setSelectedMember(member);
     setShowDirectMessagerPopup(true);
@@ -71,9 +77,6 @@ const GroupChatPage = () => {
         <Text style={styles.groupName}>{groupName}</Text>
         <Messenger style={styles.messenger} messages={messagesMainDemoData} paddingHorizontal={20}/>
       </View>
-      <View style={styles.footer}>
-        <GroupNav style={styles.groupNav}/>
-      </View>
     </View>
   );
 };
@@ -91,13 +94,14 @@ const styles = StyleSheet.create({
     height: 75,
     alignItems: 'center',
   },
-  footer: {
-    position: 'absolute',
-    width: '100%',
-    height: 130,
-    bottom: 0,
+  bodyContent: {
+    marginTop: 75,
+    marginBottom: 120,
+    overflow: 'hidden',
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
   },
   backButton: {
     position: 'absolute',
@@ -109,16 +113,9 @@ const styles = StyleSheet.create({
     top: 20,
     right: 20,
   },
-  bodyContent: {
-    marginTop: 75,
-    marginBottom: 130,
-    overflow: 'hidden',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
   directMessagesWidget: {
+    width: '90%',
+    marginTop: 20,
     marginBottom: 10,
   },
   groupName: {
@@ -128,12 +125,12 @@ const styles = StyleSheet.create({
     color: '#6E6E6E',
   },
   messenger: {
+    width: '100%',
     flex: 1,
     paddingHorizontal: 20,
   },
-  groupNav: {
-    position: 'absolute',
-    bottom: 20,
+  popup: {
+    height: '90%',
   },
 });
 

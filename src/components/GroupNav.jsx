@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
 import MeetupSymbol from './MeetupSymbol';
@@ -6,24 +6,34 @@ import ChallengeSymbol from './ChallengeSymbol';
 import ChatSymbol from './ChatSymbol';
 import GlassCard from './GlassCard';
 
-const GroupNav = ({style, scrollEnabled = true}) => {
-    const [selectedIndex, setSelectedIndex] = useState(3);
+const GroupNav = ({ style, selectedIndex = 0, onTabChange }) => {
     return (
-        <GlassCard style={[styles.groupNav, style]} scrollEnabled={scrollEnabled}>
+        <GlassCard style={[styles.groupNav, style]}>
             <View style={styles.groupNavItemsContainer}>
-                <TouchableOpacity style={[styles.groupNavItem, selectedIndex === 1 && styles.selectedNavItem]} onPress={() => setSelectedIndex(1)}>
+                <TouchableOpacity 
+                    style={[styles.groupNavItem, selectedIndex === 0 && styles.selectedNavItem]} 
+                    onPress={() => onTabChange(0)}
+                >
                     <ProfilePic size={45} footer="" imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 </TouchableOpacity>
-                
-                <TouchableOpacity style={[styles.groupNavItem, selectedIndex === 2 && styles.selectedNavItem]} onPress={() => setSelectedIndex(2)}>
+                <TouchableOpacity 
+                    style={[styles.groupNavItem, selectedIndex === 1 && styles.selectedNavItem]} 
+                    onPress={() => onTabChange(1)}
+                >
                     <MeetupSymbol size={30} />
                     <Text style={styles.groupNavText}>Meetups</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.groupNavItem, selectedIndex === 3 && styles.selectedNavItem]} onPress={() => setSelectedIndex(3)}>
+                <TouchableOpacity 
+                    style={[styles.groupNavItem, selectedIndex === 2 && styles.selectedNavItem]} 
+                    onPress={() => onTabChange(2)}
+                >
                     <ChallengeSymbol size={29} />
                     <Text style={styles.groupNavText}>Challenge</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.groupNavItem, selectedIndex === 4 && styles.selectedNavItem]} onPress={() => setSelectedIndex(4)}>
+                <TouchableOpacity 
+                    style={[styles.groupNavItem, selectedIndex === 3 && styles.selectedNavItem]} 
+                    onPress={() => onTabChange(3)}
+                >
                     <ChatSymbol size={28} />
                     <Text style={styles.groupNavText}>Chat</Text>
                 </TouchableOpacity>

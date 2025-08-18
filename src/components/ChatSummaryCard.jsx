@@ -20,7 +20,7 @@ const ChatSummaryCard = ({style, overallSummary, vibeSummary, personalSummary, g
                         <Text style={styles.summaryText} ellipsizeMode='tail' numberOfLines={2}>{personalSummary}</Text>
                     </View>
                 </View>
-                <ChatButton style={styles.chatButton} size={40} onPress={() => navigation.navigate('GroupChatPage', {groupID: groupID})}/>
+                <ChatButton style={styles.chatButton} size={40} onPress={() => navigation.navigate('GroupPage', {groupID: groupID, initialTab: 3})}/>
             </View>
         </GlassCard>
     );

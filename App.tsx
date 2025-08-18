@@ -26,7 +26,7 @@ import Profile from './src/screens/Profile.jsx';
 import Camera from './src/screens/Camera.jsx';
 import Memories from './src/screens/Memories.jsx';
 import Home from './src/screens/Home.jsx';
-import GroupPage from './src/screens/GroupPage.jsx';
+import GroupTabNavigator from './src/screens/GroupTabNavigator.jsx';
 import GroupChatPage from './src/screens/GroupChatPage.jsx';
 import SignUp from './src/screens/SignUp.jsx';
 import SignIn from './src/screens/SignIn.jsx';
@@ -78,13 +78,8 @@ if (initializing) {
           options={{ title: 'Home', headerShown: false }}
         />
         <Stack.Screen 
-          name="GroupChatPage"
-          component={GroupChatPage}
-          options={{ title: 'Group Chat Page', headerShown: false }}
-        />
-        <Stack.Screen 
           name="GroupPage"
-          component={GroupPage}
+          component={GroupTabNavigator}
           options={{ title: 'Group Page', headerShown: false }}
         />
         <Stack.Screen 
@@ -128,11 +123,7 @@ if (initializing) {
           component={DailyChallengeEvidence}
           options={{ title: 'Daily Challenge Evidence', headerShown: false }}
         />
-        <Stack.Screen 
-          name="DailyChallengeView"
-          component={DailyChallengeView}
-          options={{ title: 'Daily Challenge View', headerShown: false }}
-        />
+
         <Stack.Screen 
           name="DailyChallengeCreating"
           component={DailyChallengeCreating}
@@ -143,11 +134,7 @@ if (initializing) {
           component={AllMeetups}
           options={{ title: 'All Meetups', headerShown: false }}
         />
-        <Stack.Screen 
-          name="GroupMeetups"
-          component={GroupMeetups}
-          options={{ title: 'Group Meetups', headerShown: false }}
-        />
+
         <Stack.Screen 
           name="PlacePage"
           component={PlacePage}

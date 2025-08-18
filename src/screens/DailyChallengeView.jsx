@@ -1,17 +1,22 @@
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import BackButton from '../components/BackButton';
 import { Text } from 'react-native';
 import { Dimensions } from 'react-native';
-import { useState } from 'react';
-import GroupNav from '../components/GroupNav';
+import { useState, useEffect } from 'react';
+import BackButton from '../components/BackButton';
 import Countdown from '../components/Countdown';
 import MainButton from '../components/MainButton';
 import EvidenceUploader from '../components/EvidenceUploader';
 import ChallengeDisplayer from '../components/ChallengeDisplayer';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
 
-const DailyChallengeView = () => {
+const DailyChallengeView = ({ routeParams }) => {
 
+    // Handle challenge data from route params
+    useEffect(() => {
+        if (routeParams?.group?.challenge) {
+            console.log('Challenge type:', routeParams.group.challenge);
+        }
+    }, [routeParams]);
 
   return (
     <View style={styles.container}>
@@ -26,7 +31,6 @@ const DailyChallengeView = () => {
       </View>
       <View style={styles.footer}>
         <MainButton text="Submit" color="green" type="confirm" style={styles.submitButton}/>
-        <GroupNav style={styles.groupNav}/>
       </View>
     </View>
   );
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     width: '100%',
-    height: 200,
+    height: 120,
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     marginTop: 100,
-    marginBottom: 200,
+    marginBottom: 120,
     overflow: 'hidden',
     flex: 1,
     alignItems: 'center',
@@ -91,10 +95,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top:0,
     right: '10%',
-  },
-  groupNav: {
-    position: 'absolute',
-    bottom: 20,
   },
 });
 

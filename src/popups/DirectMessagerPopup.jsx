@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
-        height: 800,
+        height: '100%',
         paddingBottom: 20,
     },
     messenger: {
