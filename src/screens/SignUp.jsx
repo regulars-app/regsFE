@@ -8,8 +8,11 @@ import { signUp } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GoogleSymbol from '../components/GoogleSymbol';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUp = () => {
+
+  const navigation = useNavigation();
 
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -50,6 +53,7 @@ const SignUp = () => {
             return;
         }
         
+        navigation.navigate('Home');
    
       
     };
