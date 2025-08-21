@@ -21,7 +21,7 @@ async function getUserData(userId) {
 }
 
 /**
- * Get all users (excluding current user)
+ * Get all users (excluding current user and current friends)
  * @returns {Promise<Array>} - Array of user objects
  */
 async function getAllUsers() {
@@ -31,13 +31,20 @@ async function getAllUsers() {
             throw new Error('User not authenticated');
         }
 
+        const currentUserID = currentUser.uid;
+        
+        // Get current user's friends list first
+        const currentUserDoc = await firestore().collection('users').doc(currentUserID).get();
+        const currentUserFriends = currentUserDoc.exists ? (currentUserDoc.data().friends || []) : [];
+        
+        // Get all users
         const usersSnapshot = await firestore().collection('users').get();
         const users = [];
         
         usersSnapshot.forEach(doc => {
             const userData = doc.data();
-            // Exclude current user
-            if (doc.id !== currentUser.uid) {
+            // Exclude current user and users who are already friends
+            if (doc.id !== currentUserID && !currentUserFriends.includes(doc.id)) {
                 users.push({
                     id: doc.id,
                     name: userData.first_name && userData.last_name 
