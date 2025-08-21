@@ -4,9 +4,10 @@ import GlassCard from './GlassCard';
 import AcceptFriendItem from './AcceptFriendItem';
 import { acceptFriendRequest, declineFriendRequest, getIncomingFriendRequests } from '../Services/friends';
 
-const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = true}) => {
+const IncomingFriendRequestView = ({height, requests, style, scrollEnabled = true}) => {
     const [incomingRequests, setIncomingRequests] = useState([]);
     const [loading, setLoading] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     // Load incoming friend requests on component mount
     useEffect(() => {
@@ -15,12 +16,14 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
 
     const loadIncomingFriendRequests = async () => {
         try {
-            const requestIDs = await getIncomingFriendRequests();
-            // Here you would typically fetch the full user data for each request ID
-            // For now, we'll use the mock data structure
-            setIncomingRequests(requests || []);
+            setIsLoading(true);
+            const requests = await getIncomingFriendRequests();
+            setIncomingRequests(requests);
         } catch (error) {
             console.error('Error loading incoming friend requests:', error);
+            Alert.alert('Error', 'Failed to load friend requests');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -29,9 +32,7 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
         setLoading(prev => ({ ...prev, [requestIndex]: true }));
 
         try {
-            // In a real implementation, you'd use the actual user ID from the request
-            // For now, we'll use a mock ID
-            const result = await acceptFriendRequest(request.id || 'mock-user-id');
+            const result = await acceptFriendRequest(request.id);
             
             if (result.success) {
                 // Remove the accepted request from the list
@@ -53,9 +54,7 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
         setLoading(prev => ({ ...prev, [requestIndex]: true }));
 
         try {
-            // In a real implementation, you'd use the actual user ID from the request
-            // For now, we'll use a mock ID
-            const result = await declineFriendRequest(request.id || 'mock-user-id');
+            const result = await declineFriendRequest(request.id);
             
             if (result.success) {
                 // Remove the declined request from the list
@@ -72,6 +71,16 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
         }
     };
 
+    if (isLoading) {
+        return (
+            <GlassCard style={[styles.glassCard, { height: height }, style]}>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Loading friend requests...</Text>
+                </View>
+            </GlassCard>
+        );
+    }
+
     const dynamicStyles = {
         glassCard: {
             height: height,
@@ -82,24 +91,31 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
         <GlassCard style={[styles.glassCard, dynamicStyles.glassCard, style]}>
             <View style={styles.container}>
                 <Text style={styles.title}>Incoming Friend Requests</Text>
-                <ScrollView 
-                    style={styles.scrollView} 
-                    contentContainerStyle={styles.scrollViewContent} 
-                    nestedScrollEnabled={true}
-                    scrollEnabled={scrollEnabled}
-                    showsVerticalScrollIndicator={true}
-                    bounces={false}
-                >
-                    {incomingRequests.map((request, index) => (
-                        <AcceptFriendItem 
-                            key={index} 
-                            name={request.name}
-                            onAccept={() => handleAcceptRequest(index)}
-                            onDecline={() => handleDeclineRequest(index)}
-                            loading={loading[index] || false}
-                        />
-                    ))}
-                </ScrollView>
+                {incomingRequests.length === 0 ? (
+                    <View style={styles.emptyState}>
+                        <Text style={styles.emptyStateText}>No incoming friend requests</Text>
+                    </View>
+                ) : (
+                    <ScrollView 
+                        style={styles.scrollView} 
+                        contentContainerStyle={styles.scrollViewContent} 
+                        nestedScrollEnabled={true}
+                        scrollEnabled={scrollEnabled}
+                        showsVerticalScrollIndicator={true}
+                        bounces={false}
+                    >
+                        {incomingRequests.map((request, index) => (
+                            <AcceptFriendItem 
+                                key={index} 
+                                name={request.name}
+                                imageURL={request.imageURL}
+                                onAccept={() => handleAcceptRequest(index)}
+                                onDecline={() => handleDeclineRequest(index)}
+                                loading={loading[index] || false}
+                            />
+                        ))}
+                    </ScrollView>
+                )}
             </View>
         </GlassCard>
     );
@@ -107,26 +123,41 @@ const IncommingFriendRequestView = ({height, requests, style, scrollEnabled = tr
 
 const styles = StyleSheet.create({
     glassCard: {
-        minWidth: '90%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     container: {
-        alignItems: 'center',
         width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         height: '100%',
-        paddingTop: 10,
     },
     title: {
         fontSize: 18,
         fontWeight: '600',
         color: '#6E6E6E',
+        marginTop: 20,
+        marginBottom: 20,
     },
     scrollView: {
         width: '100%',
-        marginTop: 10,
+        flex: 1,
     },
     scrollViewContent: {
-        width: '100%',
+        alignItems: 'center',
+        paddingBottom: 20,
+    },
+    emptyState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyStateText: {
+        fontSize: 16,
+        color: '#6E6E6E',
+        fontStyle: 'italic',
     },
 });
 
-export default IncommingFriendRequestView;
+export default IncomingFriendRequestView;

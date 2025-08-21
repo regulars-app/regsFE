@@ -1,26 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import GlassCard from './GlassCard';
 import HamburgerSymbol from './HamburgerSymbol';
 import SearchSymbol from './SearchSymbol';
 
-const SearchBar = ({style}) => (
-  <GlassCard style={[styles.glassCard, style]}>
-    <View style={styles.container}>
-      <TouchableOpacity>
-        <HamburgerSymbol style={styles.hamburgerSymbol}/>
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Search"
-        placeholderTextColor="#888"
-      />
-      <TouchableOpacity>
-        <SearchSymbol style={styles.searchSymbol}/>
-      </TouchableOpacity>
-    </View>
-  </GlassCard>
-);
+const SearchBar = ({style, onSearch, placeholder = "Search"}) => {
+  const [searchText, setSearchText] = useState('');
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    if (onSearch) {
+      onSearch(text);
+    }
+  };
+
+  return (
+    <GlassCard style={[styles.glassCard, style]}>
+      <View style={styles.container}>
+        <TouchableOpacity>
+          <HamburgerSymbol style={styles.hamburgerSymbol}/>
+        </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder}
+          placeholderTextColor="#888"
+          value={searchText}
+          onChangeText={handleSearch}
+        />
+        <TouchableOpacity>
+          <SearchSymbol style={styles.searchSymbol}/>
+        </TouchableOpacity>
+      </View>
+    </GlassCard>
+  );
+};
 
 const styles = StyleSheet.create({
   glassCard: {

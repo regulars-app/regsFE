@@ -3,14 +3,195 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 /**
- * Custom function to handle array operations for Datastore compatibility mode
- * Since we're in "Firestore with Datastore compatibility" mode, we need to handle arrays manually
+ * Get user data by ID
+ * @param {string} userId - The user ID to fetch
+ * @returns {Promise<Object|null>} - User data or null if not found
  */
+async function getUserData(userId) {
+    try {
+        const userDoc = await firestore().collection('users').doc(userId).get();
+        if (userDoc.exists) {
+            return { id: userDoc.id, ...userDoc.data() };
+        }
+        return null;
+    } catch (error) {
+        console.error('Error getting user data:', error);
+        return null;
+    }
+}
+
+/**
+ * Get all users (excluding current user)
+ * @returns {Promise<Array>} - Array of user objects
+ */
+async function getAllUsers() {
+    try {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const usersSnapshot = await firestore().collection('users').get();
+        const users = [];
+        
+        usersSnapshot.forEach(doc => {
+            const userData = doc.data();
+            // Exclude current user
+            if (doc.id !== currentUser.uid) {
+                users.push({
+                    id: doc.id,
+                    name: userData.first_name && userData.last_name 
+                        ? `${userData.first_name} ${userData.last_name}` 
+                        : userData.handle || userData.email,
+                    email: userData.email,
+                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                });
+            }
+        });
+        
+        return users;
+    } catch (error) {
+        console.error('Error getting all users:', error);
+        return [];
+    }
+}
+
+/**
+ * Get current user's friends with full user data
+ * @returns {Promise<Array>} - Array of friend user objects
+ */
+async function getCurrentUserFriends() {
+    try {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const currentUserID = currentUser.uid;
+        const userDoc = await firestore().collection('users').doc(currentUserID).get();
+        
+        if (!userDoc.exists) {
+            return [];
+        }
+
+        const userData = userDoc.data();
+        const friendIds = userData.friends || [];
+        
+        // Get full user data for each friend
+        const friends = [];
+        for (const friendId of friendIds) {
+            const friendData = await getUserData(friendId);
+            if (friendData) {
+                friends.push({
+                    id: friendData.id,
+                    name: friendData.first_name && friendData.last_name 
+                        ? `${friendData.first_name} ${friendData.last_name}` 
+                        : friendData.handle || friendData.email,
+                    email: friendData.email,
+                    imageURL: friendData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                });
+            }
+        }
+        
+        return friends;
+    } catch (error) {
+        console.error('Error getting current user friends:', error);
+        return [];
+    }
+}
+
+/**
+ * Get incoming friend requests with full user data
+ * @returns {Promise<Array>} - Array of user objects who sent requests
+ */
+async function getIncomingFriendRequests() {
+    try {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const currentUserID = currentUser.uid;
+        const userDoc = await firestore().collection('users').doc(currentUserID).get();
+        
+        if (!userDoc.exists) {
+            return [];
+        }
+
+        const userData = userDoc.data();
+        const requestIds = userData.friend_requests_received || [];
+        
+        // Get full user data for each request
+        const requests = [];
+        for (const requestId of requestIds) {
+            const userData = await getUserData(requestId);
+            if (userData) {
+                requests.push({
+                    id: userData.id,
+                    name: userData.first_name && userData.last_name 
+                        ? `${userData.first_name} ${userData.last_name}` 
+                        : userData.handle || userData.email,
+                    email: userData.email,
+                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                });
+            }
+        }
+        
+        return requests;
+    } catch (error) {
+        console.error('Error getting incoming friend requests:', error);
+        return [];
+    }
+}
+
+/**
+ * Get outgoing friend requests with full user data
+ * @returns {Promise<Array>} - Array of user objects to whom requests were sent
+ */
+async function getOutgoingFriendRequests() {
+    try {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const currentUserID = currentUser.uid;
+        const userDoc = await firestore().collection('users').doc(currentUserID).get();
+        
+        if (!userDoc.exists) {
+            return [];
+        }
+
+        const userData = userDoc.data();
+        const requestIds = userData.friend_requests_sent || [];
+        
+        // Get full user data for each request
+        const requests = [];
+        for (const requestId of requestIds) {
+            const userData = await getUserData(requestId);
+            if (userData) {
+                requests.push({
+                    id: userData.id,
+                    name: userData.first_name && userData.last_name 
+                        ? `${userData.first_name} ${userData.last_name}` 
+                        : userData.handle || userData.email,
+                    email: userData.email,
+                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                });
+            }
+        }
+        
+        return requests;
+    } catch (error) {
+        console.error('Error getting outgoing friend requests:', error);
+        return [];
+    }
+}
 
 /**
  * Send a friend request to another user
- * @param {string} friendID - The ID of the user to send the request to
- * @returns {Promise<Object>} - Result of the operation
+ * @param {string} friendID - The ID of the user to send request to
+ * @returns {Promise<Object>} - Result object with success status
  */
 async function requestFriend(friendID) {
     try {
@@ -29,6 +210,7 @@ async function requestFriend(friendID) {
             throw new Error('Friend user not found');
         }
 
+        // Add current user ID to friend's friend_requests_received array
         const friendData = friendDoc.data();
         const currentRequests = friendData.friend_requests_received || [];
         
@@ -40,7 +222,6 @@ async function requestFriend(friendID) {
             };
         }
 
-        // Add current user ID to friend's friend_requests_received array
         await friendRef.update({
             friend_requests_received: [...currentRequests, currentUserID]
         });
@@ -75,8 +256,8 @@ async function requestFriend(friendID) {
 
 /**
  * Accept a friend request from another user
- * @param {string} friendID - The ID of the user who sent the request
- * @returns {Promise<Object>} - Result of the operation
+ * @param {string} friendID - The ID of the user whose request to accept
+ * @returns {Promise<Object>} - Result object with success status
  */
 async function acceptFriendRequest(friendID) {
     try {
@@ -95,6 +276,8 @@ async function acceptFriendRequest(friendID) {
             throw new Error('Current user not found');
         }
 
+        // Remove friend ID from current user's friend_requests_received array
+        // and add to friends array
         const currentUserData = currentUserDoc.data();
         const currentReceivedRequests = currentUserData.friend_requests_received || [];
         const currentFriends = currentUserData.friends || [];
@@ -107,8 +290,6 @@ async function acceptFriendRequest(friendID) {
             };
         }
 
-        // Remove friend ID from current user's friend_requests_received array
-        // and add to friends array
         const updatedReceivedRequests = currentReceivedRequests.filter(id => id !== friendID);
         const updatedFriends = [...currentFriends, friendID];
 
@@ -152,8 +333,8 @@ async function acceptFriendRequest(friendID) {
 
 /**
  * Decline a friend request from another user
- * @param {string} friendID - The ID of the user who sent the request
- * @returns {Promise<Object>} - Result of the operation
+ * @param {string} friendID - The ID of the user whose request to decline
+ * @returns {Promise<Object>} - Result object with success status
  */
 async function declineFriendRequest(friendID) {
     try {
@@ -172,10 +353,10 @@ async function declineFriendRequest(friendID) {
             throw new Error('Current user not found');
         }
 
+        // Remove friend ID from current user's friend_requests_received array
         const currentUserData = currentUserDoc.data();
         const currentReceivedRequests = currentUserData.friend_requests_received || [];
 
-        // Remove friend ID from current user's friend_requests_received array
         const updatedReceivedRequests = currentReceivedRequests.filter(id => id !== friendID);
 
         await currentUserRef.update({
@@ -211,62 +392,13 @@ async function declineFriendRequest(friendID) {
     }
 }
 
-/**
- * Get incoming friend requests for the current user
- * @returns {Promise<Array>} - Array of user IDs who sent friend requests
- */
-async function getIncomingFriendRequests() {
-    try {
-        const currentUser = auth().currentUser;
-        if (!currentUser) {
-            throw new Error('User not authenticated');
-        }
-
-        const currentUserID = currentUser.uid;
-        const userDoc = await firestore().collection('users').doc(currentUserID).get();
-        
-        if (!userDoc.exists) {
-            return [];
-        }
-
-        const userData = userDoc.data();
-        return userData.friend_requests_received || [];
-    } catch (error) {
-        console.error('Error getting incoming friend requests:', error);
-        return [];
-    }
-}
-
-/**
- * Get outgoing friend requests sent by the current user
- * @returns {Promise<Array>} - Array of user IDs to whom requests were sent
- */
-async function getOutgoingFriendRequests() {
-    try {
-        const currentUser = auth().currentUser;
-        if (!currentUser) {
-            throw new Error('User not authenticated');
-        }
-
-        const currentUserID = currentUser.uid;
-        const userDoc = await firestore().collection('users').doc(currentUserID).get();
-        
-        if (!userDoc.exists) {
-            return [];
-        }
-
-        const userData = userDoc.data();
-        return userData.friend_requests_sent || [];
-    } catch (error) {
-        console.error('Error getting outgoing friend requests:', error);
-        return [];
-    }
-}
-
 export { 
     requestFriend, 
     acceptFriendRequest, 
     declineFriendRequest, 
     getIncomingFriendRequests, 
-    getOutgoingFriendRequests 
+    getOutgoingFriendRequests,
+    getCurrentUserFriends,
+    getAllUsers,
+    getUserData
 };

@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 import ProfilePic from './ProfilePic';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const AcceptFriendItem = ({style, name, onAccept, onDecline, loading = false}) => {
+const AcceptFriendItem = ({style, name, imageURL, onAccept, onDecline, loading = false}) => {
     return (
-        <View style={[styles.container, style]}>
+        <View style={styles.container}>
             <View style={styles.leftContainer}>
-                <ProfilePic size={40} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                <ProfilePic size={40} style={styles.profilePic} imageURL={imageURL || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 <Text style={styles.name}>{name}</Text>
             </View>
             <View style={styles.rightContainer}>
@@ -43,67 +43,55 @@ const AcceptFriendItem = ({style, name, onAccept, onDecline, loading = false}) =
 
 const styles = StyleSheet.create({
     container: {
+        width: '90%',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1, 
-        borderColor: 'rgba(110, 110, 110, 0.2)',
-        height: 70,
-        width: '100%',
-        backgroundColor: 'transparent',
-        paddingHorizontal: 25,
+        justifyContent: 'space-between',
+        marginVertical: 5,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
     },
     leftContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start',
         flex: 1,
-        gap: 20,
+    },
+    profilePic: {
+        marginRight: 15,
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#6E6E6E',
     },
     rightContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-end',
         gap: 10,
     },
-    profilePic: {
-        marginRight: 10,
-    },
-    name: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#6E6E6E',
-    },
     acceptFriendButton: {
-        backgroundColor: '#F2FFF6',
+        backgroundColor: '#4CAF50',
         paddingHorizontal: 15,
-        paddingVertical: 5,
-        borderRadius: 10,
-        elevation: 0.5, 
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: -2},
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        paddingVertical: 8,
+        borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
         gap: 5,
+        minWidth: 80,
+        justifyContent: 'center',
     },
     rejectFriendButton: {
-        backgroundColor: '#F9C7C5',
+        backgroundColor: '#F44336',
         paddingHorizontal: 15,
-        paddingVertical: 5,
-        borderRadius: 10,
-        elevation: 0.5, 
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: -2},
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        paddingVertical: 8,
+        borderRadius: 20,
+        minWidth: 80,
+        justifyContent: 'center',
     },
     buttonText: {
-        fontSize: 12,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#6E6E6E',
+        color: 'white',
+        fontSize: 14,
+        fontWeight: '600',
     },
 });
 

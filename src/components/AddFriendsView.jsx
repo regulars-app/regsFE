@@ -2,48 +2,62 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import GlassCard from './GlassCard';
 import AddFriendItem from './AddFriendItem';
-import { requestFriend, getOutgoingFriendRequests } from '../Services/friends';
+import { requestFriend, getOutgoingFriendRequests, getAllUsers } from '../Services/friends';
 
 const AddFriendsView = ({height, potentialFriends, style, type="request", onToggleFriend, selectedMembers = []}) => {
+    const [allUsers, setAllUsers] = useState([]);
     const [requestedFriends, setRequestedFriends] = useState({});
     const [addedFriends, setAddedFriends] = useState({});
     const [loading, setLoading] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-    // Load existing outgoing friend requests on component mount
+    // Load all users and existing outgoing friend requests on component mount
     useEffect(() => {
-        loadOutgoingFriendRequests();
+        loadUsersAndRequests();
     }, []);
+
+    const loadUsersAndRequests = async () => {
+        try {
+            setIsLoading(true);
+            
+            // Load all users (excluding current user)
+            const users = await getAllUsers();
+            setAllUsers(users);
+            
+            // Load existing outgoing friend requests
+            const outgoingRequests = await getOutgoingFriendRequests();
+            const requestsMap = {};
+            
+            outgoingRequests.forEach(request => {
+                const userIndex = users.findIndex(user => user.id === request.id);
+                if (userIndex !== -1) {
+                    requestsMap[userIndex] = true;
+                }
+            });
+            
+            setRequestedFriends(requestsMap);
+        } catch (error) {
+            console.error('Error loading users and requests:', error);
+            Alert.alert('Error', 'Failed to load users');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     // Update addedFriends state when selectedMembers changes
     useEffect(() => {
         // Only run this effect if we have the required props for group creation
         if (onToggleFriend && selectedMembers) {
             const newAddedFriends = {};
-            potentialFriends.forEach((friend, index) => {
-                newAddedFriends[index] = selectedMembers.some(member => member.id === friend.id);
+            allUsers.forEach((user, index) => {
+                newAddedFriends[index] = selectedMembers.some(member => member.id === user.id);
             });
             setAddedFriends(newAddedFriends);
         }
-    }, [selectedMembers, potentialFriends, onToggleFriend]);
-
-    const loadOutgoingFriendRequests = async () => {
-        try {
-            const outgoingRequests = await getOutgoingFriendRequests();
-            const requestsMap = {};
-            outgoingRequests.forEach(friendID => {
-                const friendIndex = potentialFriends.findIndex(friend => friend.id === friendID);
-                if (friendIndex !== -1) {
-                    requestsMap[friendIndex] = true;
-                }
-            });
-            setRequestedFriends(requestsMap);
-        } catch (error) {
-            console.error('Error loading outgoing friend requests:', error);
-        }
-    };
+    }, [selectedMembers, allUsers, onToggleFriend]);
 
     const handleToggleRequest = async (index) => {
-        const friend = potentialFriends[index];
+        const user = allUsers[index];
         const isCurrentlyRequested = requestedFriends[index] || false;
         
         if (isCurrentlyRequested) {
@@ -55,7 +69,7 @@ const AddFriendsView = ({height, potentialFriends, style, type="request", onTogg
         setLoading(prev => ({ ...prev, [index]: true }));
 
         try {
-            const result = await requestFriend(friend.id);
+            const result = await requestFriend(user.id);
             
             if (result.success) {
                 setRequestedFriends(prev => ({
@@ -75,35 +89,50 @@ const AddFriendsView = ({height, potentialFriends, style, type="request", onTogg
     };
 
     const handleToggleAdd = (index) => {
-        const friend = potentialFriends[index];
+        const user = allUsers[index];
         const isCurrentlyAdded = addedFriends[index] || false;
         
-        // Toggle the local state
-        setAddedFriends(prev => ({
-            ...prev,
-            [index]: !isCurrentlyAdded
-        }));
-        
-        // Notify parent component
         if (onToggleFriend) {
-            onToggleFriend(friend, !isCurrentlyAdded);
+            onToggleFriend(user, !isCurrentlyAdded);
+            setAddedFriends(prev => ({
+                ...prev,
+                [index]: !isCurrentlyAdded
+            }));
         }
     };
+
+    if (isLoading) {
+        return (
+            <GlassCard style={[styles.glassCard, { height: height }, style]}>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Loading users...</Text>
+                </View>
+            </GlassCard>
+        );
+    }
 
     const dynamicStyles = {
         glassCard: {
             height: height,
         },
     };
+
     return (
-        <GlassCard style={[style, styles.glassCard, dynamicStyles.glassCard]}>
+        <GlassCard style={[styles.glassCard, dynamicStyles.glassCard, style]}>
             <View style={styles.container}>
-                <Text style={styles.title}>Add Friends View</Text>
-                <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} nestedScrollEnabled={true}>
-                    {potentialFriends.map((friend, index) => (
+                <Text style={styles.title}>Add Friends</Text>
+                <ScrollView 
+                    style={styles.scrollView} 
+                    contentContainerStyle={styles.scrollViewContent} 
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={true}
+                    bounces={false}
+                >
+                    {allUsers.map((user, index) => (
                         <AddFriendItem 
                             key={index} 
-                            name={friend.name} 
+                            name={user.name}
+                            imageURL={user.imageURL}
                             requested={requestedFriends[index] || false}
                             added={addedFriends[index] || false}
                             onToggle={() => handleToggleRequest(index)}
@@ -120,25 +149,30 @@ const AddFriendsView = ({height, potentialFriends, style, type="request", onTogg
 
 const styles = StyleSheet.create({
     glassCard: {
-        width: '90%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     container: {
-        alignItems: 'center',
         width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         height: '100%',
-        paddingTop: 10,
     },
     title: {
         fontSize: 18,
         fontWeight: '600',
         color: '#6E6E6E',
+        marginTop: 20,
+        marginBottom: 20,
     },
     scrollView: {
         width: '100%',
-        marginTop: 10,
+        flex: 1,
     },
     scrollViewContent: {
-        width: '100%',
+        alignItems: 'center',
+        paddingBottom: 20,
     },
 });
 
