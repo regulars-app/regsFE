@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import SettingsView from '../components/SettingsView';
 import SearchBar from '../components/SearchBar';
+import LogoutSymbol from '../components/LogoutSymbol';
+import { signOut } from '../Services/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const SettingsPopup = ({onClose}) => {
-
+    const navigation = useNavigation();
+    
     const settings = [
         { name: 'Privacy' },
         { name: 'Notifications' },
@@ -26,7 +30,15 @@ const SettingsPopup = ({onClose}) => {
 
     return (
         <View style={styles.container}>
-            <SearchBar style={styles.searchBar}/>
+            <View style={styles.header}>
+                <SearchBar style={styles.searchBar}/>
+                <TouchableOpacity style={styles.logoutButton} onPress={() => {
+                    signOut();
+                    navigation.navigate('SignIn');
+                }}>
+                    <LogoutSymbol size={30}/>
+                </TouchableOpacity>
+            </View>
             <SettingsView height={600} style={styles.settingsView} settings={settings}/>
         </View>
     );
@@ -39,8 +51,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 20,
     },
-    searchBar: {
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
         marginTop: 20,
+        paddingHorizontal: 20,
+    },
+    searchBar: {
+    },
+    logoutButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     settingsView: {
         marginTop: 20,

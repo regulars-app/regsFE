@@ -4,6 +4,7 @@ import { useRoute } from '@react-navigation/native';
 import GroupNav from '../components/GroupNav';
 import GroupPage from './GroupPage';
 import GroupMeetups from './GroupMeetups';
+import UpcomingMeetupDetails from './UpcomingMeetupDetails';
 import DailyChallengeView from './DailyChallengeView';
 import GroupChatPage from './GroupChatPage';
 
@@ -28,6 +29,8 @@ const GroupTabNavigator = () => {
                 return <DailyChallengeView routeParams={route.params} />;
             case 3:
                 return <GroupChatPage routeParams={route.params} />;
+            case 4:
+                return <UpcomingMeetupDetails routeParams={route.params} />;
             default:
                 return <GroupPage routeParams={route.params} />;
         }

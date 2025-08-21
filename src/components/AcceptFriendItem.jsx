@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ProfilePic from './ProfilePic';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const AcceptFriendItem = ({style, name}) => {
+const AcceptFriendItem = ({style, name, onAccept, onDecline, loading = false}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.leftContainer}>
@@ -11,12 +11,30 @@ const AcceptFriendItem = ({style, name}) => {
                 <Text style={styles.name}>{name}</Text>
             </View>
             <View style={styles.rightContainer}>
-                <TouchableOpacity style={styles.acceptFriendButton}>
-                    <Text style={styles.buttonText}>Accept</Text>
-                    <ConfirmSymbol size={18}/>
+                <TouchableOpacity 
+                    style={styles.acceptFriendButton} 
+                    onPress={onAccept}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <ActivityIndicator size="small" color="#6E6E6E" />
+                    ) : (
+                        <>
+                            <Text style={styles.buttonText}>Accept</Text>
+                            <ConfirmSymbol size={18}/>
+                        </>
+                    )}
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.rejectFriendButton}>
-                    <Text style={styles.buttonText}>Reject</Text>
+                <TouchableOpacity 
+                    style={styles.rejectFriendButton}
+                    onPress={onDecline}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <ActivityIndicator size="small" color="#6E6E6E" />
+                    ) : (
+                        <Text style={styles.buttonText}>Reject</Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </View>

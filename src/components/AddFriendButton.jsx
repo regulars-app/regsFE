@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, ActivityIndicator} from 'react-native';
 import AddSymbol from './AddSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const AddFriendButton = ({style, type="request", requested = false, added = false, onToggleAdd = () => {}}) => {
+const AddFriendButton = ({style, type="request", requested = false, added = false, onToggleAdd = () => {}, loading = false}) => {
     return (
         <View style={[styles.container, style]}>
             {requested || added ? <View style={styles.overlay}></View> : null}
@@ -20,8 +20,14 @@ const AddFriendButton = ({style, type="request", requested = false, added = fals
                     </View> 
                     : 
                     <View style={styles.button} onPress={onToggleAdd}>
-                        <Text style={styles.buttonText}>Add</Text>
-                        <AddSymbol size={20}/>
+                        {loading ? (
+                            <ActivityIndicator size="small" color="#6E6E6E" />
+                        ) : (
+                            <>
+                                <Text style={styles.buttonText}>Add</Text>
+                                <AddSymbol size={20}/>
+                            </>
+                        )}
                     </View>}
         </View>
     );

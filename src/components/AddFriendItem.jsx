@@ -3,15 +3,25 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
 import AddFriendButton from './AddFriendButton'
 
-const AddFriendItem = ({style, name, requested, added, onToggle, onToggleAdd, type="request"}) => {
+const AddFriendItem = ({style, name, requested, added, onToggle, onToggleAdd, type="request", loading=false}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.leftContainer}>
                 <ProfilePic size={40} style={styles.profilePic} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 <Text style={styles.name}>{name}</Text>
             </View>
-            <TouchableOpacity style={styles.rightContainer} onPress={type === "request" ? onToggle : onToggleAdd} activeOpacity={1}>
-                <AddFriendButton requested={requested} added={added} type={type}/>
+            <TouchableOpacity 
+                style={styles.rightContainer} 
+                onPress={type === "request" ? onToggle : onToggleAdd} 
+                activeOpacity={1}
+                disabled={loading}
+            >
+                <AddFriendButton 
+                    requested={requested} 
+                    added={added} 
+                    type={type}
+                    loading={loading}
+                />
             </TouchableOpacity>
         </View>
     );

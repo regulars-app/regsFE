@@ -7,9 +7,11 @@ import AdditionalInfoInput from '../components/AdditionalInfoInput';
 import { signIn } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import GoogleSymbol from '../components/GoogleSymbol';
+import { useNavigation } from '@react-navigation/native';
 
 const SignIn = () => {
 
+  const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
       email: '',
@@ -31,6 +33,8 @@ const SignIn = () => {
             alert('Please fill in all fields');
             return;
         }
+
+        navigation.navigate('Home');
     };
   
     return (
