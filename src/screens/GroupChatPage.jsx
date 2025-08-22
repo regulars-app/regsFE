@@ -7,8 +7,8 @@ import Messenger from '../components/Messenger';
 import DirectMessagesWidget from '../components/DirectMessagesWidget';
 import Popup from '../components/Popup';
 import DirectMessagerPopup from '../popups/DirectMessagerPopup';
-import ConnectyCube from 'react-native-connectycube';
-import { initConnectyCube, authenticateChatUser } from '../Services/messaging';
+import { initializeGroupChat, loadGroupMessages, sendGroupMessage, formatMessagesForDisplay } from '../Services/messaging';
+import { loadGroupDataForChat } from '../Services/groups';
 
 const GroupChatPage = ({ routeParams }) => {
     const [showDirectMessagerPopup, setShowDirectMessagerPopup] = useState(false);
@@ -37,24 +37,14 @@ const GroupChatPage = ({ routeParams }) => {
             try {
                 console.log('🚀 Initializing ConnectyCube for group chat...');
                 
-                // Initialize ConnectyCube
-                const user = await initConnectyCube();
-                console.log('✅ ConnectyCube initialized:', user);
-                
-                // Authenticate chat user
-                const chatUserId = await authenticateChatUser(user);
-                console.log('✅ Chat user authenticated:', chatUserId);
-                
-                // Get user session
-                const session = await ConnectyCube.auth.getSession();
-                const currentUserId = session.user_id;
-                setUserId(currentUserId);
-                console.log('✅ User session set:', currentUserId);
-                console.log('🔍 Setting userId to:', currentUserId, 'Type:', typeof currentUserId);
+                // Initialize group chat using service
+                const chatData = await initializeGroupChat(groupId);
+                setUserId(chatData.userId);
+                console.log('🔍 Setting userId to:', chatData.userId, 'Type:', typeof chatData.userId);
                 
                 // Load group data
                 if (groupId) {
-                    await loadGroupData(currentUserId);
+                    await loadGroupData(chatData.userId);
                 }
                 
             } catch (error) {
@@ -75,16 +65,9 @@ const GroupChatPage = ({ routeParams }) => {
 
     const loadGroupData = async (currentUserId) => {
         try {
-            // For now, use a mock group object with the chat ID
-            // You can replace this with actual Firestore loading later
-            const mockGroup = {
-                id: groupId,
-                name: 'Test Group',
-                // Use the actual ConnectyCube chat ID from your earlier logs
-                chat: '68a880fb8443c4000ef12c5f', // This is the working chat ID
-                members: []
-            };
-            setGroup(mockGroup);
+            // Load group data using service
+            const groupData = await loadGroupDataForChat(groupId);
+            setGroup(groupData);
             
             // Load messages for this group with the correct userId
             await loadMessages(currentUserId);
@@ -101,74 +84,15 @@ const GroupChatPage = ({ routeParams }) => {
             console.log('🔍 Using ConnectyCube chat ID:', group?.chat);
             console.log('🔍 Using userId for positioning:', currentUserId, 'Type:', typeof currentUserId);
             
-            // First, let's check if the dialog exists
-            console.log('🔍 Checking if dialog exists...');
-            const dialogs = await ConnectyCube.chat.dialog.list({
-                _id: group?.chat || '68a880fb8443c4000ef12c5f'
-            });
-            console.log('📋 Dialogs found:', dialogs);
+            // Load messages using service
+            const messagesResult = await loadGroupMessages(group?.chat || '68a880fb8443c4000ef12c5f', 50);
             
-            // Get messages from ConnectyCube using the correct chat ID
-            const messagesResult = await ConnectyCube.chat.message.list({
-                chat_dialog_id: group?.chat || '68a880fb8443c4000ef12c5f',
-                sort_desc: 'date_sent',
-                limit: 50,
-                skip: 0,
-            });
-
-            console.log('📨 Messages loaded:', messagesResult);
-            console.log('📨 Messages items:', messagesResult?.items);
-            console.log('📨 Messages count:', messagesResult?.items?.length || 0);
-
-            if (messagesResult && messagesResult.items && messagesResult.items.length > 0) {
-                console.log('🔍 Raw messages from ConnectyCube:', messagesResult.items);
-                
-                // Check if all messages are from the same user
-                const uniqueSenders = new Set(messagesResult.items.map(msg => msg.sender_id));
-                const isOnlyOneSender = uniqueSenders.size === 1;
-                
-                if (isOnlyOneSender) {
-                    console.log('ℹ️ Only one person chatting in this group');
-                }
-                
-                // Convert ConnectyCube messages to our format
-                const formattedMessages = messagesResult.items.map(msg => {
-                    console.log('📝 Processing message:', msg);
-                    console.log('📝 Message body:', msg.body);
-                    console.log('📝 Message message:', msg.message);
-                    console.log('📝 Message type:', msg.type);
-                    console.log('🔍 Sender ID from message:', msg.sender_id, 'Type:', typeof msg.sender_id);
-                    console.log('🔍 Current userId:', currentUserId, 'Type:', typeof currentUserId);
-                    console.log('🔍 Position will be:', String(msg.sender_id) === String(currentUserId) ? 'right' : 'left');
-                    
-                    return {
-                        id: msg.id || msg._id,
-                        chatType: 'main',
-                        time: new Date(msg.date_sent * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                        position: String(msg.sender_id) === String(currentUserId) ? 'right' : 'left',
-                        messageType: (msg.body || msg.message) ? 'text' : 'image',
-                        senderName: String(msg.sender_id) === String(currentUserId) ? 'You' : 'Member',
-                        messageText: msg.body || msg.message || '',
-                        imageURL: msg.extension?.image_url || '',
-                        mediaDownloadUrl: msg.extension?.image_url || null,
-                        senderId: msg.sender_id,
-                        timestamp: new Date(msg.date_sent * 1000),
-                        // Add these properties to match dummy data styling
-                        senderPic: null,
-                        isRead: true,
-                        isDelivered: true,
-                    };
-                });
-
-                console.log('✅ Formatted messages:', formattedMessages);
-                setMessages(formattedMessages.reverse()); // Show oldest first
-                
-                // Scroll to bottom after messages are loaded
-                setTimeout(() => scrollToBottom(), 100);
-            } else {
-                console.log('⚠️ No messages found or empty result');
-                setMessages([]);
-            }
+            // Format messages for display using service
+            const formattedMessages = formatMessagesForDisplay(messagesResult, currentUserId);
+            setMessages(formattedMessages);
+            
+            // Scroll to bottom after messages are loaded
+            setTimeout(() => scrollToBottom(), 100);
             
             setLoading(false);
             
@@ -184,22 +108,12 @@ const GroupChatPage = ({ routeParams }) => {
                 return;
             }
 
-                        // Create message object for ConnectyCube
-            const messageData = {
-                type: 'chat',
-                message: messageText, // Changed from 'body' to 'message'
-                markable: 1,
-                chat_dialog_id: group?.chat || '68a880fb8443c4000ef12c5f',
-                recipient_id: null, // For group chats, this should be null
-                sender_id: userId,
-            };
-            
-            console.log('📤 Sending message via ConnectyCube API:', messageData);
-            console.log('🎯 Target chat ID:', group?.chat || '68a880fb8443c4000ef12c5f');
-            
-            // Send message using ConnectyCube's message API
-            const messageResult = await ConnectyCube.chat.message.create(messageData);
-            console.log('✅ Message created via API:', messageResult);
+            // Send message using service
+            const messageResult = await sendGroupMessage(
+                messageText, 
+                group?.chat || '68a880fb8443c4000ef12c5f', 
+                userId
+            );
             
             // Add message to local state immediately
             const newMessage = {

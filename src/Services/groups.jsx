@@ -126,4 +126,24 @@ async function getCurrentUserGroups() {
     }
 }
 
-export { createGroup, getCurrentUserGroups };
+// Load group data for chat
+async function loadGroupDataForChat(groupId) {
+    try {
+        // For now, use a mock group object with the chat ID
+        // You can replace this with actual Firestore loading later
+        const mockGroup = {
+            id: groupId,
+            name: 'Test Group',
+            // Use the actual ConnectyCube chat ID from your earlier logs
+            chat: '68a880fb8443c4000ef12c5f', // This is the working chat ID
+            members: []
+        };
+        
+        return mockGroup;
+    } catch (error) {
+        console.error('Error loading group data for chat:', error);
+        throw error;
+    }
+}
+
+export { createGroup, getCurrentUserGroups, loadGroupDataForChat };

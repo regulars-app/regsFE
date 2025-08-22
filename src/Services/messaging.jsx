@@ -102,5 +102,145 @@ async function retrieveMessages(dialog) {
   return await ConnectyCube.chat.message.list(params);
 }
 
+// New chat functions for GroupChatPage
+async function initializeGroupChat(groupId) {
+  try {
+    // Initialize ConnectyCube
+    const user = await initConnectyCube();
+    console.log('✅ ConnectyCube initialized:', user);
+    
+    // Authenticate chat user
+    const chatUserId = await authenticateChatUser(user);
+    console.log('✅ Chat user authenticated:', chatUserId);
+    
+    // Get user session
+    const session = await ConnectyCube.auth.getSession();
+    console.log('✅ User session set:', session.user_id);
+    
+    return {
+      user,
+      chatUserId,
+      session,
+      userId: session.user_id
+    };
+  } catch (error) {
+    console.error('❌ Error initializing group chat:', error);
+    throw error;
+  }
+}
 
-export { initConnectyCube, authenticateChatUser, createGroupChat, sendMessage, retrieveMessages, retrieveDialogs };
+async function loadGroupMessages(chatId, limit = 50) {
+  try {
+    console.log('📥 Loading messages for chat:', chatId);
+    
+    // First, check if the dialog exists
+    console.log('🔍 Checking if dialog exists...');
+    const dialogs = await ConnectyCube.chat.dialog.list({
+      _id: chatId
+    });
+    console.log('📋 Dialogs found:', dialogs);
+    
+    // Get messages from ConnectyCube
+    const messagesResult = await ConnectyCube.chat.message.list({
+      chat_dialog_id: chatId,
+      sort_desc: 'date_sent',
+      limit: limit,
+      skip: 0,
+    });
+
+    console.log('📨 Messages loaded:', messagesResult);
+    console.log('📨 Messages count:', messagesResult?.items?.length || 0);
+
+    return messagesResult;
+  } catch (error) {
+    console.error('❌ Error loading messages:', error);
+    throw error;
+  }
+}
+
+async function sendGroupMessage(messageText, chatId, senderId) {
+  try {
+    // Create message object for ConnectyCube
+    const messageData = {
+      type: 'chat',
+      message: messageText,
+      markable: 1,
+      chat_dialog_id: chatId,
+      recipient_id: null, // For group chats, this should be null
+      sender_id: senderId,
+    };
+    
+    console.log('📤 Sending message via ConnectyCube API:', messageData);
+    
+    // Send message using ConnectyCube's message API
+    const messageResult = await ConnectyCube.chat.message.create(messageData);
+    console.log('✅ Message created via API:', messageResult);
+    
+    return messageResult;
+  } catch (error) {
+    console.error('❌ Error sending message:', error);
+    throw error;
+  }
+}
+
+function formatMessagesForDisplay(messages, currentUserId) {
+  if (!messages || !messages.items || messages.items.length === 0) {
+    return [];
+  }
+
+  console.log('🔍 Raw messages from ConnectyCube:', messages.items);
+  
+  // Check if all messages are from the same user
+  const uniqueSenders = new Set(messages.items.map(msg => msg.sender_id));
+  const isOnlyOneSender = uniqueSenders.size === 1;
+  
+  if (isOnlyOneSender) {
+    console.log('ℹ️ Only one person chatting in this group');
+  }
+  
+  // Convert ConnectyCube messages to our format
+  const formattedMessages = messages.items.map(msg => {
+    console.log('📝 Processing message:', msg);
+    console.log('📝 Message body:', msg.body);
+    console.log('📝 Message message:', msg.message);
+    console.log('📝 Message type:', msg.type);
+    console.log('🔍 Sender ID from message:', msg.sender_id, 'Type:', typeof msg.sender_id);
+    console.log('🔍 Current userId:', currentUserId, 'Type:', typeof currentUserId);
+    console.log('🔍 Position will be:', String(msg.sender_id) === String(currentUserId) ? 'right' : 'left');
+    
+    return {
+      id: msg.id || msg._id,
+      chatType: 'main',
+      time: new Date(msg.date_sent * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      position: String(msg.sender_id) === String(currentUserId) ? 'right' : 'left',
+      messageType: (msg.body || msg.message) ? 'text' : 'image',
+      senderName: String(msg.sender_id) === String(currentUserId) ? 'You' : 'Member',
+      messageText: msg.body || msg.message || '',
+      imageURL: msg.extension?.image_url || '',
+      mediaDownloadUrl: msg.extension?.image_url || null,
+      senderId: msg.sender_id,
+      timestamp: new Date(msg.date_sent * 1000),
+      // Add these properties to match dummy data styling
+      senderPic: null,
+      isRead: true,
+      isDelivered: true,
+    };
+  });
+
+  console.log('✅ Formatted messages:', formattedMessages);
+  return formattedMessages.reverse(); // Show oldest first
+}
+
+
+export { 
+  initConnectyCube, 
+  authenticateChatUser, 
+  createGroupChat, 
+  sendMessage, 
+  retrieveMessages, 
+  retrieveDialogs,
+  initializeGroupChat,
+  loadGroupMessages,
+  sendGroupMessage,
+  formatMessagesForDisplay
+};
