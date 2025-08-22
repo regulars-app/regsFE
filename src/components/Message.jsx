@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image   } from 'react-native';
 import GlassCard from './GlassCard';
 import ProfilePic from './ProfilePic';
 
-const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL, userID}) => {
+const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL, userID, mediaDownloadUrl}) => {
     const dynamicStyle = {
         mainChatMessageContainer: {
           alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
@@ -19,6 +19,10 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
         },
         subSenderLabel: {backgroundColor: userID === '1' ? '#F2FFF6' : 'white'},
       };
+
+    // Use mediaDownloadUrl if available, otherwise fall back to imageURL
+    const displayImageUrl = mediaDownloadUrl || imageURL;
+
     return (
         <View style={[styles.container, dynamicStyle.container]}>
             {/* Differentiate between messages in a main chat and 
@@ -30,7 +34,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
                         <GlassCard style={styles.messageBody}>
                             {messageType === 'image' ? (
                                 <View style={styles.mainMessageImageContainer}>     
-                                    <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
+                                    <Image source={{ uri: displayImageUrl }} style={styles.mainMessageImage} />
                                     <Text style={styles.mainMessageImageTime}>{time}</Text>
                                 </View>
                             ) : messageType === 'text' ? (
@@ -41,7 +45,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
                             </View>
                             ) : messageType === 'mixed' ? (
                             <View style={styles.mainMessageImageTextContainer}>
-                                <Image source={{ uri: imageURL }} style={styles.mainMessageImage} />
+                                <Image source={{ uri: displayImageUrl }} style={styles.mainMessageImage} />
                                 <View style={styles.mainMessageTextContainer}>
                                     <Text style={styles.mainMessageSenderName}>{senderName}</Text>
                                     <Text style={styles.mainMessageText}>{messageText}</Text>
@@ -57,7 +61,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
                   {messageType === 'image' ? (
                     <View style={styles.subMessageImageOnly}>
                       <View style={[styles.subSenderLabel, dynamicStyle.subSenderLabel]}><Text style={styles.subSenderLabelText}>{senderName}</Text></View>
-                      <Image source={{ uri: imageURL }} style={styles.subMessageImage} />
+                      <Image source={{ uri: displayImageUrl }} style={styles.subMessageImage} />
                       <Text style={styles.subMessageTime}>{time}</Text>
                     </View>
                   ) : messageType === 'text' ? (
@@ -70,7 +74,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
                     <View style={styles.subMessageMixed}>
                       <View style={[styles.subSenderLabel, dynamicStyle.subSenderLabel]}><Text style={styles.subSenderLabelText}>{senderName}</Text></View>
                       <View style={styles.subMessageMixedImageTextContainer}>
-                        <Image source={{ uri: imageURL }} style={styles.subMessageImage} />
+                        <Image source={{ uri: displayImageUrl }} style={styles.subMessageImage} />
                         <Text style={styles.subMessageText}>{messageText}</Text>
                       </View>
                       <Text style={styles.subMessageTime}>{time}</Text>

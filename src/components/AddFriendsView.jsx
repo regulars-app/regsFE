@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import GlassCard from './GlassCard';
 import AddFriendItem from './AddFriendItem';
-import { requestFriend, getOutgoingFriendRequests, getAllUsers } from '../Services/friends';
+import { requestFriend, cancelFriendRequest, getOutgoingFriendRequests, getAllUsers } from '../Services/friends';
 
 const AddFriendsView = ({height, potentialFriends, style, type="request", onToggleFriend, selectedMembers = []}) => {
     const [allUsers, setAllUsers] = useState([]);
@@ -60,29 +60,39 @@ const AddFriendsView = ({height, potentialFriends, style, type="request", onTogg
         const user = allUsers[index];
         const isCurrentlyRequested = requestedFriends[index] || false;
         
-        if (isCurrentlyRequested) {
-            // If already requested, we could implement a cancel request feature
-            Alert.alert('Friend Request', 'Friend request already sent');
-            return;
-        }
-
         setLoading(prev => ({ ...prev, [index]: true }));
 
         try {
-            const result = await requestFriend(user.id);
-            
-            if (result.success) {
-                setRequestedFriends(prev => ({
-                    ...prev,
-                    [index]: true
-                }));
-                Alert.alert('Success', 'Friend request sent successfully!');
+            if (isCurrentlyRequested) {
+                // Cancel existing friend request
+                const result = await cancelFriendRequest(user.id);
+                
+                if (result.success) {
+                    setRequestedFriends(prev => ({
+                        ...prev,
+                        [index]: false
+                    }));
+                    Alert.alert('Success', 'Friend request cancelled!');
+                } else {
+                    Alert.alert('Error', result.error || 'Failed to cancel friend request');
+                }
             } else {
-                Alert.alert('Error', result.error || 'Failed to send friend request');
+                // Send new friend request
+                const result = await requestFriend(user.id);
+                
+                if (result.success) {
+                    setRequestedFriends(prev => ({
+                        ...prev,
+                        [index]: true
+                    }));
+                    Alert.alert('Success', 'Friend request sent successfully!');
+                } else {
+                    Alert.alert('Error', result.error || 'Failed to send friend request');
+                }
             }
         } catch (error) {
-            console.error('Error sending friend request:', error);
-            Alert.alert('Error', 'Failed to send friend request');
+            console.error('Error handling friend request:', error);
+            Alert.alert('Error', 'Failed to handle friend request');
         } finally {
             setLoading(prev => ({ ...prev, [index]: false }));
         }

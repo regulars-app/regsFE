@@ -1,56 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfilePic from './ProfilePic';
-import AddSymbol from './AddSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
+import AddSymbol from './AddSymbol';
 
-const AddFriendItem = ({style, name, imageURL, requested, added, onToggle, onToggleAdd, type="request", loading=false}) => {
-    const renderButton = () => {
-        if (requested || added) {
-            return (
-                <TouchableOpacity 
-                    style={styles.button} 
-                    onPress={type === "request" ? onToggle : onToggleAdd}
-                    activeOpacity={0.7}
-                    disabled={loading}
-                >
-                    <Text style={styles.buttonText}>
-                        {type === "request" ? "Requested" : "Added"}
-                    </Text>
-                    <ConfirmSymbol style={styles.confirmSymbol} size={18}/>
-                </TouchableOpacity>
-            );
-        }
-
-        return (
-            <TouchableOpacity 
-                style={styles.button} 
-                onPress={type === "request" ? onToggle : onToggleAdd}
-                activeOpacity={0.7}
-                disabled={loading}
-            >
-                {loading ? (
-                    <ActivityIndicator size="small" color="#6E6E6E" />
-                ) : (
-                    <>
-                        <Text style={styles.buttonText}>Add</Text>
-                        <AddSymbol size={20}/>
-                    </>
-                )}
-            </TouchableOpacity>
-        );
-    };
-
+const SelectableMemberItem = ({style, name, imageURL, isSelected = false, onPress}) => {
     return (
-        <View style={[styles.container, style]}>
+        <TouchableOpacity style={[styles.container, style]} onPress={onPress} activeOpacity={0.7}>
             <View style={styles.leftContainer}>
                 <ProfilePic size={40} style={styles.profilePic} imageURL={imageURL || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
                 <Text style={styles.name}>{name}</Text>
             </View>
             <View style={styles.rightContainer}>
-                {renderButton()}
+                <View style={styles.buttonContainer}>
+                    {isSelected && <View style={styles.overlay}></View>}
+                    {isSelected ? (
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>Selected</Text>
+                            <ConfirmSymbol style={styles.confirmSymbol} size={18}/>
+                        </View>
+                    ) : (
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>Select</Text>
+                            <AddSymbol size={20}/>
+                        </View>
+                    )}
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -80,6 +57,19 @@ const styles = StyleSheet.create({
     rightContainer: {
         alignItems: 'flex-end',
     },
+    buttonContainer: {
+        position: 'relative',
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.25)',
+        borderRadius: 10,
+        zIndex: 2,
+    },
     button: {
         minWidth: 80,
         height: 30,
@@ -107,4 +97,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddFriendItem;
+export default SelectableMemberItem;

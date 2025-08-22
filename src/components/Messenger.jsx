@@ -3,14 +3,16 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MessageIO from './MessageIO';
 import Message from './Message';
 
-const Messenger = ({style, messages = [], paddingHorizontal = 30}) => {
+const Messenger = ({style, messages = [], paddingHorizontal = 30, onSendMessage, groupId, scrollViewRef}) => {
     return (
         <View style={[styles.container, style]}>
             <View style={styles.scrollViewContainer}>
-                <ScrollView style={styles.scrollView} 
-                contentContainerStyle={styles.scrollViewContent}
-                showsVerticalScrollIndicator={true}
-                nestedScrollEnabled={true}>
+                <ScrollView 
+                    ref={scrollViewRef}
+                    style={styles.scrollView} 
+                    contentContainerStyle={styles.scrollViewContent}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled={true}>
                     {messages.map((message, index) => (
                         <Message 
                             key={index}
@@ -22,12 +24,18 @@ const Messenger = ({style, messages = [], paddingHorizontal = 30}) => {
                             messageText={message.messageText}
                             imageURL={message.imageURL}
                             userID={message.userID}
+                            mediaDownloadUrl={message.mediaDownloadUrl}
                         />
                     ))}
                 </ScrollView>
             </View>
             <View style={styles.messageIOContainer}>
-                <MessageIO style={styles.messageIO} paddingHorizontal={paddingHorizontal}/>
+                <MessageIO 
+                    style={styles.messageIO} 
+                    paddingHorizontal={paddingHorizontal}
+                    onSendMessage={onSendMessage}
+                    groupId={groupId}
+                />
             </View>
         </View>
     );

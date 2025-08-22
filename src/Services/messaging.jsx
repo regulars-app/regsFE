@@ -57,13 +57,16 @@ async function retrieveDialogs() {
   return dialogs;
 }
 
-async function createGroupChat(name, occupants_ids, description, photo) {
+async function createGroupChat(name, occupants_ids, description, photo, chat_type) {
   const params = {
     type: 2,
     name: name,
     occupants_ids: occupants_ids,
     description: description,
     photo: photo,
+    extensions: {
+      chat_type: chat_type
+    }
   };
 
   return await ConnectyCube.chat.dialog.create(params);
@@ -100,4 +103,4 @@ async function retrieveMessages(dialog) {
 }
 
 
-export { initConnectyCube, authenticateChatUser };
+export { initConnectyCube, authenticateChatUser, createGroupChat, sendMessage, retrieveMessages, retrieveDialogs };

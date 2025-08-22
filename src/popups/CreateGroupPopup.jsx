@@ -5,11 +5,14 @@ import ProfileListCard from '../components/ProfileListCard';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
 import SelectMembersView from '../components/SelectMembersView';
 import { getCurrentUserFriends } from '../Services/friends';
+import { createGroup } from '../Services/groups';
 
 const CreateGroupPopup = ({onClose}) => {
     const [friends, setFriends] = useState([]);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCreating, setIsCreating] = useState(false);
+    const [groupName, setGroupName] = useState('');
 
     // Load friends on component mount
     useEffect(() => {
@@ -41,14 +44,52 @@ const CreateGroupPopup = ({onClose}) => {
         setSelectedMembers(prev => prev.filter(member => member.id !== memberId));
     };
 
-    const handleCreateGroup = () => {
+    const handleCreateGroup = async () => {
+        if (!groupName.trim()) {
+            Alert.alert('Error', 'Please enter a group name');
+            return;
+        }
+
         if (selectedMembers.length === 0) {
             Alert.alert('Error', 'Please select at least one member for your group');
             return;
         }
-        // TODO: Implement group creation logic
-        Alert.alert('Success', 'Group created successfully!');
-        onClose();
+
+        try {
+            setIsCreating(true);
+            
+            // Prepare member IDs for group creation
+            const memberIds = selectedMembers.map(member => member.id);
+            
+            // Create the group
+            const result = await createGroup(
+                groupName.trim(),
+                memberIds,
+                `Group: ${groupName.trim()}`, // description
+                null, // photo - can be added later
+                'group' // chat_type
+            );
+
+            if (result.success) {
+                Alert.alert(
+                    'Success', 
+                    `Group "${groupName.trim()}" created successfully!`,
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => onClose()
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert('Error', result.error || 'Failed to create group');
+            }
+        } catch (error) {
+            console.error('Error creating group:', error);
+            Alert.alert('Error', 'Failed to create group');
+        } finally {
+            setIsCreating(false);
+        }
     };
 
     if (isLoading) {
@@ -61,7 +102,14 @@ const CreateGroupPopup = ({onClose}) => {
 
     return (
         <View style={styles.container}>
-            <AdditionalInfoInput style={styles.additionalInfoInput} placeholder={"Give your group a name..."} multiline={false} maxLength={30}/>
+            <AdditionalInfoInput 
+                style={styles.additionalInfoInput} 
+                placeholder={"Give your group a name..."} 
+                multiline={false} 
+                maxLength={30}
+                value={groupName}
+                onChangeText={setGroupName}
+            />
             <ProfileListCard 
                 style={styles.profileListCard} 
                 clickable={false} 
@@ -82,7 +130,14 @@ const CreateGroupPopup = ({onClose}) => {
                 onToggleMember={handleToggleMember}
                 selectedMembers={selectedMembers}
             />
-            <MainButton text="Confirm" color="green" type="confirm" style={styles.createGroupButton} onPress={handleCreateGroup} />
+            <MainButton 
+                text={isCreating ? "Creating..." : "Confirm"} 
+                color="green" 
+                type="confirm" 
+                style={styles.createGroupButton} 
+                onPress={handleCreateGroup}
+                disabled={isCreating}
+            />
         </View>
     );
 };

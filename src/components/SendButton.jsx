@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import SendSymbol from './SendSymbol';
 
-const SendButton = ({style, size}) => {
+const SendButton = ({style, size, onPress, disabled}) => {
     const dynamicStyle = {
         sendButton: {
             width: size,
@@ -10,7 +10,12 @@ const SendButton = ({style, size}) => {
         },
     };
   return (
-    <TouchableOpacity style={[styles.sendButton, dynamicStyle.sendButton, style]}>
+    <TouchableOpacity 
+        style={[styles.sendButton, dynamicStyle.sendButton, style]}
+        onPress={onPress}
+        disabled={disabled}
+        activeOpacity={0.7}
+    >
       <SendSymbol size={size/2}/>
     </TouchableOpacity>
   );

@@ -21,7 +21,7 @@ async function getUserData(userId) {
 }
 
 /**
- * Get all users (excluding current user and current friends)
+ * Get all users (excluding current user, current friends, and users who have sent requests to current user)
  * @returns {Promise<Array>} - Array of user objects
  */
 async function getAllUsers() {
@@ -33,9 +33,10 @@ async function getAllUsers() {
 
         const currentUserID = currentUser.uid;
         
-        // Get current user's friends list first
+        // Get current user's friends list and incoming requests
         const currentUserDoc = await firestore().collection('users').doc(currentUserID).get();
         const currentUserFriends = currentUserDoc.exists ? (currentUserDoc.data().friends || []) : [];
+        const currentUserIncomingRequests = currentUserDoc.exists ? (currentUserDoc.data().friend_requests_received || []) : [];
         
         // Get all users
         const usersSnapshot = await firestore().collection('users').get();
@@ -43,15 +44,18 @@ async function getAllUsers() {
         
         usersSnapshot.forEach(doc => {
             const userData = doc.data();
-            // Exclude current user and users who are already friends
-            if (doc.id !== currentUserID && !currentUserFriends.includes(doc.id)) {
+            // Exclude current user, existing friends, and users who have sent requests to current user
+            if (doc.id !== currentUserID && 
+                !currentUserFriends.includes(doc.id) && 
+                !currentUserIncomingRequests.includes(doc.id)) {
                 users.push({
                     id: doc.id,
                     name: userData.first_name && userData.last_name 
                         ? `${userData.first_name} ${userData.last_name}` 
                         : userData.handle || userData.email,
                     email: userData.email,
-                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+                    connectycube_id: userData.connectycube_id
                 });
             }
         });
@@ -95,7 +99,8 @@ async function getCurrentUserFriends() {
                         ? `${friendData.first_name} ${friendData.last_name}` 
                         : friendData.handle || friendData.email,
                     email: friendData.email,
-                    imageURL: friendData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                    imageURL: friendData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+                    connectycube_id: friendData.connectycube_id
                 });
             }
         }
@@ -399,10 +404,80 @@ async function declineFriendRequest(friendID) {
     }
 }
 
+/**
+ * Cancel/remove a friend request that was sent to another user
+ * @param {string} friendID - The ID of the user whose request to cancel
+ * @returns {Promise<Object>} - Result object with success status
+ */
+async function cancelFriendRequest(friendID) {
+    try {
+        const currentUser = auth().currentUser;
+        if (!currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const currentUserID = currentUser.uid;
+        
+        // Get current user document
+        const currentUserRef = firestore().collection('users').doc(currentUserID);
+        const currentUserDoc = await currentUserRef.get();
+        
+        if (!currentUserDoc.exists) {
+            throw new Error('Current user not found');
+        }
+
+        // Remove friend ID from current user's friend_requests_sent array
+        const currentUserData = currentUserDoc.data();
+        const currentSentRequests = currentUserData.friend_requests_sent || [];
+
+        // Check if the request exists
+        if (!currentSentRequests.includes(friendID)) {
+            return {
+                success: false,
+                error: 'Friend request not found'
+            };
+        }
+
+        const updatedSentRequests = currentSentRequests.filter(id => id !== friendID);
+
+        await currentUserRef.update({
+            friend_requests_sent: updatedSentRequests
+        });
+
+        // Get friend document
+        const friendRef = firestore().collection('users').doc(friendID);
+        const friendDoc = await friendRef.get();
+        
+        if (friendDoc.exists) {
+            const friendData = friendDoc.data();
+            const friendReceivedRequests = friendData.friend_requests_received || [];
+
+            // Remove current user ID from friend's friend_requests_received array
+            const updatedFriendReceivedRequests = friendReceivedRequests.filter(id => id !== currentUserID);
+
+            await friendRef.update({
+                friend_requests_received: updatedFriendReceivedRequests
+            });
+        }
+
+        return {
+            success: true,
+            message: 'Friend request cancelled successfully'
+        };
+    } catch (error) {
+        console.error('Error cancelling friend request:', error);
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+
 export { 
     requestFriend, 
     acceptFriendRequest, 
     declineFriendRequest, 
+    cancelFriendRequest,
     getIncomingFriendRequests, 
     getOutgoingFriendRequests,
     getCurrentUserFriends,

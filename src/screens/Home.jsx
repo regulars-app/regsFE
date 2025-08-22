@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import ProfilePic from '../components/ProfilePic';
 import GlassCard from '../components/GlassCard';
@@ -20,50 +20,54 @@ import AvailabilityPopup from '../popups/AvailabilityPopup';
 import PlaceSymbol from '../components/PlaceSymbol';
 import GlassCardButton from '../components/GlassCardButton';
 import CreateGroupPopup from '../popups/CreateGroupPopup';
+import { getCurrentUserGroups } from '../Services/groups';
 
 const Home = ({navigation}) => {
-    
-
     const [placePopupVisible, setPlacePopupVisible] = useState(false);
     const [availabilityPopupVisible, setAvailabilityPopupVisible] = useState(false);
     const [createGroupPopupVisible, setCreateGroupPopupVisible] = useState(false);
+    const [groups, setGroups] = useState([]);
+    const [isLoadingGroups, setIsLoadingGroups] = useState(true);
 
     const mapImage = require('../images/map.png');
 
-    const groups = [
-        {
-            id: 1,
-            name: 'Group 1',
-            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
-            upcomingMeetup: true,
-            upcomingSurpriseEvent: false,
-            challenge: 'smart',
-        },
-        {
-            id: 2,
-            name: 'Group 2',
-            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
-            upcomingMeetup: true,
-            upcomingSurpriseEvent: true,
-            challenge: 'wild',
-        },
-        {
-            id: 3,
-            name: 'Group 3',
-            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
-            upcomingMeetup: false,
-            upcomingSurpriseEvent: true,
-            challenge: 'health',
-        },
-        {
-            id: 4,
-            name: 'Group 4',
-            imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
-            upcomingMeetup: true,
-            upcomingSurpriseEvent: true,
-            challenge: false,
-        },
-    ];
+    // Load user's groups on component mount
+    useEffect(() => {
+        loadUserGroups();
+    }, []);
+
+    // Reload groups when create group popup closes (in case a new group was created)
+    useEffect(() => {
+        if (!createGroupPopupVisible) {
+            loadUserGroups();
+        }
+    }, [createGroupPopupVisible]);
+
+    const loadUserGroups = async () => {
+        try {
+            setIsLoadingGroups(true);
+            const userGroups = await getCurrentUserGroups();
+            
+            // Transform the group data to match the expected format
+            const formattedGroups = userGroups.map(group => ({
+                id: group.id,
+                name: group.name,
+                imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg', // Default group image
+                upcomingMeetup: false, // TODO: Implement actual meetup checking
+                upcomingSurpriseEvent: false, // TODO: Implement actual surprise event checking
+                challenge: false, // TODO: Implement actual challenge checking
+                // Keep the original group data for navigation
+                originalGroup: group
+            }));
+            
+            setGroups(formattedGroups);
+        } catch (error) {
+            console.error('Error loading user groups:', error);
+            Alert.alert('Error', 'Failed to load groups');
+        } finally {
+            setIsLoadingGroups(false);
+        }
+    };
 
     return (
         <View>
@@ -133,18 +137,76 @@ const Home = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={styles.groupsScrollView} contentContainerStyle={styles.groupsScrollViewContent}>
-                    {groups.map((group, index) => (
-                            <GlassCard style={styles.groupCardContainer} key={index}>
-                                <View style={styles.groupCard} key={index}>
-                                    <TouchableOpacity style={styles.profilePicTouchableOpacity} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 0})}>
+                    {isLoadingGroups ? (
+                        <GlassCard style={styles.groupCardContainer}>
+                            <View style={styles.groupCard}>
+                                <Text style={styles.loadingText}>Loading...</Text>
+                            </View>
+                        </GlassCard>
+                    ) : groups.length > 0 ? (
+                        groups.map((group, index) => (
+                            <GlassCard style={styles.groupCardContainer} key={group.id || index}>
+                                <View style={styles.groupCard}>
+                                    <TouchableOpacity 
+                                        style={styles.profilePicTouchableOpacity} 
+                                        onPress={() => navigation.navigate('GroupPage', {
+                                            group: group.originalGroup, 
+                                            groupID: group.id,
+                                            initialTab: 0
+                                        })}
+                                    >
                                         <ProfilePic size={40} imageURL={group.imageURL}/>
                                     </TouchableOpacity>
-                                    {group.upcomingMeetup && <TouchableOpacity style={styles.groupUpcomingMeetup} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 4, upcomingMeetup: group.upcomingMeetup})}><MeetupSymbol size={23} /></TouchableOpacity>}
-                                    {group.upcomingSurpriseEvent && <TouchableOpacity style={styles.groupUpcomingSurpriseEvent} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 1, upcomingSurpriseEvent: group.upcomingSurpriseEvent})}><SurpriseEventSymbol size={30} /></TouchableOpacity>}
-                                    {group.challenge && <TouchableOpacity style={styles.groupChallenge} onPress={() => navigation.navigate('GroupPage', {group: group, initialTab: 2})}>{group.challenge === 'smart' ? <SmartSymbol size={30} /> : group.challenge === 'wild' ? <WildSymbol size={30} /> : group.challenge === 'health' ? <HealthSymbol size={30} /> : null}</TouchableOpacity>}
+                                    {group.upcomingMeetup && (
+                                        <TouchableOpacity 
+                                            style={styles.groupUpcomingMeetup} 
+                                            onPress={() => navigation.navigate('GroupPage', {
+                                                group: group.originalGroup, 
+                                                groupID: group.id,
+                                                initialTab: 4, 
+                                                upcomingMeetup: group.upcomingMeetup
+                                            })}
+                                        >
+                                            <MeetupSymbol size={23} />
+                                        </TouchableOpacity>
+                                    )}
+                                    {group.upcomingSurpriseEvent && (
+                                        <TouchableOpacity 
+                                            style={styles.groupUpcomingSurpriseEvent} 
+                                            onPress={() => navigation.navigate('GroupPage', {
+                                                group: group.originalGroup, 
+                                                groupID: group.id,
+                                                initialTab: 1, 
+                                                upcomingSurpriseEvent: group.upcomingSurpriseEvent
+                                            })}
+                                        >
+                                            <SurpriseEventSymbol size={30} />
+                                        </TouchableOpacity>
+                                    )}
+                                    {group.challenge && (
+                                        <TouchableOpacity 
+                                            style={styles.groupChallenge} 
+                                            onPress={() => navigation.navigate('GroupPage', {
+                                                group: group.originalGroup, 
+                                                groupID: group.id,
+                                                initialTab: 2
+                                            })}
+                                        >
+                                            {group.challenge === 'smart' ? <SmartSymbol size={30} /> : 
+                                             group.challenge === 'wild' ? <WildSymbol size={30} /> : 
+                                             group.challenge === 'health' ? <HealthSymbol size={30} /> : null}
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
                             </GlassCard>
-                    ))}
+                        ))
+                    ) : (
+                        <GlassCard style={styles.groupCardContainer}>
+                            <View style={styles.groupCard}>
+                                <Text style={styles.noGroupsText}>No groups yet</Text>
+                            </View>
+                        </GlassCard>
+                    )}
                     <TouchableOpacity style={styles.createGroupButton} onPress={() => setCreateGroupPopupVisible(true)}>
                         <GlassCardButton style={styles.createGroupButton} type="addFriend" text="Create Group"/>
                     </TouchableOpacity>
@@ -335,6 +397,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white',   
         elevation: 1,
+    },
+    loadingText: {
+        fontSize: 14,
+        color: '#6E6E6E',
+        textAlign: 'center',
+    },
+    noGroupsText: {
+        fontSize: 12,
+        color: '#6E6E6E',
+        textAlign: 'center',
+        fontStyle: 'italic',
     },
 });
 
