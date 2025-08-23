@@ -6,69 +6,60 @@ import ProfilePic from './ProfilePic';
 import DownSymbol from './DownSymbol';
 import ConfirmSymbol from './ConfirmSymbol';
 
-const memberMessageInfo = [
-    { id: 1,
-        name: 'John Doe',
-        lastMessage: 'Hello, how are you?',
-        imageURL: 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
-        time: '12:00',
+// Function to get group members for direct messaging
+const getGroupMembersForDirectChat = (group, currentUserId) => {
+    if (!group || !group.members || !currentUserId) {
+        console.log('⚠️ getGroupMembersForDirectChat - missing data:', { 
+            hasGroup: !!group, 
+            hasMembers: !!group?.members, 
+            hasCurrentUserId: !!currentUserId 
+        });
+        return [];
+    }
+    
+    console.log('🔍 getGroupMembersForDirectChat - filtering members:');
+    console.log('  - All members:', group.members);
+    console.log('  - Current user ID:', currentUserId);
+    
+    // Filter out current user and get other members
+    const filteredMembers = group.members.filter(memberId => {
+        const isCurrentUser = memberId === currentUserId;
+        console.log(`  - Member ${memberId.slice(-4)}: ${isCurrentUser ? 'CURRENT USER (filtered out)' : 'Other member'}`);
+        return !isCurrentUser;
+    });
+    
+    console.log('  - Filtered members:', filteredMembers);
+    
+    return filteredMembers.map(memberId => ({
+        id: memberId,
+        name: `Member ${memberId.slice(-4)}`, // Show last 4 chars of ID
+        lastMessage: 'Tap to start chatting',
+        imageURL: null, // Will use default profile pic
+        time: '',
         status: 'online',
         read: false,
-    },
-    {
-        id: 2,
-        name: 'Jane Doe',
-        lastMessage: 'I\'m ok thanks, i\'ve been doing lots of arts and crafts!',
-        imageURL: 'https://cdn.pixabay.com/photo/2025/06/22/14/12/rusty-tailed-9674318_1280.jpg',
-        time: '12:00',
-        status: 'online',
-        read: false,
-    },
-    {
-        id: 3,
-        name: 'John Doe',
-        lastMessage: 'Hello, how are you?',
-        imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
-        time: '12:00',
-        status: 'online',
-        read: true,
-    },
-    {
-        id: 4,
-        name: 'John Doe',
-        lastMessage: 'Hello, how are you?',
-        imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
-        time: '12:00',
-        status: 'online',
-        read: true,
-    },
-    {
-        id: 5,
-        name: 'John Doe',
-        lastMessage: 'Hello, how are you?',
-        imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
-        time: '12:00',
-        status: 'online',
-        read: true,
-    },
-    {
-        id: 6,
-        name: 'John Doe',
-        lastMessage: 'Hello, how are you?',
-        imageURL: 'https://cdn.pixabay.com/photo/2025/06/11/22/12/kackar-mountains-9655201_1280.jpg',
-        time: '12:00',
-        status: 'online',
-        read: true,
-    },
-];
+    }));
+};
 
 
-const DirectMessagesWidget = ({style, onMemberPress}) => {
+const DirectMessagesWidget = ({style, onMemberPress, group, currentUserId}) => {
     const [expanded, setExpanded] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [isAnimating, setIsAnimating] = useState(false);
     const animatedHeight = useRef(new Animated.Value(0)).current;
     const animatedOpacity = useRef(new Animated.Value(0)).current;
+    
+    // Debug logging
+    console.log('🔍 DirectMessagesWidget - props:', {
+        hasGroup: !!group,
+        groupMembers: group?.members?.length || 0,
+        currentUserId: currentUserId,
+        hasOnMemberPress: !!onMemberPress
+    });
+    
+    // Get members for display
+    const members = getGroupMembersForDirectChat(group, currentUserId);
+    console.log('🔍 DirectMessagesWidget - members:', members);
 
     const handleMemberPress = (member) => {
         setSelectedMember(member);
@@ -129,7 +120,7 @@ const DirectMessagesWidget = ({style, onMemberPress}) => {
             <GlassCard style={[styles.glassCard, dynamicStyles.glassCard]}>
                 {!expanded ? 
                 <View style={styles.unexpandedContainer}>
-                    <Stack style={styles.profilePicStack} cardWidth={40} cardHeight={40} sideOffset={10} data={memberMessageInfo} renderItem={({item}) => <ProfilePic imageURL={item.imageURL} size={40} newMessage={!item.read}/>} />
+                    <Stack style={styles.profilePicStack} cardWidth={40} cardHeight={40} sideOffset={10} data={members} renderItem={({item}) => <ProfilePic imageURL={item.imageURL} size={40} newMessage={!item.read}/>} />
                     <Text style={styles.directMessageTitle}>Direct Messages</Text>
                     <TouchableOpacity style={styles.expandButton} onPress={toggleExpanded} activeOpacity={0.6}>
                         <DownSymbol size={35}/>
@@ -149,7 +140,7 @@ const DirectMessagesWidget = ({style, onMemberPress}) => {
                     ]}
                 >
                     <ScrollView style={styles.memberScrollView}>
-                    {memberMessageInfo.map((member) => (
+                    {members.map((member) => (
                         <GlassCard key={member.id} style={styles.memberContainer} disableShadow={isAnimating}>
                                 <TouchableOpacity style={styles.memberInfo} onPress={() => handleMemberPress(member)} activeOpacity={0}>
                                     <ProfilePic imageURL={member.imageURL} size={50} newMessage={!member.read}/>

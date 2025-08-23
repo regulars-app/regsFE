@@ -88,7 +88,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        minWidth: '100%',
     },
     mainChatMessageContainer: {
         paddingBottom: 12,

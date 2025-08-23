@@ -4,7 +4,7 @@ import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
 import ProfilePic from '../components/ProfilePic';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
-import { signIn } from '../Services/auth';
+import { signIn, signInWithGoogle } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import GoogleSymbol from '../components/GoogleSymbol';
 import { useNavigation } from '@react-navigation/native';
@@ -61,7 +61,9 @@ const SignIn = () => {
                 onChangeText={(value) => handleInputChange('password', value)}
                 secureTextEntry={true}
             />
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => {
+                alert('Google Sign-In is not yet implemented for React Native. Please use email/password sign in for now.');
+            }}>
                 <AdditionalInfoDisplay style={styles.googleSignIn} text="Sign in with Google">
                     <GoogleSymbol size={20}/>
                 </AdditionalInfoDisplay>

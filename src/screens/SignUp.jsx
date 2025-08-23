@@ -4,7 +4,7 @@ import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
 import ProfilePic from '../components/ProfilePic';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
-import { signUp } from '../Services/auth';
+import { signUp, signUpWithGoogle } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GoogleSymbol from '../components/GoogleSymbol';
@@ -40,9 +40,7 @@ const SignUp = () => {
     };
 
     const handleConfirm = async () => {
-        await signUp(formData.email, formData.password);
-  
-        // Validate the form data
+        // Validate the form data first
         if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
             alert('Please fill in all fields');
             return;
@@ -53,9 +51,14 @@ const SignUp = () => {
             return;
         }
         
-        navigation.navigate('Home');
-   
-      
+        // Call signUp with all the collected data
+        const result = await signUp(formData.email, formData.password, formData.name, date);
+        
+        if (result.success) {
+            navigation.navigate('Home');
+        } else {
+            alert('Sign up failed: ' + result.error);
+        }
     };
   
     return (
@@ -112,7 +115,9 @@ const SignUp = () => {
                 onChangeText={(value) => handleInputChange('confirmPassword', value)}
                 secureTextEntry={true}
             />
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => {
+                alert('Google Sign-Up is not yet implemented for React Native. Please use email/password sign up for now.');
+            }}>
                 <AdditionalInfoDisplay style={styles.googleSignUp} text="Sign up with Google">
                     <GoogleSymbol size={20}/>
                 </AdditionalInfoDisplay>

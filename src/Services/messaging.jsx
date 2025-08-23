@@ -49,6 +49,7 @@ async function authenticateChatUser(user) {
       message,
     );
   }
+  
   return user.id;
 }
 
@@ -195,6 +196,47 @@ function formatMessagesForDisplay(messages, currentUserId) {
 }
 
 
+// Direct chat functions
+async function createDirectChat(user1Id, user2Id) {
+  try {
+    console.log('🔍 Creating direct chat between users:', user1Id, user2Id);
+    
+    const params = {
+      type: 3, // 3 = private chat
+      occupants_ids: [user1Id, user2Id],
+    };
+    
+    console.log('📝 Direct chat params:', params);
+    
+    const directChat = await ConnectyCube.chat.dialog.create(params);
+    console.log('✅ Direct chat created successfully:', directChat);
+    console.log('🔍 Direct chat ID:', directChat?._id);
+    
+    return directChat;
+  } catch (error) {
+    console.error('❌ Error creating direct chat:', error);
+    throw error;
+  }
+}
+
+async function loadDirectMessages(chatId, limit = 50) {
+  try {
+    const messagesResult = await ConnectyCube.chat.message.list({
+      chat_dialog_id: chatId,
+      sort_desc: 'date_sent',
+      limit: limit,
+      skip: 0,
+    });
+
+    return messagesResult;
+  } catch (error) {
+    console.error('❌ Error loading direct messages:', error);
+    throw error;
+  }
+}
+
+
+
 export { 
   initConnectyCube, 
   authenticateChatUser, 
@@ -205,5 +247,7 @@ export {
   initializeGroupChat,
   loadGroupMessages,
   sendGroupMessage,
-  formatMessagesForDisplay
+  formatMessagesForDisplay,
+  createDirectChat,
+  loadDirectMessages
 };

@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
     
     },
     scrollViewContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingVertical: 10,
     },
     messageIOContainer: {
         width: '100%',

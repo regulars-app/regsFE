@@ -9,6 +9,7 @@ import Popup from '../components/Popup';
 import DirectMessagerPopup from '../popups/DirectMessagerPopup';
 import { initializeGroupChat, loadGroupMessages, sendGroupMessage, formatMessagesForDisplay } from '../Services/messaging';
 import { loadGroupDataForChat } from '../Services/groups';
+import auth from '@react-native-firebase/auth';
 
 const GroupChatPage = ({ routeParams }) => {
     const [showDirectMessagerPopup, setShowDirectMessagerPopup] = useState(false);
@@ -16,10 +17,14 @@ const GroupChatPage = ({ routeParams }) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState(null);
+    const [firebaseUid, setFirebaseUid] = useState(null);
     const [group, setGroup] = useState(null);
 
     const groupId = routeParams?.groupID;
     const groupName = group?.name || 'Loading...';
+    
+    console.log('🔍 GroupChatPage - groupId:', groupId);
+    console.log('🔍 GroupChatPage - routeParams:', routeParams);
     
     // Ref for ScrollView to enable auto-scrolling
     const scrollViewRef = useRef(null);
@@ -42,6 +47,11 @@ const GroupChatPage = ({ routeParams }) => {
                 setUserId(chatData.userId);
                 console.log('🔍 Setting userId to:', chatData.userId, 'Type:', typeof chatData.userId);
                 
+                // Also store the Firebase UID for direct messaging
+                const currentFirebaseUid = auth().currentUser?.uid;
+                setFirebaseUid(currentFirebaseUid);
+                console.log('🔍 Firebase UID:', currentFirebaseUid);
+                
                 // Load group data
                 if (groupId) {
                     await loadGroupData(chatData.userId);
@@ -63,14 +73,27 @@ const GroupChatPage = ({ routeParams }) => {
         }
     }, [messages]);
 
+    // Reload messages when group data becomes available
+    useEffect(() => {
+        if (group && group.chat && userId) {
+            console.log('🔄 Group data available, reloading messages...');
+            loadMessages(userId, group);
+        }
+    }, [group, userId]);
+
     const loadGroupData = async (currentUserId) => {
         try {
             // Load group data using service
             const groupData = await loadGroupDataForChat(groupId);
+            console.log('✅ Group data loaded:', groupData);
+            console.log('🔍 Group chat ID:', groupData.chat);
+            
+            // Set group state first
             setGroup(groupData);
             
             // Load messages for this group with the correct userId
-            await loadMessages(currentUserId);
+            // Pass the groupData directly instead of relying on state
+            await loadMessages(currentUserId, groupData);
             
         } catch (error) {
             console.error('❌ Error loading group data:', error);
@@ -78,14 +101,17 @@ const GroupChatPage = ({ routeParams }) => {
         }
     };
 
-    const loadMessages = async (currentUserId = userId) => {
+    const loadMessages = async (currentUserId = userId, groupData = group) => {
         try {
             console.log('📥 Loading messages for group:', groupId);
-            console.log('🔍 Using ConnectyCube chat ID:', group?.chat);
+            console.log('🔍 Using ConnectyCube chat ID:', groupData?.chat);
             console.log('🔍 Using userId for positioning:', currentUserId, 'Type:', typeof currentUserId);
             
             // Load messages using service
-            const messagesResult = await loadGroupMessages(group?.chat || '68a880fb8443c4000ef12c5f', 50);
+            if (!groupData?.chat) {
+                throw new Error('Group chat ID not available');
+            }
+            const messagesResult = await loadGroupMessages(groupData.chat, 50);
             
             // Format messages for display using service
             const formattedMessages = formatMessagesForDisplay(messagesResult, currentUserId);
@@ -109,9 +135,12 @@ const GroupChatPage = ({ routeParams }) => {
             }
 
             // Send message using service
+            if (!group?.chat) {
+                throw new Error('Group chat ID not available');
+            }
             const messageResult = await sendGroupMessage(
                 messageText, 
-                group?.chat || '68a880fb8443c4000ef12c5f', 
+                group.chat, 
                 userId
             );
             
@@ -174,7 +203,12 @@ const GroupChatPage = ({ routeParams }) => {
     return (
         <View style={styles.container}>
             <Popup showPopup={showDirectMessagerPopup} onClose={handleClosePopup} style={styles.popup}>
-                <DirectMessagerPopup member={selectedMember} onClose={handleClosePopup}/>
+                <DirectMessagerPopup 
+                    member={selectedMember} 
+                    onClose={handleClosePopup}
+                    group={group}
+                    currentUserId={firebaseUid}
+                />
             </Popup>
             <View style={styles.header}>
                 <BackButton size={30} style={styles.backButton} />
@@ -183,7 +217,14 @@ const GroupChatPage = ({ routeParams }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.bodyContent}>
-                <DirectMessagesWidget style={styles.directMessagesWidget} onMemberPress={handleMemberPress}/>
+                {firebaseUid && (
+                    <DirectMessagesWidget 
+                        style={styles.directMessagesWidget} 
+                        onMemberPress={handleMemberPress}
+                        group={group}
+                        currentUserId={firebaseUid}
+                    />
+                )}
                 <Text style={styles.groupName}>{groupName}</Text>
                 <Messenger 
                     style={styles.messenger} 
