@@ -4,7 +4,7 @@ import ConfirmSymbol from './ConfirmSymbol';
 import CancelSymbol from './CancelSymbol';
 import AddSymbol from './AddSymbol';
 
-const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, removeable = false, onRemove, newMessage = false, addProfilePic = false, onPress }) => { 
+const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, selected = false, removeable = false, onRemove, newMessage = false, addProfilePic = false, onPress, onAddProfilePic }) => { 
   const dynamicStyles = {
     outer: {
       width: size,
@@ -24,7 +24,7 @@ const ProfilePic = ({ footer, style, size = 80, imageURL, selectable = false, se
       activeOpacity={0.8}
     >
       {addProfilePic && <View style={styles.addProfilePic}>
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity style={styles.addButton} onPress={onAddProfilePic}>
             <AddSymbol size={30} />
           </TouchableOpacity>
         </View>}

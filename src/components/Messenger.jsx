@@ -25,6 +25,7 @@ const Messenger = ({style, messages = [], paddingHorizontal = 30, onSendMessage,
                             imageURL={message.imageURL}
                             userID={message.userID}
                             mediaDownloadUrl={message.mediaDownloadUrl}
+                            senderProfilePic={message.senderProfilePic}
                         />
                     ))}
                 </ScrollView>
@@ -66,8 +67,9 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     messageIO: {
-    position: 'absolute',
-    bottom: 2,
+        position: 'absolute',
+        bottom: 2,
     },
 });
-    export default Messenger;
+
+export default Messenger;

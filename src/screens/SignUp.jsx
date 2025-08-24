@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
 import BackButton from '../components/BackButton';
 import MainButton from '../components/MainButton';
 import ProfilePic from '../components/ProfilePic';
 import AdditionalInfoInput from '../components/AdditionalInfoInput';
-import { signUp, signUpWithGoogle } from '../Services/auth';
+import { signUp, googleSignIn } from '../Services/auth';
 import AdditionalInfoDisplay from '../components/AdditionalInfoDisplay';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GoogleSymbol from '../components/GoogleSymbol';
 import { useNavigation } from '@react-navigation/native';
+import { pickImageFromGallery } from '../Services/media';
 
 const SignUp = () => {
 
@@ -25,18 +26,30 @@ const SignUp = () => {
   };
 
 
-  const [formData, setFormData] = useState({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-  });
+      const [selectedImage, setSelectedImage] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
 
     const handleInputChange = (field, value) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
+    };
+
+    const handleAddProfilePic = async () => {
+        const result = await pickImageFromGallery();
+        
+        if (result.success) {
+            setSelectedImage(result.image);
+        } else if (result.error !== 'User cancelled image selection') {
+            Alert.alert('Error', result.error);
+        }
     };
 
     const handleConfirm = async () => {
@@ -51,13 +64,21 @@ const SignUp = () => {
             return;
         }
         
-        // Call signUp with all the collected data
-        const result = await signUp(formData.email, formData.password, formData.name, date);
+        setIsUploading(true);
         
-        if (result.success) {
-            navigation.navigate('Home');
-        } else {
-            alert('Sign up failed: ' + result.error);
+        try {
+            // Call signUp with all the collected data including profile picture
+            const result = await signUp(formData.email, formData.password, formData.name, date, selectedImage);
+            
+            if (result.success) {
+                navigation.navigate('Home');
+            } else {
+                alert('Sign up failed: ' + result.error);
+            }
+        } catch (error) {
+            alert('Sign up failed: ' + error.message);
+        } finally {
+            setIsUploading(false);
         }
     };
   
@@ -67,7 +88,13 @@ const SignUp = () => {
           <BackButton size={30} style={styles.backButton} />
         </View>
         <View style={styles.bodyContent}>
-            <ProfilePic size={120} style={styles.profilePic} addProfilePic={true} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+            <ProfilePic 
+                size={120} 
+                style={styles.profilePic} 
+                addProfilePic={true} 
+                imageURL={selectedImage?.uri || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}
+                onAddProfilePic={handleAddProfilePic}
+            />
             <AdditionalInfoInput 
                 style={styles.additionalInfoInput} 
                 multiline={false}
@@ -115,8 +142,19 @@ const SignUp = () => {
                 onChangeText={(value) => handleInputChange('confirmPassword', value)}
                 secureTextEntry={true}
             />
-            <TouchableOpacity onPress={() => {
-                alert('Google Sign-Up is not yet implemented for React Native. Please use email/password sign up for now.');
+            <TouchableOpacity onPress={async () => {
+                try {
+                    const result = await googleSignIn();
+                    if (result.success) {
+                        // Navigate to Home on successful sign up
+                        navigation.navigate('Home');
+                    } else {
+                        // Show error message
+                        Alert.alert('Google Sign-Up Failed', result.error);
+                    }
+                } catch (error) {
+                    Alert.alert('Google Sign-Up Error', error.message);
+                }
             }}>
                 <AdditionalInfoDisplay style={styles.googleSignUp} text="Sign up with Google">
                     <GoogleSymbol size={20}/>
@@ -125,11 +163,12 @@ const SignUp = () => {
         </View>
         <View style={styles.footer}>
             <MainButton 
-                text="Confirm" 
+                text={isUploading ? "Creating Account..." : "Confirm"} 
                 color="green" 
                 type="confirm" 
                 style={styles.confirmButton}
                 onPress={handleConfirm}
+                disabled={isUploading}
             />    
         </View>
       </View>

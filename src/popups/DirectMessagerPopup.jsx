@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import ProfilePic from '../components/ProfilePic';
 import Messenger from '../components/Messenger';
-import { loadDirectMessages, formatMessagesForDisplay, sendGroupMessage } from '../Services/messaging';
+import { loadDirectMessages, formatMessagesForDisplay, sendGroupMessage, markDirectMessagesAsRead, createNewMessageWithProfilePic } from '../Services/messaging';
 import { getDirectChatId } from '../Services/groups';
 import firestore from '@react-native-firebase/firestore';
+import ConnectyCube from 'react-native-connectycube';
+import auth from '@react-native-firebase/auth';
 
-const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
+const DirectMessagerPopup = ({member, onClose, group, currentUserId, onRefresh}) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [directChatId, setDirectChatId] = useState(null);
+    const [recipientName, setRecipientName] = useState('');
     
     // Ref for ScrollView to enable auto-scrolling
     const scrollViewRef = useRef(null);
@@ -21,19 +24,42 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
         }
     };
 
+    // Function to refresh direct messages widget
+    const refreshDirectMessages = () => {
+        setRefreshKey(prev => prev + 1);
+    };
+
+    // Call refresh callback when component unmounts (popup closes)
+    useEffect(() => {
+        return () => {
+            if (onRefresh) {
+                onRefresh();
+            }
+        };
+    }, [onRefresh]);
+
     // Load direct chat when component mounts
     useEffect(() => {
         const loadDirectChat = async () => {
             try {
-                console.log('🔍 DirectMessagerPopup - loadDirectChat called with:', {
-                    group: group ? { id: group.id, name: group.name, hasDirectChats: !!group.directChats } : null,
-                    member: member ? { id: member.id, name: member.name } : null,
-                    currentUserId: currentUserId
-                });
-                
                 if (!group || !member || !currentUserId) {
-                    console.warn('⚠️ Missing required data for direct chat:', { group: !!group, member: !!member, currentUserId: !!currentUserId });
                     return;
+                }
+                
+                // Fetch recipient's user data to get their name/handle
+                try {
+                    const recipientDoc = await firestore().collection('users').doc(member.id).get();
+                    if (recipientDoc.exists) {
+                        const recipientData = recipientDoc.data();
+                        const name = recipientData.first_name && recipientData.last_name 
+                            ? `${recipientData.first_name} ${recipientData.last_name}`.trim()
+                            : recipientData.handle || 'Unknown User';
+                        setRecipientName(name);
+                    } else {
+                        setRecipientName(member?.name || member?.handle || 'Unknown User');
+                    }
+                } catch (error) {
+                    setRecipientName(member?.name || member?.handle || 'Unknown User');
                 }
                 
                 // Get direct chat ID between current user and selected member
@@ -48,8 +74,11 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
                     if (currentUserDoc.exists) {
                         const userData = currentUserDoc.data();
                         const connectycubeId = userData.connectycube_id;
-                        const formattedMessages = formatMessagesForDisplay(messagesResult, connectycubeId);
+                        const formattedMessages = await formatMessagesForDisplay(messagesResult, connectycubeId);
                         setMessages(formattedMessages);
+                        
+                        // Mark messages as read when opening the chat
+                        await markDirectMessagesAsRead(chatId, connectycubeId);
                         
                         // Scroll to bottom after messages are loaded
                         setTimeout(() => scrollToBottom(), 100);
@@ -62,7 +91,6 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
                 
                 setLoading(false);
             } catch (error) {
-                console.error('❌ Error loading direct chat:', error);
                 setLoading(false);
             }
         };
@@ -90,23 +118,8 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
                 currentUserId
             );
             
-            // Add message to local state immediately
-            const newMessage = {
-                id: messageResult?.id || messageResult?._id || Date.now().toString(),
-                chatType: 'main',
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                position: 'right',
-                messageType: 'text',
-                senderName: 'You',
-                messageText: messageText,
-                imageURL: '',
-                mediaDownloadUrl: null,
-                senderId: currentUserId,
-                timestamp: new Date(),
-                senderPic: null,
-                isRead: true,
-                isDelivered: true,
-            };
+            // Create new message with profile picture using service
+            const newMessage = await createNewMessageWithProfilePic(messageText, messageResult, currentUserId, true);
 
             setMessages(prev => [...prev, newMessage]);
             
@@ -132,7 +145,7 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
             {/* Header with member name */}
             <View style={styles.header}>
                 <Text style={styles.memberName}>
-                    {member?.name || member?.handle || 'Direct Message'}
+                    {recipientName || 'Loading...'}
                 </Text>
             </View>
             
@@ -141,6 +154,7 @@ const DirectMessagerPopup = ({member, onClose, group, currentUserId}) => {
                 style={styles.messenger}
                 onSendMessage={handleSendMessage}
                 scrollViewRef={scrollViewRef}
+                key="messenger"
             />
         </View>
     );

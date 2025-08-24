@@ -1,9 +1,9 @@
-import auth from '@react-native-firebase/auth';
+import auth, { GoogleAuthProvider, getAuth, signInWithCredential } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { initConnectyCube, authenticateChatUser } from './messaging';
 import ConnectyCube from 'react-native-connectycube';
-// Note: Google Sign-In is now handled through Firebase Auth directly
-// This avoids compatibility issues with the Google Sign-In package
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { uploadMediaToStorage } from './media';
 
 // Function to generate a unique handle from first and last name
 // Examples: "johnsmith", "johnsmith_1", "johnsmith_2", etc.
@@ -83,7 +83,7 @@ async function ensureUserProfile(userId, email) {
                 first_name: firstName,
                 last_name: lastName,
                 handle: handle,
-                media_ref: existingData.media_ref || '',
+                profile_pic: existingData.profile_pic || '',
                 friends: existingData.friends || [],
                 friend_requests_received: existingData.friend_requests_received || [],
                 friend_requests_sent: existingData.friend_requests_sent || [],
@@ -96,7 +96,9 @@ async function ensureUserProfile(userId, email) {
                 connectycube_id: chatUser || null
             }, { merge: true }); // Use merge to preserve existing data
             
-
+            console.log('✅ User profile ensured with ConnectyCube ID:', chatUser);
+        } else {
+            console.log('✅ User profile already exists with all fields');
         }
     } catch (error) {
         console.error('Error ensuring user profile:', error);
@@ -104,7 +106,7 @@ async function ensureUserProfile(userId, email) {
 }
 
 // Sign up function
-export async function signUp(email, password, name = '', dateOfBirth = null) {
+export async function signUp(email, password, name = '', dateOfBirth = null, profilePicture = null) {
     try {
         // Create Firebase Auth user
         const userCredential = await auth().createUserWithEmailAndPassword(email, password);
@@ -122,6 +124,35 @@ export async function signUp(email, password, name = '', dateOfBirth = null) {
         // Generate unique handle from name
         const handle = await generateUniqueHandle(firstName, lastName);
         
+        // Upload profile picture if provided (after user is authenticated)
+        let mediaRef = '';
+        if (profilePicture && profilePicture.uri) {
+            try {
+                // Ensure user is properly authenticated before upload
+                const currentUser = auth().currentUser;
+                if (!currentUser) {
+                    throw new Error('User not authenticated');
+                }
+                
+                // Get fresh ID token to ensure authentication
+                await currentUser.getIdToken(true);
+                
+                // Upload to dedicated profile_pics folder
+                const uploadResult = await uploadMediaToStorage(
+                    profilePicture.uri, 
+                    `profile_pics`, 
+                    `${user.uid}_`
+                );
+                if (uploadResult.success) {
+                    mediaRef = uploadResult.downloadUrl;
+                } else {
+                    console.warn('⚠️ Profile picture upload failed:', uploadResult.error);
+                }
+            } catch (error) {
+                console.warn('⚠️ Profile picture upload failed:', error);
+            }
+        }
+        
         // Create user profile in Firestore
         await firestore().collection('users').doc(user.uid).set({
             uid: user.uid,
@@ -130,7 +161,7 @@ export async function signUp(email, password, name = '', dateOfBirth = null) {
             last_name: lastName,
             handle: handle,
             date_of_birth: dateOfBirth ? dateOfBirth.toISOString() : null,
-            media_ref: '',
+            profile_pic: mediaRef, // Now contains Firebase Storage download URL
             friends: [],
             friend_requests_received: [],
             friend_requests_sent: [],
@@ -194,107 +225,222 @@ export async function signOut() {
     }
 }
 
-// Check if user is signed in with Google (through Firebase)
-export async function isSignedInWithGoogle() {
-    try {
-        const currentUser = auth().currentUser;
-        if (currentUser) {
-            // Check if the user has Google provider
-            const providers = currentUser.providerData;
-            return providers.some(provider => provider.providerId === 'google.com');
-        }
-        return false;
-    } catch (error) {
-        console.error('Error checking Google sign-in status:', error);
-        return false;
-    }
-}
-
-// Get current Google user info (through Firebase)
-export async function getCurrentGoogleUser() {
-    try {
-        const currentUser = auth().currentUser;
-        if (currentUser) {
-            // Check if the user has Google provider
-            const providers = currentUser.providerData;
-            const googleProvider = providers.find(provider => provider.providerId === 'google.com');
-            return googleProvider || null;
-        }
-        return null;
-    } catch (error) {
-        console.error('Error getting current Google user:', error);
-        return null;
-    }
-}
-
-// Link existing email/password account with Google
+// Function to link existing email/password account with Google
 export async function linkAccountWithGoogle(email, password) {
     try {
-        // For React Native, we need to use a different approach
-        // Since GoogleAuthProvider constructor isn't available, we'll use a web-based approach
-        // or implement a simpler Google Sign-In flow
+        // First, sign in with email/password to get the user
+        const userCredential = await auth().signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
         
-        // For now, let's show a message that this needs to be implemented differently
-        throw new Error('Account linking with Google needs to be implemented using a different method for React Native.');
+        // Configure Google Sign-In
+        GoogleSignin.configure({
+            webClientId: '21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com',
+        });
         
-        // TODO: Implement proper React Native Google Sign-In
-        // Options:
-        // 1. Use @react-native-google-signin/google-signin (but fix the linking issues)
-        // 2. Use a web-based approach with react-native-webview
-        // 3. Use Firebase's native Google Sign-In (requires additional setup)
+        // Check if your device supports Google Play
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         
+        // Get the users ID token
+        const signInResult = await GoogleSignin.signIn();
+        
+        // Get ID token (handle both new and old versions)
+        let idToken = signInResult.data?.idToken || signInResult.idToken;
+        if (!idToken) {
+            throw new Error('No ID token found');
+        }
+        
+        // Create a Google credential with the token
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+        
+        // Link the accounts
+        const linkResult = await user.linkWithCredential(googleCredential);
+        
+        // Update the user profile with Google info
+        const displayName = linkResult.user.displayName || '';
+        const nameParts = displayName.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        if (firstName || lastName) {
+            // Update Firestore with Google name and profile picture
+            const updateData = {
+                first_name: firstName,
+                last_name: lastName,
+            };
+            
+            // Add profile picture if Google provides one
+            if (linkResult.user.photoURL) {
+                updateData.profile_pic = linkResult.user.photoURL;
+            }
+            
+            await firestore().collection('users').doc(user.uid).update(updateData);
+            
+            // Update ConnectyCube profile if available
+            const userDoc = await firestore().collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                if (userData.connectycube_id) {
+                    const fullName = `${firstName} ${lastName}`.trim();
+                    await ConnectyCube.users.update({
+                        id: userData.connectycube_id,
+                        full_name: fullName,
+                        email: user.email,
+                    });
+                }
+            }
+        }
+        
+        return { success: true, user: user };
     } catch (error) {
         console.error('Error linking account with Google:', error);
-        return { success: false, error: 'Account linking with Google is not yet implemented for React Native.' };
+        
+        let errorMessage = 'Account linking failed';
+        if (error.code === 'auth/credential-already-in-use') {
+            errorMessage = 'This Google account is already linked to another user.';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+        
+        return { success: false, error: errorMessage };
     }
 }
 
-// Google Sign-In function using React Native Firebase
-export async function signInWithGoogle() {
+export async function googleSignIn() {
     try {
-        // For React Native, we need to use a different approach
-        // Since GoogleAuthProvider constructor isn't available, we'll use a web-based approach
-        // or implement a simpler Google Sign-In flow
+        GoogleSignin.configure({
+            webClientId: '21743597469-nm0196ga0ppujl54ql1ldvotui7vmga2.apps.googleusercontent.com',
+        });
+
+        // Check if your device supports Google Play
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         
-        // For now, let's show a message that this needs to be implemented differently
-        throw new Error('Google Sign-In needs to be implemented using a different method for React Native. Please use the web version or implement native Google Sign-In.');
+        // Get the users ID token
+        const signInResult = await GoogleSignin.signIn();
+      
+        // Get ID token (handle both new and old versions)
+        let idToken = signInResult.data?.idToken || signInResult.idToken;
+        if (!idToken) {
+            throw new Error('No ID token found');
+        }
+      
+        // Create a Google credential with the token
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+      
+        // Sign-in the user with the credential
+        const userCredential = await signInWithCredential(getAuth(), googleCredential);
+        const user = userCredential.user;
         
-        // TODO: Implement proper React Native Google Sign-In
-        // Options:
-        // 1. Use @react-native-google-signin/google-signin (but fix the linking issues)
-        // 2. Use a web-based approach with react-native-webview
-        // 3. Use Firebase's native Google Sign-In (requires additional setup)
+        // Check if this is a new user
+        const isNewUser = userCredential.additionalUserInfo?.isNewUser;
+        
+        if (isNewUser) {
+            // This is a new user, create their profile
+            const displayName = user.displayName || '';
+            const nameParts = displayName.trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+            
+            console.log('🔍 Creating new Google user profile:', { firstName, lastName, email: user.email });
+            
+            // Generate unique handle from Google name
+            const handle = await generateUniqueHandle(firstName, lastName);
+            console.log('🔍 Generated handle:', handle);
+            
+            // Get ConnectyCube ID first (before creating Firestore profile)
+            console.log('🔍 Creating ConnectyCube user...');
+            let connectyCubeUser = await initConnectyCube();
+            let chatUser = await authenticateChatUser(connectyCubeUser);
+            console.log('✅ ConnectyCube user created with ID:', chatUser);
+            
+            // Create user profile in Firestore with ConnectyCube ID
+            await firestore().collection('users').doc(user.uid).set({
+                uid: user.uid,
+                email: user.email,
+                first_name: firstName,
+                last_name: lastName,
+                handle: handle,
+                date_of_birth: null, // Google doesn't provide DOB
+                profile_pic: user.photoURL || '', // Use Google profile picture if available
+                friends: [],
+                friend_requests_received: [],
+                friend_requests_sent: [],
+                groups: [],
+                interests: [],
+                dietary_preferences: [],
+                places: [],
+                availability: [],
+                diary_manager: '',
+                connectycube_id: chatUser // Set ConnectyCube ID directly
+            });
+            
+            console.log('✅ Firestore profile created for new Google user with ConnectyCube ID');
+            
+            // Update ConnectyCube profile with Google name
+            try {
+                const fullName = `${firstName} ${lastName}`.trim();
+                await ConnectyCube.users.update({
+                    id: chatUser,
+                    full_name: fullName,
+                    email: user.email,
+                });
+                console.log('✅ ConnectyCube profile updated with Google name:', fullName);
+            } catch (error) {
+                console.warn('⚠️ Could not update ConnectyCube profile with Google name:', error);
+            }
+        } else {
+            // Existing user, just ensure profile exists
+            await ensureUserProfile(user.uid, user.email);
+            
+            // For existing Google users, also ensure ConnectyCube profile is updated
+            try {
+                const userDoc = await firestore().collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.connectycube_id) {
+                        const displayName = user.displayName || '';
+                        const nameParts = displayName.trim().split(' ');
+                        const firstName = nameParts[0] || '';
+                        const lastName = nameParts.slice(1).join(' ') || '';
+                        
+                        if (firstName || lastName) {
+                            const fullName = `${firstName} ${lastName}`.trim();
+                            await ConnectyCube.users.update({
+                                id: userData.connectycube_id,
+                                full_name: fullName,
+                                email: user.email,
+                            });
+                            console.log('✅ ConnectyCube profile updated for existing Google user:', fullName);
+                        }
+                        
+                        // Update profile picture if Google provides one and user doesn't have one
+                        if (user.photoURL && (!userData.profile_pic || userData.profile_pic === '')) {
+                            await firestore().collection('users').doc(user.uid).update({
+                                profile_pic: user.photoURL
+                            });
+                            console.log('✅ Profile picture updated with Google photo for existing user');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ Could not update ConnectyCube profile for existing Google user:', error);
+            }
+        }
+        
+        return { success: true, user: user, isNewUser: isNewUser };
         
     } catch (error) {
         console.error('Error during Google sign in:', error);
         
-        let errorMessage = 'Google sign in is not yet implemented for React Native. Please use email/password sign in for now.';
+        let errorMessage = 'Google sign in failed';
+        if (error.code === 'auth/account-exists-with-different-credential') {
+            errorMessage = 'An account with this email already exists. Please sign in with your password first, then link your Google account.';
+        } else if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = 'Sign in was cancelled';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
         
         return { success: false, error: errorMessage };
     }
 }
 
-// Google Sign-Up function using React Native Firebase
-export async function signUpWithGoogle() {
-    try {
-        // For React Native, we need to use a different approach
-        // Since GoogleAuthProvider constructor isn't available, we'll use a web-based approach
-        // or implement a simpler Google Sign-In flow
-        
-        // For now, let's show a message that this needs to be implemented differently
-        throw new Error('Google Sign-Up needs to be implemented using a different method for React Native. Please use email/password sign up for now.');
-        
-        // TODO: Implement proper React Native Google Sign-In
-        // Options:
-        // 1. Use @react-native-google-signin/google-signin (but fix the linking issues)
-        // 2. Use a web-based approach with react-native-webview
-        // 3. Use Firebase's native Google Sign-In (requires additional setup)
-        
-    } catch (error) {
-        console.error('Error during Google sign up:', error);
-        
-        let errorMessage = 'Google sign up is not yet implemented for React Native. Please use email/password sign up for now.';
-        
-        return { success: false, error: errorMessage };
-    }
-}

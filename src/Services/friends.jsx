@@ -54,7 +54,7 @@ async function getAllUsers() {
                         ? `${userData.first_name} ${userData.last_name}` 
                         : userData.handle || userData.email,
                     email: userData.email,
-                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+                    imageURL: userData.profile_pic || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
                     connectycube_id: userData.connectycube_id
                 });
             }
@@ -99,7 +99,7 @@ async function getCurrentUserFriends() {
                         ? `${friendData.first_name} ${friendData.last_name}` 
                         : friendData.handle || friendData.email,
                     email: friendData.email,
-                    imageURL: friendData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
+                    imageURL: friendData.profile_pic || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg',
                     connectycube_id: friendData.connectycube_id
                 });
             }
@@ -144,7 +144,7 @@ async function getIncomingFriendRequests() {
                         ? `${userData.first_name} ${userData.last_name}` 
                         : userData.handle || userData.email,
                     email: userData.email,
-                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                    imageURL: userData.profile_pic || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
                 });
             }
         }
@@ -188,7 +188,7 @@ async function getOutgoingFriendRequests() {
                         ? `${userData.first_name} ${userData.last_name}` 
                         : userData.handle || userData.email,
                     email: userData.email,
-                    imageURL: userData.media_ref || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
+                    imageURL: userData.profile_pic || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'
                 });
             }
         }

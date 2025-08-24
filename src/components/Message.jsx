@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, Image   } from 'react-native';
 import GlassCard from './GlassCard';
 import ProfilePic from './ProfilePic';
 
-const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL, userID, mediaDownloadUrl}) => {
+const Message = ({style, chatType, time, position, messageType, senderName, messageText, imageURL, userID, mediaDownloadUrl, senderProfilePic}) => {
+    
+    
     const dynamicStyle = {
         mainChatMessageContainer: {
           alignSelf: position === 'left' ? 'flex-start' : 'flex-end',
@@ -30,7 +32,7 @@ const Message = ({style, chatType, time, position, messageType, senderName, mess
             {chatType === 'main' ? (
                 <View style={[styles.mainChatMessageContainer, dynamicStyle.mainChatMessageContainer]}>
                     <View style={styles.mainChatMessage}>
-                        <ProfilePic size={40} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'} style={[styles.mainMessageProfilePic, dynamicStyle.mainMessageProfilePic]}/>
+                        <ProfilePic size={40} imageURL={senderProfilePic || 'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'} style={[styles.mainMessageProfilePic, dynamicStyle.mainMessageProfilePic]}/>
                         <GlassCard style={styles.messageBody}>
                             {messageType === 'image' ? (
                                 <View style={styles.mainMessageImageContainer}>     

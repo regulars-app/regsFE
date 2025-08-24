@@ -7,9 +7,7 @@ import GlassCard from './GlassCard';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 const MessageIO = ({style, paddingHorizontal = 30, onSendMessage, groupId}) => {
-    console.log('🔍 MessageIO component rendered');
-    console.log('📤 onSendMessage prop:', onSendMessage);
-    console.log('📤 onSendMessage type:', typeof onSendMessage);
+
     
     const [messageText, setMessageText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +83,7 @@ const MessageIO = ({style, paddingHorizontal = 30, onSendMessage, groupId}) => {
             <SendButton 
                 size={50} 
                 onPress={() => {
-                    console.log('🔘 Send button pressed!');
+            
                     handleSendMessage();
                 }}
                 disabled={isLoading || (!messageText.trim() && !selectedMedia)}

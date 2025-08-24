@@ -21,6 +21,7 @@ import PlaceSymbol from '../components/PlaceSymbol';
 import GlassCardButton from '../components/GlassCardButton';
 import CreateGroupPopup from '../popups/CreateGroupPopup';
 import { getCurrentUserGroups } from '../Services/groups';
+import { loadUserProfilePic } from '../Services/user';
 
 const Home = ({navigation}) => {
     const [placePopupVisible, setPlacePopupVisible] = useState(false);
@@ -28,12 +29,14 @@ const Home = ({navigation}) => {
     const [createGroupPopupVisible, setCreateGroupPopupVisible] = useState(false);
     const [groups, setGroups] = useState([]);
     const [isLoadingGroups, setIsLoadingGroups] = useState(true);
+    const [userProfilePic, setUserProfilePic] = useState('https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg');
 
     const mapImage = require('../images/map.png');
 
-    // Load user's groups on component mount
+    // Load user's groups and profile picture on component mount
     useEffect(() => {
         loadUserGroups();
+        loadUserProfilePicFromService();
     }, []);
 
     // Reload groups when create group popup closes (in case a new group was created)
@@ -42,6 +45,15 @@ const Home = ({navigation}) => {
             loadUserGroups();
         }
     }, [createGroupPopupVisible]);
+
+    const loadUserProfilePicFromService = async () => {
+        try {
+            const profilePicUrl = await loadUserProfilePic();
+            setUserProfilePic(profilePicUrl);
+        } catch (error) {
+            console.error('Error loading user profile picture:', error);
+        }
+    };
 
     const loadUserGroups = async () => {
         try {
@@ -89,7 +101,7 @@ const Home = ({navigation}) => {
             <View style={styles.header}>
                 <SearchBar style={styles.searchBar}/>
                 <TouchableOpacity style={styles.profilePic} onPress={() => navigation.navigate('Profile')}>
-                    <ProfilePic size={60} imageURL={'https://cdn.pixabay.com/photo/2024/12/22/15/29/people-9284717_1280.jpg'}/>
+                    <ProfilePic size={60} imageURL={userProfilePic}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.content}>

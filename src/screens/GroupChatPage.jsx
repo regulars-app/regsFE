@@ -7,9 +7,9 @@ import Messenger from '../components/Messenger';
 import DirectMessagesWidget from '../components/DirectMessagesWidget';
 import Popup from '../components/Popup';
 import DirectMessagerPopup from '../popups/DirectMessagerPopup';
-import { initializeGroupChat, loadGroupMessages, sendGroupMessage, formatMessagesForDisplay } from '../Services/messaging';
-import { loadGroupDataForChat } from '../Services/groups';
+import { initializeAndLoadGroupChat, sendGroupMessage, createNewMessageWithProfilePic, scrollToBottom } from '../Services/messaging';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const GroupChatPage = ({ routeParams }) => {
     const [showDirectMessagerPopup, setShowDirectMessagerPopup] = useState(false);
@@ -19,46 +19,40 @@ const GroupChatPage = ({ routeParams }) => {
     const [userId, setUserId] = useState(null);
     const [firebaseUid, setFirebaseUid] = useState(null);
     const [group, setGroup] = useState(null);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const groupId = routeParams?.groupID;
     const groupName = group?.name || 'Loading...';
     
-    console.log('🔍 GroupChatPage - groupId:', groupId);
-    console.log('🔍 GroupChatPage - routeParams:', routeParams);
+
     
     // Ref for ScrollView to enable auto-scrolling
     const scrollViewRef = useRef(null);
 
-    // Function to scroll to bottom of chat
-    const scrollToBottom = () => {
-        if (scrollViewRef.current) {
-            scrollViewRef.current.scrollToEnd({ animated: true });
-        }
+
+
+    // Function to refresh direct messages widget
+    const refreshDirectMessages = () => {
+        setRefreshKey(prev => prev + 1);
     };
     
     // Initialize ConnectyCube and get user session
     useEffect(() => {
         const initializeChat = async () => {
             try {
-                console.log('🚀 Initializing ConnectyCube for group chat...');
-                
-                // Initialize group chat using service
-                const chatData = await initializeGroupChat(groupId);
+                // Initialize and load complete group chat using service
+                const chatData = await initializeAndLoadGroupChat(groupId);
                 setUserId(chatData.userId);
-                console.log('🔍 Setting userId to:', chatData.userId, 'Type:', typeof chatData.userId);
+                setGroup(chatData.group);
+                setMessages(chatData.messages);
                 
                 // Also store the Firebase UID for direct messaging
                 const currentFirebaseUid = auth().currentUser?.uid;
                 setFirebaseUid(currentFirebaseUid);
-                console.log('🔍 Firebase UID:', currentFirebaseUid);
                 
-                // Load group data
-                if (groupId) {
-                    await loadGroupData(chatData.userId);
-                }
+                setLoading(false);
                 
             } catch (error) {
-                console.error('❌ Error initializing chat:', error);
                 setLoading(false);
             }
         };
@@ -69,64 +63,9 @@ const GroupChatPage = ({ routeParams }) => {
     // Auto-scroll to bottom whenever messages change
     useEffect(() => {
         if (messages.length > 0) {
-            setTimeout(() => scrollToBottom(), 100);
+            scrollToBottom(scrollViewRef);
         }
     }, [messages]);
-
-    // Reload messages when group data becomes available
-    useEffect(() => {
-        if (group && group.chat && userId) {
-            console.log('🔄 Group data available, reloading messages...');
-            loadMessages(userId, group);
-        }
-    }, [group, userId]);
-
-    const loadGroupData = async (currentUserId) => {
-        try {
-            // Load group data using service
-            const groupData = await loadGroupDataForChat(groupId);
-            console.log('✅ Group data loaded:', groupData);
-            console.log('🔍 Group chat ID:', groupData.chat);
-            
-            // Set group state first
-            setGroup(groupData);
-            
-            // Load messages for this group with the correct userId
-            // Pass the groupData directly instead of relying on state
-            await loadMessages(currentUserId, groupData);
-            
-        } catch (error) {
-            console.error('❌ Error loading group data:', error);
-            setLoading(false);
-        }
-    };
-
-    const loadMessages = async (currentUserId = userId, groupData = group) => {
-        try {
-            console.log('📥 Loading messages for group:', groupId);
-            console.log('🔍 Using ConnectyCube chat ID:', groupData?.chat);
-            console.log('🔍 Using userId for positioning:', currentUserId, 'Type:', typeof currentUserId);
-            
-            // Load messages using service
-            if (!groupData?.chat) {
-                throw new Error('Group chat ID not available');
-            }
-            const messagesResult = await loadGroupMessages(groupData.chat, 50);
-            
-            // Format messages for display using service
-            const formattedMessages = formatMessagesForDisplay(messagesResult, currentUserId);
-            setMessages(formattedMessages);
-            
-            // Scroll to bottom after messages are loaded
-            setTimeout(() => scrollToBottom(), 100);
-            
-            setLoading(false);
-            
-        } catch (error) {
-            console.error('❌ Error loading messages:', error);
-            setLoading(false);
-        }
-    };
 
     const handleSendMessage = async (messageText, mediaUri = null) => {
         try {
@@ -144,40 +83,15 @@ const GroupChatPage = ({ routeParams }) => {
                 userId
             );
             
-            // Add message to local state immediately
-            const newMessage = {
-                id: messageResult?.id || messageResult?._id || Date.now().toString(),
-                chatType: 'main',
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                position: 'right',
-                messageType: 'text',
-                senderName: 'You',
-                messageText: messageText,
-                imageURL: '',
-                mediaDownloadUrl: null,
-                senderId: userId,
-                timestamp: new Date(),
-                // Add these properties to match dummy data styling
-                senderPic: null,
-                isRead: true,
-                isDelivered: true,
-            };
+            // Create new message with profile picture using service
+            const newMessage = await createNewMessageWithProfilePic(messageText, messageResult, userId);
 
-            console.log('📱 Adding message to local state:', newMessage);
             setMessages(prev => [...prev, newMessage]);
             
             // Scroll to bottom after adding new message
-            setTimeout(() => scrollToBottom(), 100);
-            
-            // Force reload messages after a short delay to see if they're stored
-            setTimeout(async () => {
-                console.log('🔄 Reloading messages to check persistence...');
-                console.log('📱 Current local messages before reload:', messages);
-                await loadMessages();
-            }, 2000);
+            scrollToBottom(scrollViewRef);
 
         } catch (error) {
-            console.error('❌ Error sending message:', error);
             Alert.alert('Error', `Failed to send message: ${error.message}`);
         }
     };
@@ -208,6 +122,7 @@ const GroupChatPage = ({ routeParams }) => {
                     onClose={handleClosePopup}
                     group={group}
                     currentUserId={firebaseUid}
+                    onRefresh={refreshDirectMessages}
                 />
             </Popup>
             <View style={styles.header}>
@@ -223,6 +138,7 @@ const GroupChatPage = ({ routeParams }) => {
                         onMemberPress={handleMemberPress}
                         group={group}
                         currentUserId={firebaseUid}
+                        refreshTrigger={refreshKey}
                     />
                 )}
                 <Text style={styles.groupName}>{groupName}</Text>
